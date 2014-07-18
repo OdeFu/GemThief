@@ -792,7 +792,7 @@ ROT.Display.prototype.getOptions = function() {
 
 /**
  * Returns the DOM node of this display
- * @returns {node} DOM node
+ * @returns {Node} DOM node
  */
 ROT.Display.prototype.getContainer = function() {
 	return this._context.canvas;
