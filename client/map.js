@@ -42,6 +42,44 @@ createMap = function (options)
 		return empties;
 	};
 
+	// Public methods
+	var getTiles = function () { return _tiles; };
+	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
+
+	var isEmpty = function (x, y)
+	{
+		"use strict";
+
+		var tile = getTile(x, y);
+		return tile && !tile.isWall();
+	};
+
+	var draw = function (display, visibleTiles)
+	{
+		"use strict";
+
+		for (var i = 0; i < _tiles.length; i++)
+		{
+			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(),
+				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
+		}
+
+		for (i = 0; i < visibleTiles.length; i++)
+		{
+			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
+				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
+		}
+	};
+
+	var findEmptyTile = function ()
+	{
+		"use strict";
+
+		var empties = getAllEmptyTiles();
+		var index = Math.floor(ROT.RNG.getUniform() * empties.length);
+		return empties[index];
+	};
+
 	var calculateVisibleTiles = function ()
 	{
 		"use strict";
@@ -58,45 +96,6 @@ createMap = function (options)
 		return tiles;
 	};
 
-	// Public methods
-	var getTiles = function () { return _tiles; };
-	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
-
-	var isEmpty = function (x, y)
-	{
-		"use strict";
-
-		var tile = getTile(x, y);
-		return tile && !tile.isWall();
-	};
-
-	var draw = function (display)
-	{
-		"use strict";
-
-		for (var i = 0; i < _tiles.length; i++)
-		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(),
-				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
-		}
-
-		var visibleTiles = calculateVisibleTiles();
-		for (var i = 0; i < visibleTiles.length; i++)
-		{
-			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
-				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
-		}
-	};
-
-	var findEmptyTile = function ()
-	{
-		"use strict";
-
-		var empties = getAllEmptyTiles();
-		var index = Math.floor(ROT.RNG.getUniform() * empties.length);
-		return empties[index];
-	};
-
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
@@ -104,6 +103,7 @@ createMap = function (options)
 	map.draw = draw;
 	map.isEmpty = isEmpty;
 	map.findEmptyTile = findEmptyTile;
+	map.calculateVisibleTiles = calculateVisibleTiles;
 
 	// Dig the level
 	dig();

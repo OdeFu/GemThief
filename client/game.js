@@ -26,22 +26,12 @@ Game.init = function ()
 	this.boxes = this._generateBoxes();
 
 	var scheduler = new ROT.Scheduler.Simple();
+	scheduler.add(this, true);
 	scheduler.add(this.player, true);
 	scheduler.add(this.pedro, true);
+
 	this.engine = new ROT.Engine(scheduler);
 	this.engine.start();
-
-	this.draw();
-};
-
-Game.draw = function ()
-{
-	"use strict";
-
-	this.map.draw(this.display);
-	this._drawBoxes();
-	this.player.draw(this.display);
-	this.pedro.draw(this.display);
 };
 
 Game.getBox = function (x, y)
@@ -56,6 +46,65 @@ Game.getBox = function (x, y)
 		}
 	}
 	return null;
+};
+
+Game.act = function ()
+{
+	"use strict";
+
+	this._draw();
+};
+
+Game._draw = function ()
+{
+	"use strict";
+
+	var visibleTiles = this.map.calculateVisibleTiles();
+
+	this.map.draw(this.display, visibleTiles);
+
+	var visibleEntities = this._getVisibleEntities(visibleTiles);
+	for (var i = 0; i < visibleEntities.length; i++)
+	{
+		visibleEntities[i].draw(this.display);
+	}
+
+	this.player.draw(this.display);
+};
+
+Game._getVisibleEntities = function (visibleTiles)
+{
+	"use strict";
+
+	var entities = [];
+	for (var i = 0; i < this.boxes.length; i++)
+	{
+		if (this._isVisible(this.boxes[i], visibleTiles))
+		{
+			entities.push(this.boxes[i]);
+		}
+	}
+
+	if (this._isVisible(this.pedro, visibleTiles))
+	{
+		entities.push(this.pedro);
+	}
+
+	return entities;
+};
+
+Game._isVisible = function (entity, visibleTiles)
+{
+	"use strict";
+
+	for (var i = 0; i < visibleTiles.length; i++)
+	{
+		if (visibleTiles[i].getX() === entity.getX() && visibleTiles[i].getY() === entity.getY())
+		{
+			return true;
+		}
+	}
+	return false;
 };
 
 Game._drawBoxes = function ()

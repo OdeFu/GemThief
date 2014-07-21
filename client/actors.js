@@ -46,7 +46,7 @@ createPlayer = function (x, y)
 
 		var code = event.keyCode;
 
-		if (code == 13 || code == 32)
+		if (code === 13 || code === 32)
 		{
 			checkBox();
 			return;
@@ -69,8 +69,6 @@ createPlayer = function (x, y)
 
 		player.setX(newX);
 		player.setY(newY);
-
-		Game.draw();
 
 		window.removeEventListener("keydown", player);
 		Game.engine.unlock();
@@ -124,7 +122,7 @@ createPedro = function (x, y)
 		/* Remove Pedro's position */
 		path.shift();
 
-		if (path.length == 1)
+		if (path.length <= 1)
 		{
 			Game.gameOver(false);
 		}
@@ -132,7 +130,6 @@ createPedro = function (x, y)
 		{
 			pedro.setX(path[0][0]);
 			pedro.setY(path[0][1]);
-			Game.draw();
 		}
 	};
 
