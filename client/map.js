@@ -26,7 +26,21 @@ createMap = function (options)
 		};
 		digger.create(digCallback.bind(this));
 	};
-	dig();
+
+	var getAllEmptyTiles = function ()
+	{
+		"use strict";
+
+		var empties = [];
+		for (var i = 0; i < _tiles.length; i++)
+		{
+			if (!_tiles[i].isWall())
+			{
+				empties.push(_tiles[i]);
+			}
+		}
+		return empties;
+	};
 
 	// Public methods
 	var getTiles = function () { return _tiles; };
@@ -37,10 +51,19 @@ createMap = function (options)
 	{
 		"use strict";
 
-		for (var tile in _tiles)
+		for (var i = 0; i < _tiles.length; i++)
 		{
-			display.draw(tile.getX(), tile.getY(), tile.getChar(), tile.getForegroundColor(), tile.getBackgroundColor());
+			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(), _tiles[i].getForegroundColor(), _tiles[i].getBackgroundColor());
 		}
+	};
+
+	var findEmptyTile = function ()
+	{
+		"use strict";
+
+		var empties = getAllEmptyTiles();
+		var index = Math.floor(ROT.RNG.getUniform() * empties.length);
+		return empties[index];
 	};
 
 	// Create the actual map object
@@ -49,5 +72,9 @@ createMap = function (options)
 	map.getTile = getTile;
 	map.draw = draw;
 	map.isEmpty = isEmpty;
+	map.findEmptyTile = findEmptyTile;
+
+	dig();
+
 	return map;
 };

@@ -4,7 +4,7 @@ Game =
 	map: null,
 	player: null,
 	engine: null,
-	ananas: null,
+	boxes: null,
 	pedro: null
 };
 
@@ -17,11 +17,21 @@ Game.init = function ()
 
 	this.map = createMap({ width: 80, height: 25, seed: new Date().now });
 
+	var tile = this.map.findEmptyTile();
+	this.player = createPlayer(tile.getX(), tile.getY());
+
+	tile = this.map.findEmptyTile();
+	this.pedro = createPedro(tile.getX(), tile.getY());
+
+	this.boxes = this._generateBoxes();
+
 	var scheduler = new ROT.Scheduler.Simple();
 	scheduler.add(this.player, true);
 	scheduler.add(this.pedro, true);
 	this.engine = new ROT.Engine(scheduler);
 	this.engine.start();
+
+	this.draw();
 };
 
 Game.draw = function ()
@@ -29,6 +39,19 @@ Game.draw = function ()
 	"use strict";
 
 	this.map.draw(this.display);
+	this._drawBoxes();
+	this.player.draw(this.display);
+	this.pedro.draw(this.display);
+};
+
+Game._drawBoxes = function ()
+{
+	"use strict";
+
+	for (var i = 0; i < this.boxes.length; i++)
+	{
+		this.boxes[i].draw(this.display);
+	}
 };
 
 Game.gameOver = function (won)
@@ -47,37 +70,14 @@ Game.gameOver = function (won)
 	}
 };
 
-Game._generateMap = function ()
+Game._generateBoxes = function ()
 {
-
-
-	this._generateBoxes(freeCells);
-	this.player = this._createActor(Player, freeCells);
-	this.pedro = this._createActor(Pedro, freeCells);
-};
-
-Game._generateBoxes = function (freeCells)
-{
+	var boxes = []
 	for (var i = 0; i < 10; i++)
 	{
-		var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
-		var key = freeCells.splice(index, 1)[0];
-		this.map[key] = "*";
-
-		if (!i)
-		{
-			/* The first box contains the ananas */
-			this.ananas = key;
-		}
+		var tile = this.map.findEmptyTile();
+		boxes.push(createBox(tile.getX(), tile.getY(), i === 0));
 	}
+	return boxes;
 };
 
-Game._createActor = function (what, freeCells)
-{
-	var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
-	var key = freeCells.splice(index, 1)[0];
-	var parts = key.split(",");
-	var x = parseInt(parts[0]);
-	var y = parseInt(parts[1]);
-	return new what(x, y);
-};
