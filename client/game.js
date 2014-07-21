@@ -44,6 +44,20 @@ Game.draw = function ()
 	this.pedro.draw(this.display);
 };
 
+Game.getBox = function (x, y)
+{
+	"use strict";
+
+	for (var i = 0; i < this.boxes.length; i++)
+	{
+		if (this.boxes[i].getX() === x && this.boxes[i].getY() === y)
+		{
+			return this.boxes[i];
+		}
+	}
+	return null;
+};
+
 Game._drawBoxes = function ()
 {
 	"use strict";
@@ -72,7 +86,9 @@ Game.gameOver = function (won)
 
 Game._generateBoxes = function ()
 {
-	var boxes = []
+	"use strict";
+
+	var boxes = [];
 	for (var i = 0; i < 10; i++)
 	{
 		var tile = this.map.findEmptyTile();

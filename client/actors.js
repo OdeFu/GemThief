@@ -9,12 +9,14 @@ createPlayer = function (x, y)
 	// Private methods
 	var checkBox = function ()
 	{
-		var key = this._x + "," + this._y;
-		if (Game.map[key] != "*")
+		"use strict";
+
+		var box = Game.getBox(player.getX(), player.getY());
+		if (!box)
 		{
 			alert("There is no box here!");
 		}
-		else if (key == Game.ananas)
+		else if (box.containsAnanas())
 		{
 			Game.gameOver(true);
 			window.removeEventListener("keydown", this);
@@ -113,6 +115,9 @@ createPedro = function (x, y)
 		{
 			path.push([x, y]);
 		};
+
+		var px = pedro.getX();
+		var py = pedro.getY();
 
 		astar.compute(pedro.getX(), pedro.getY(), pathCallback);
 

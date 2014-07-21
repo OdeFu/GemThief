@@ -44,8 +44,15 @@ createMap = function (options)
 
 	// Public methods
 	var getTiles = function () { return _tiles; };
-	var getTile = function (x, y) {	return _tiles[options.width * x + y]; };
-	var isEmpty = function (x, y) {	return !getTile(x, y).isWall; };
+	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
+
+	var isEmpty = function (x, y)
+	{
+		"use strict";
+
+		var tile = getTile(x, y);
+		return tile && !tile.isWall();
+	};
 
 	var draw = function (display)
 	{
@@ -74,6 +81,7 @@ createMap = function (options)
 	map.isEmpty = isEmpty;
 	map.findEmptyTile = findEmptyTile;
 
+	// Dig the level
 	dig();
 
 	return map;
