@@ -42,6 +42,22 @@ createMap = function (options)
 		return empties;
 	};
 
+	var calculateVisibleTiles = function ()
+	{
+		"use strict";
+
+		var tiles = [];
+		var fov = new ROT.FOV.PreciseShadowcasting(isEmpty);
+		fov.compute(Game.player.getX(), Game.player.getY(), 10, function (x, y, r, visibility)
+		{
+			var tile = getTile(x, y);
+			tile.setSeen(true);
+			tiles.push(tile);
+		});
+
+		return tiles;
+	};
+
 	// Public methods
 	var getTiles = function () { return _tiles; };
 	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
@@ -60,7 +76,15 @@ createMap = function (options)
 
 		for (var i = 0; i < _tiles.length; i++)
 		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(), _tiles[i].getForegroundColor(), _tiles[i].getBackgroundColor());
+			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(),
+				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
+		}
+
+		var visibleTiles = calculateVisibleTiles();
+		for (var i = 0; i < visibleTiles.length; i++)
+		{
+			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
+				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
 	};
 
