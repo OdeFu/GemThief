@@ -11,4 +11,4 @@ createBox = function (x, y, ananas)
 	var box = createEntity(x, y, "*", "orange");
 	box.containsAnanas = containsAnanas;
 	return box;
-}
+};
