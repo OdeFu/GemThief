@@ -5,7 +5,7 @@
 /**
  * @namespace Top-level ROT namespace
  */
-var ROT = {
+ROT = {
 	/**
 	 * @returns {bool} Is rot.js supported by this browser?
 	 */
@@ -677,21 +677,31 @@ Function.prototype.extend = function(parent) {
 	this.prototype.constructor = this;
 	return this;
 }
-window.requestAnimationFrame =
-	window.requestAnimationFrame
-	|| window.mozRequestAnimationFrame
-	|| window.webkitRequestAnimationFrame
-	|| window.oRequestAnimationFrame
-	|| window.msRequestAnimationFrame
-	|| function(cb) { return setTimeout(cb, 1000/60); };
 
-window.cancelAnimationFrame =
+if (Meteor.isClient)
+{
+	window.requestAnimationFrame =
+	window.requestAnimationFrame
+		|| window.mozRequestAnimationFrame
+		|| window.webkitRequestAnimationFrame
+		|| window.oRequestAnimationFrame
+		|| window.msRequestAnimationFrame
+		|| function (cb)
+	{
+		return setTimeout(cb, 1000 / 60);
+	};
+
+	window.cancelAnimationFrame =
 	window.cancelAnimationFrame
-	|| window.mozCancelAnimationFrame
-	|| window.webkitCancelAnimationFrame
-	|| window.oCancelAnimationFrame
-	|| window.msCancelAnimationFrame
-	|| function(id) { return clearTimeout(id); };
+		|| window.mozCancelAnimationFrame
+		|| window.webkitCancelAnimationFrame
+		|| window.oCancelAnimationFrame
+		|| window.msCancelAnimationFrame
+		|| function (id)
+	{
+		return clearTimeout(id);
+	};
+}
 /**
  * @class Visual map display
  * @param {object} [options]
