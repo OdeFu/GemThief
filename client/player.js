@@ -4,21 +4,27 @@ Player = function (x, y)
 	this._y = y;
 };
 
-Player.prototype.draw = function ()
+Player.prototype.draw = function (display)
 {
-	Game.display.draw(this._x, this._y, "@", "#ff0");
+	"use strict";
+
+	display.draw(this._x, this._y, "@", "#ff0");
 };
 
 Player.prototype.act = function ()
 {
+	"use strict";
+
 	Game.engine.lock();
 
-	/* Wait for user input, do stuff what the user hits a key */
+	/* Wait for user input, do stuff when the user hits a key */
 	window.addEventListener("keydown", this);
 };
 
 Player.prototype.handleEvent = function (event)
 {
+	"use strict";
+
 	// Process user input
 
 	var keyMap = {};
@@ -48,18 +54,16 @@ Player.prototype.handleEvent = function (event)
 	var newX = this._x + dir[0];
 	var newY = this._y + dir[1];
 
-	var newKey = newX + "," + newY;
-	if (!(newKey in Game.map))
+	if (!Game.map.isEmpty(newX, newY))
 	{
 		/* Cannot move in this direction */
 		return;
 	}
 
-	Game.display.draw(this._x, this._y, Game.map[this._x + "," + this._y]);
-
 	this._x = newX;
 	this._y = newY;
-	this.draw();
+
+	Game.draw();
 
 	window.removeEventListener("keydown", this);
 	Game.engine.unlock();
@@ -74,8 +78,7 @@ Player.prototype._checkBox = function ()
 	}
 	else if (key == Game.ananas)
 	{
-		alert("Hooray! You found an ananas and won this game.");
-		Game.engine.lock();
+		Game.gameOver(true);
 		window.removeEventListener("keydown", this);
 	}
 	else
@@ -112,10 +115,10 @@ Pedro.prototype.act = function ()
 
 	var passableCallback = function (x, y)
 	{
-		return x + "," + y in Game.map;
+		return Game.map.isEmpty(x, y);
 	};
 
-	var astar = new ROT.Path.AStar(x, y, passableCallback, { topology: 4});
+	var astar = new ROT.Path.AStar(x, y, passableCallback, { topology: 4 });
 	var path = [];
 	var pathCallback = function (x, y)
 	{
@@ -129,16 +132,12 @@ Pedro.prototype.act = function ()
 
 	if (path.length == 1)
 	{
-		Game.engine.lock();
-		alert("Game Over - you were captured by Pedro!");
+		Game.gameOver(false);
 	}
 	else
 	{
-		x = path[0][0];
-		y = path[0][1];
-		Game.display.draw(this._x, this._y, Game.map[this._x + "," + this._y]);
-		this._x = x;
-		this._y = y;
-		this.draw();
+		this._x = path[0][0];
+		this._y = path[0][1];
+		Game.draw();
 	}
 };

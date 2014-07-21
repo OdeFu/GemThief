@@ -1,7 +1,7 @@
 Game =
 {
 	display: null,
-	map: {},
+	map: null,
 	player: null,
 	engine: null,
 	ananas: null,
@@ -10,11 +10,12 @@ Game =
 
 Game.init = function ()
 {
+	"use strict";
+
 	this.display = new ROT.Display();
 	document.body.appendChild(this.display.getContainer());
 
-	this._generateMap();
-	this._drawWholeMap();
+	this.map = createMap({ width: 80, height: 25, seed: new Date().now });
 
 	var scheduler = new ROT.Scheduler.Simple();
 	scheduler.add(this.player, true);
@@ -23,45 +24,36 @@ Game.init = function ()
 	this.engine.start();
 };
 
+Game.draw = function ()
+{
+	"use strict";
+
+	this.map.draw(this.display);
+};
+
+Game.gameOver = function (won)
+{
+	"use strict";
+
+	Game.engine.lock();
+
+	if (won)
+	{
+		alert("Hooray! You found the ananas and won this game.");
+	}
+	else
+	{
+		alert("Game Over - you were captured by Pedro!");
+	}
+};
+
 Game._generateMap = function ()
 {
-	var digger = new ROT.Map.Digger();
-	var freeCells = [];
 
-	var digCallback = function (x, y, value)
-	{
-		if (value)
-		{
-			/* Do not store walls */
-			return;
-		}
-
-		var key = x + "," + y;
-		this.map[key] = ".";
-		freeCells.push(key);
-	};
-	digger.create(digCallback.bind(this));
 
 	this._generateBoxes(freeCells);
 	this.player = this._createActor(Player, freeCells);
 	this.pedro = this._createActor(Pedro, freeCells);
-};
-
-Game._drawWholeMap = function ()
-{
-	for (var key in this.map)
-	{
-		if (this.map.hasOwnProperty(key))
-		{
-			var parts = key.split(",");
-			var x = parseInt(parts[0]);
-			var y = parseInt(parts[1]);
-			this.display.draw(x, y, this.map[key]);
-		}
-	}
-
-	this.player.draw();
-	this.pedro.draw();
 };
 
 Game._generateBoxes = function (freeCells)
