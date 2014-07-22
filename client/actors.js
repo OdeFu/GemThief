@@ -114,9 +114,6 @@ createPedro = function (x, y)
 			path.push([x, y]);
 		};
 
-		var px = pedro.getX();
-		var py = pedro.getY();
-
 		astar.compute(pedro.getX(), pedro.getY(), pathCallback);
 
 		/* Remove Pedro's position */
