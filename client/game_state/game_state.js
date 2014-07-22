@@ -9,6 +9,7 @@ var createGameState = function ()
 
 	// Private fields
 	var _map;
+	var _playerStats = new PlayerStats();
 
 	// Private methods
 	var draw = function ()
@@ -56,9 +57,10 @@ var createGameState = function ()
 
 	// Public methods
 	var getMap = function () { return _map; };
+	var getPlayerStats = function () { return _playerStats; };
 
 	var state = createState(options);
 	state.getMap = getMap;
-
+	state.getPlayerStats = getPlayerStats;
 	return state;
 }

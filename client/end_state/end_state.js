@@ -1,14 +1,17 @@
-EndState = function (won)
+EndState = function (params)
 {
-	return createEndState(won);
+	return createEndState(params);
 };
 
-var createEndState = function (won)
+var createEndState = function (params)
 {
 	"use strict";
+	check(params.won, Boolean);
+	check(params.score, Number);
 
 	// Private fields
-	var _won = won;
+	var _won = params.won;
+	var _score = params.score;
 
 	// Private methods
 	var draw = function ()
@@ -17,8 +20,9 @@ var createEndState = function (won)
 
 		Game.getDisplay().clear();
 
-		var text = _won ? "You won!" : "You lost!";
+		var text = _won ? "You managed to escape!" : "You got caught by Pedro(s)!";
 		Game.drawTextCentered(5, text);
+		Game.drawTextCentered(6, "Score: " + _score);
 		Game.drawTextCentered(8, "%b{gray}New Game");
 	};
 
@@ -35,6 +39,7 @@ var createEndState = function (won)
 	var handleEvent = function (event)
 	{
 		"use strict";
+		check(event.keyCode, Number);
 
 		// Process user input
 		if (event.keyCode === ROT.VK_RETURN)

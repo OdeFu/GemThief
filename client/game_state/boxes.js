@@ -5,17 +5,20 @@
  * @param ananas flag indicating if this box contains an ananas
  * @returns {*}
  */
-createBox = function (x, y, ananas)
+createBox = function (params)
 {
 	"use strict";
 
 	// Private fields
-	var _ananas = ananas;
+	var _ananas = params.ananas;
+
+	params.char = "*";
+	params.color = "orange";
 
 	// Public methods
 	var containsAnanas = function () { return _ananas; };
 
-	var box = createEntity(x, y, "*", "orange");
+	var box = createEntity(params);
 	box.containsAnanas = containsAnanas;
 	return box;
 };

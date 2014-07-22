@@ -1,22 +1,23 @@
 /**
  * Create a new entity.
- * @param x coordinate, defaults to 0
- * @param y coordinate, defaults to 0
- * @param char the character to draw, defaults to ' '
- * @param color the foreground color for the char
+ * @param params object containing the parameters:
+ *  - x: the x-coordinate, defaults to 0
+ *  - y: the y-coordinate, defaults to 0
+ *  - char: the character to be draw, defaults to ' '
+ *  - color: the color used when drawing the char, defaults to 'white'
+ *  - blocks: a flag indicating if this entity is passable
  * @returns {{}}
  */
-createEntity = function (x, y, char, color)
+createEntity = function (params)
 {
 	"use strict";
 
 	// Private fields
-	var _x = x || 0;
-	var _y = y || 0;
-	var _char = char || ' ';
-	var _color = color || "black";
-
-	// Private methods
+	var _x = params.x || 0;
+	var _y = params.y || 0;
+	var _char = params.char || ' ';
+	var _color = params.color || "white";
+	var _blocks = params.blocks || false;
 
 	// Public methods
 	var getX = function () { return _x; };
@@ -26,6 +27,7 @@ createEntity = function (x, y, char, color)
 	var getChar = function () { return _char; };
 	var getColor = function () { return _color; };
 	var draw = function (display) {	display.draw(_x, _y, _char, _color); };
+	var isBlocking = function () { return _blocks; };
 
 	var entity = {};
 	entity.getX = getX;
@@ -35,5 +37,6 @@ createEntity = function (x, y, char, color)
 	entity.getChar = getChar;
 	entity.getColor = getColor;
 	entity.draw = draw;
+	entity.isBlocking = isBlocking;
 	return entity;
 };

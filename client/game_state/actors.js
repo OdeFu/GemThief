@@ -16,7 +16,8 @@ createPlayer = function (x, y)
 		else if (box.containsAnanas())
 		{
 			window.removeEventListener("keydown", player);
-			Game.gameOver(true);
+			Game.getState().getPlayerStats().ananas += 1;
+			Game.getState().getEngine().unlock();
 		}
 		else
 		{
@@ -58,14 +59,14 @@ createPlayer = function (x, y)
 		var newX = player.getX() + dir[0];
 		var newY = player.getY() + dir[1];
 
-		if (!Game.getState().getMap().isEmpty(newX, newY))
+		if (Game.getState().getMap().isBlocking(newX, newY))
 		{
 			/* Cannot move in this direction */
 			return;
 		}
 
-		player.setX(newX);
-		player.setY(newY);
+		Game.getState().getMap().moveEntity(player, newX, newY);
+		Game.getState().getPlayerStats().moves += 1;
 
 		window.removeEventListener("keydown", player);
 		Game.getState().getEngine().unlock();
@@ -82,7 +83,7 @@ createPlayer = function (x, y)
 	};
 
 	// Create the player actor
-	var player = createEntity(x, y, "@", "#ff0");
+	var player = createEntity({ x: x, y: y, char: "@", color: "#ff0" });
 	player.handleEvent = handleEvent;
 	player.act = act;
 	return player;
@@ -100,7 +101,7 @@ createPedro = function (x, y)
 
 		var passableCallback = function (x, y)
 		{
-			return Game.getState().getMap().isEmpty(x, y);
+			return !Game.getState().getMap().isBlocking(x, y);
 		};
 
 		var astar = new ROT.Path.AStar(x, y, passableCallback, { topology: 4 });
@@ -115,19 +116,20 @@ createPedro = function (x, y)
 		/* Remove Pedro's position */
 		path.shift();
 
+		Game.getState().getPlayerStats().distance = path.length;
+
 		if (path.length <= 1)
 		{
 			Game.gameOver(false);
 		}
 		else
 		{
-			pedro.setX(path[0][0]);
-			pedro.setY(path[0][1]);
+			Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
 		}
 	};
 
 	// Create the Pedro actor
-	var pedro = createEntity(x, y, "P", "red");
+	var pedro = createEntity({ x: x, y: y, char: "P", color: "red" });
 	pedro.act = act;
 	return pedro;
 };

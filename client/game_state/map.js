@@ -22,8 +22,12 @@ createMap = function (options)
 
 		var digCallback = function (x, y, value)
 		{
+			var tile = createTile(x, y);
 			var wall = value === 1;
-			var tile = createTile(x, y, wall);
+			if (wall)
+			{
+				tile.addEntity(new Wall({ x: x, y: y }));
+			}
 
 			_tiles.push(tile);
 		};
@@ -34,14 +38,16 @@ createMap = function (options)
 	{
 		"use strict";
 
+		_boxes = generateBoxes();
+
 		var tile = findEmptyTile();
 		_player = createPlayer(tile.getX(), tile.getY());
+		tile.addEntity(_player);
 
 		tile = findEmptyTile();
 		_pedro = createPedro(tile.getX(), tile.getY());
-
-		_boxes = generateBoxes();
-	}
+		tile.addEntity(_pedro);
+	};
 
 	var generateBoxes = function ()
 	{
@@ -51,7 +57,9 @@ createMap = function (options)
 		for (var i = 0; i < 10; i++)
 		{
 			var tile = findEmptyTile();
-			boxes.push(createBox(tile.getX(), tile.getY(), i === 0));
+			var box = createBox({ x: tile.getX(), y: tile.getY(), ananas: i % 2 === 0 });
+			tile.addEntity(box);
+			boxes.push(box);
 		}
 		return boxes;
 	};
@@ -63,7 +71,7 @@ createMap = function (options)
 		var empties = [];
 		for (var i = 0; i < _tiles.length; i++)
 		{
-			if (!_tiles[i].isWall())
+			if (_tiles[i].isEmpty())
 			{
 				empties.push(_tiles[i]);
 			}
@@ -71,39 +79,9 @@ createMap = function (options)
 		return empties;
 	};
 
-	var getVisibleEntities = function (visibleTiles)
+	var lightPass = function (x, y)
 	{
-		"use strict";
-
-		var entities = [];
-		for (var i = 0; i < _boxes.length; i++)
-		{
-			if (isVisible(_boxes[i], visibleTiles))
-			{
-				entities.push(_boxes[i]);
-			}
-		}
-
-		if (isVisible(_pedro, visibleTiles))
-		{
-			entities.push(_pedro);
-		}
-
-		return entities;
-	};
-
-	var isVisible = function (entity, visibleTiles)
-	{
-		"use strict";
-
-		for (var i = 0; i < visibleTiles.length; i++)
-		{
-			if (visibleTiles[i].getX() === entity.getX() && visibleTiles[i].getY() === entity.getY())
-			{
-				return true;
-			}
-		}
-		return false;
+		return !isBlocking(x, y);
 	};
 
 	// Public methods
@@ -118,7 +96,15 @@ createMap = function (options)
 		"use strict";
 
 		var tile = getTile(x, y);
-		return tile && !tile.isWall();
+		return tile && tile.isEmpty();
+	};
+
+	var isBlocking = function (x, y)
+	{
+		"use strict";
+
+		var tile = getTile(x, y);
+		return tile && tile.isBlocking();
 	};
 
 	var draw = function (display)
@@ -137,14 +123,6 @@ createMap = function (options)
 			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
-
-		var visibleEntities = getVisibleEntities(visibleTiles);
-		for (var i = 0; i < visibleEntities.length; i++)
-		{
-			visibleEntities[i].draw(display);
-		}
-
-		_player.draw(Game.getDisplay());
 	};
 
 	var findEmptyTile = function ()
@@ -161,7 +139,7 @@ createMap = function (options)
 		"use strict";
 
 		var tiles = [];
-		var fov = new ROT.FOV.PreciseShadowcasting(isEmpty);
+		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
 		fov.compute(_player.getX(), _player.getY(), 10, function (x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
@@ -186,18 +164,34 @@ createMap = function (options)
 		return null;
 	};
 
+	var moveEntity = function (entity, newX, newY)
+	{
+		"use strict";
+
+		var oldTile = getTile(entity.getX(), entity.getY());
+		oldTile.removeEntity(entity);
+
+		var newTile = getTile(newX, newY);
+		newTile.addEntity(entity);
+
+		entity.setX(newX);
+		entity.setY(newY);
+	};
+
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
 	map.getTile = getTile;
 	map.draw = draw;
 	map.isEmpty = isEmpty;
+	map.isBlocking = isBlocking;
 	map.findEmptyTile = findEmptyTile;
 	map.calculateVisibleTiles = calculateVisibleTiles;
 	map.getPlayer = getPlayer;
 	map.getPedro = getPedro;
 	map.getBoxes = getBoxes;
 	map.getBox = getBox;
+	map.moveEntity = moveEntity;
 
 	// Dig the level
 	dig();

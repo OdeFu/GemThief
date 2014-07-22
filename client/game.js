@@ -40,7 +40,10 @@ createGame = function ()
 
 	var gameOver = function (won)
 	{
-		changeState(EndState, won);
+		Meteor.call("update", _state.getPlayerStats(), function (error, score)
+		{
+			changeState(EndState, { won: won, score: score });
+		});
 	};
 
 	var drawTextCentered = function (y, text)
