@@ -86,7 +86,7 @@ createMap = function (options)
 
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(isEmpty);
-		fov.compute(Game.player.getX(), Game.player.getY(), 10, function (x, y, r, visibility)
+		fov.compute(Game.getPlayer().getX(), Game.getPlayer().getY(), 10, function (x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
 			tile.setSeen(true);

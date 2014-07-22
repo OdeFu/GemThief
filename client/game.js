@@ -1,150 +1,167 @@
-Game =
-{
-	display: null,
-	map: null,
-	player: null,
-	engine: null,
-	boxes: null,
-	pedro: null
-};
-
-Game.init = function ()
+createGame = function ()
 {
 	"use strict";
 
-	this.display = new ROT.Display();
-	document.body.appendChild(this.display.getContainer());
+	// Private fields
+	var display;
+	var map;
+	var player;
+	var engine;
+	var boxes;
+	var pedro;
 
-	this.map = createMap({ width: 80, height: 25, seed: new Date().now });
-
-	var tile = this.map.findEmptyTile();
-	this.player = createPlayer(tile.getX(), tile.getY());
-
-	tile = this.map.findEmptyTile();
-	this.pedro = createPedro(tile.getX(), tile.getY());
-
-	this.boxes = this._generateBoxes();
-
-	var scheduler = new ROT.Scheduler.Simple();
-	scheduler.add(this, true);
-	scheduler.add(this.player, true);
-	scheduler.add(this.pedro, true);
-
-	this.engine = new ROT.Engine(scheduler);
-	this.engine.start();
-};
-
-Game.getBox = function (x, y)
-{
-	"use strict";
-
-	for (var i = 0; i < this.boxes.length; i++)
+	// Private methods
+	var draw = function ()
 	{
-		if (this.boxes[i].getX() === x && this.boxes[i].getY() === y)
+		"use strict";
+
+		display.clear();
+
+		var visibleTiles = map.calculateVisibleTiles();
+
+		map.draw(display, visibleTiles);
+
+		var visibleEntities = getVisibleEntities(visibleTiles);
+		for (var i = 0; i < visibleEntities.length; i++)
 		{
-			return this.boxes[i];
+			visibleEntities[i].draw(display);
 		}
-	}
-	return null;
-};
 
-Game.act = function ()
-{
-	"use strict";
+		player.draw(display);
+	};
 
-	this._draw();
-};
-
-Game._draw = function ()
-{
-	"use strict";
-
-	this.display.clear();
-
-	var visibleTiles = this.map.calculateVisibleTiles();
-
-	this.map.draw(this.display, visibleTiles);
-
-	var visibleEntities = this._getVisibleEntities(visibleTiles);
-	for (var i = 0; i < visibleEntities.length; i++)
+	var getVisibleEntities = function (visibleTiles)
 	{
-		visibleEntities[i].draw(this.display);
-	}
+		"use strict";
 
-	this.player.draw(this.display);
-};
-
-Game._getVisibleEntities = function (visibleTiles)
-{
-	"use strict";
-
-	var entities = [];
-	for (var i = 0; i < this.boxes.length; i++)
-	{
-		if (this._isVisible(this.boxes[i], visibleTiles))
+		var entities = [];
+		for (var i = 0; i < boxes.length; i++)
 		{
-			entities.push(this.boxes[i]);
+			if (isVisible(boxes[i], visibleTiles))
+			{
+				entities.push(boxes[i]);
+			}
 		}
-	}
 
-	if (this._isVisible(this.pedro, visibleTiles))
-	{
-		entities.push(this.pedro);
-	}
-
-	return entities;
-};
-
-Game._isVisible = function (entity, visibleTiles)
-{
-	"use strict";
-
-	for (var i = 0; i < visibleTiles.length; i++)
-	{
-		if (visibleTiles[i].getX() === entity.getX() && visibleTiles[i].getY() === entity.getY())
+		if (isVisible(pedro, visibleTiles))
 		{
-			return true;
+			entities.push(pedro);
 		}
-	}
-	return false;
+
+		return entities;
+	};
+
+	var isVisible = function (entity, visibleTiles)
+	{
+		"use strict";
+
+		for (var i = 0; i < visibleTiles.length; i++)
+		{
+			if (visibleTiles[i].getX() === entity.getX() && visibleTiles[i].getY() === entity.getY())
+			{
+				return true;
+			}
+		}
+		return false;
+	};
+
+	var generateBoxes = function ()
+	{
+		"use strict";
+
+		var boxes = [];
+		for (var i = 0; i < 10; i++)
+		{
+			var tile = map.findEmptyTile();
+			boxes.push(createBox(tile.getX(), tile.getY(), i === 0));
+		}
+		return boxes;
+	};
+
+	// Public methods
+	var init = function ()
+	{
+		"use strict";
+
+		display = new ROT.Display();
+		document.body.appendChild(display.getContainer());
+
+		map = createMap({ width: 80, height: 25, seed: new Date().now });
+
+		var tile = map.findEmptyTile();
+		player = createPlayer(tile.getX(), tile.getY());
+
+		tile = map.findEmptyTile();
+		pedro = createPedro(tile.getX(), tile.getY());
+
+		boxes = generateBoxes();
+
+		var scheduler = new ROT.Scheduler.Simple();
+		scheduler.add(this, true);
+		scheduler.add(player, true);
+		scheduler.add(pedro, true);
+
+		engine = new ROT.Engine(scheduler);
+		engine.start();
+	};
+
+	var getBox = function (x, y)
+	{
+		"use strict";
+
+		for (var i = 0; i < boxes.length; i++)
+		{
+			if (boxes[i].getX() === x && boxes[i].getY() === y)
+			{
+				return boxes[i];
+			}
+		}
+		return null;
+	};
+
+	var act = function ()
+	{
+		"use strict";
+
+		draw();
+	};
+
+	var gameOver = function (won)
+	{
+		"use strict";
+
+		engine.lock();
+
+		if (won)
+		{
+			alert("Hooray! You found the ananas and won this game.");
+		}
+		else
+		{
+			alert("Game Over - you were captured by Pedro!");
+		}
+	};
+
+	var getPlayer = function () { return player; };
+	var getMap = function () { return map; };
+	var getDisplay = function () { return display; };
+	var getEngine = function () { return engine; };
+	var getBoxes = function () { return boxes; };
+	var getPedro = function () { return pedro; };
+
+	var game = {};
+	game.gameOver = gameOver;
+	game.act = act;
+	game.getBox = getBox;
+	game.init = init;
+	game.getPlayer = getPlayer;
+	game.getPedro = getPedro;
+	game.getMap = getMap;
+	game.getDisplay = getDisplay;
+	game.getEngine = getEngine;
+	game.getBoxes = getBoxes;
+	return game;
 };
 
-Game._drawBoxes = function ()
-{
-	"use strict";
 
-	for (var i = 0; i < this.boxes.length; i++)
-	{
-		this.boxes[i].draw(this.display);
-	}
-};
-
-Game.gameOver = function (won)
-{
-	"use strict";
-
-	Game.engine.lock();
-
-	if (won)
-	{
-		alert("Hooray! You found the ananas and won this game.");
-	}
-	else
-	{
-		alert("Game Over - you were captured by Pedro!");
-	}
-};
-
-Game._generateBoxes = function ()
-{
-	"use strict";
-
-	var boxes = [];
-	for (var i = 0; i < 10; i++)
-	{
-		var tile = this.map.findEmptyTile();
-		boxes.push(createBox(tile.getX(), tile.getY(), i === 0));
-	}
-	return boxes;
-};
 

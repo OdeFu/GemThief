@@ -61,7 +61,7 @@ createPlayer = function (x, y)
 		var newX = player.getX() + dir[0];
 		var newY = player.getY() + dir[1];
 
-		if (!Game.map.isEmpty(newX, newY))
+		if (!Game.getMap().isEmpty(newX, newY))
 		{
 			/* Cannot move in this direction */
 			return;
@@ -71,14 +71,14 @@ createPlayer = function (x, y)
 		player.setY(newY);
 
 		window.removeEventListener("keydown", player);
-		Game.engine.unlock();
+		Game.getEngine().unlock();
 	};
 
 	var act = function ()
 	{
 		"use strict";
 
-		Game.engine.lock();
+		Game.getEngine().lock();
 
 		/* Wait for user input, do stuff when the user hits a key */
 		window.addEventListener("keydown", player);
@@ -99,12 +99,12 @@ createPedro = function (x, y)
 	// Public methods
 	var act = function ()
 	{
-		var x = Game.player.getX();
-		var y = Game.player.getY();
+		var x = Game.getPlayer().getX();
+		var y = Game.getPlayer().getY();
 
 		var passableCallback = function (x, y)
 		{
-			return Game.map.isEmpty(x, y);
+			return Game.getMap().isEmpty(x, y);
 		};
 
 		var astar = new ROT.Path.AStar(x, y, passableCallback, { topology: 4 });

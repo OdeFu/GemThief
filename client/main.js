@@ -1,5 +1,8 @@
+Game = {};
+
 Meteor.startup(function()
 {
-    Game.init();
+    Game = createGame();
+	Game.init();
 });
 
