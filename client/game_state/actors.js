@@ -3,9 +3,6 @@ createPlayer = function (x, y)
 {
 	"use strict";
 
-	// Create the player actor
-	var player = createEntity(x, y, "@", "#ff0");
-
 	// Private methods
 	var checkBox = function ()
 	{
@@ -84,6 +81,8 @@ createPlayer = function (x, y)
 		window.addEventListener("keydown", player);
 	};
 
+	// Create the player actor
+	var player = createEntity(x, y, "@", "#ff0");
 	player.handleEvent = handleEvent;
 	player.act = act;
 	return player;
@@ -92,9 +91,6 @@ createPlayer = function (x, y)
 createPedro = function (x, y)
 {
 	"use strict";
-
-	// Create the Pedro actor
-	var pedro = createEntity(x, y, "P", "red");
 
 	// Public methods
 	var act = function ()
@@ -130,6 +126,8 @@ createPedro = function (x, y)
 		}
 	};
 
+	// Create the Pedro actor
+	var pedro = createEntity(x, y, "P", "red");
 	pedro.act = act;
 	return pedro;
 };
