@@ -3,31 +3,31 @@ createGame = function ()
 	"use strict";
 
 	// Private fields
-	var display;
-	var map;
-	var player;
-	var engine;
-	var boxes;
-	var pedro;
+	var _display;
+	var _map;
+	var _player;
+	var _engine;
+	var _boxes;
+	var _pedro;
 
 	// Private methods
 	var draw = function ()
 	{
 		"use strict";
 
-		display.clear();
+		_display.clear();
 
-		var visibleTiles = map.calculateVisibleTiles();
+		var visibleTiles = _map.calculateVisibleTiles();
 
-		map.draw(display, visibleTiles);
+		_map.draw(_display, visibleTiles);
 
 		var visibleEntities = getVisibleEntities(visibleTiles);
 		for (var i = 0; i < visibleEntities.length; i++)
 		{
-			visibleEntities[i].draw(display);
+			visibleEntities[i].draw(_display);
 		}
 
-		player.draw(display);
+		_player.draw(_display);
 	};
 
 	var getVisibleEntities = function (visibleTiles)
@@ -35,17 +35,17 @@ createGame = function ()
 		"use strict";
 
 		var entities = [];
-		for (var i = 0; i < boxes.length; i++)
+		for (var i = 0; i < _boxes.length; i++)
 		{
-			if (isVisible(boxes[i], visibleTiles))
+			if (isVisible(_boxes[i], visibleTiles))
 			{
-				entities.push(boxes[i]);
+				entities.push(_boxes[i]);
 			}
 		}
 
-		if (isVisible(pedro, visibleTiles))
+		if (isVisible(_pedro, visibleTiles))
 		{
-			entities.push(pedro);
+			entities.push(_pedro);
 		}
 
 		return entities;
@@ -72,7 +72,7 @@ createGame = function ()
 		var boxes = [];
 		for (var i = 0; i < 10; i++)
 		{
-			var tile = map.findEmptyTile();
+			var tile = _map.findEmptyTile();
 			boxes.push(createBox(tile.getX(), tile.getY(), i === 0));
 		}
 		return boxes;
@@ -83,37 +83,37 @@ createGame = function ()
 	{
 		"use strict";
 
-		display = new ROT.Display();
-		document.body.appendChild(display.getContainer());
+		_display = new ROT.Display();
+		document.body.appendChild(_display.getContainer());
 
-		map = createMap({ width: 80, height: 25, seed: new Date().now });
+		_map = createMap({ width: 80, height: 25, seed: new Date().now });
 
-		var tile = map.findEmptyTile();
-		player = createPlayer(tile.getX(), tile.getY());
+		var tile = _map.findEmptyTile();
+		_player = createPlayer(tile.getX(), tile.getY());
 
-		tile = map.findEmptyTile();
-		pedro = createPedro(tile.getX(), tile.getY());
+		tile = _map.findEmptyTile();
+		_pedro = createPedro(tile.getX(), tile.getY());
 
-		boxes = generateBoxes();
+		_boxes = generateBoxes();
 
 		var scheduler = new ROT.Scheduler.Simple();
 		scheduler.add(this, true);
-		scheduler.add(player, true);
-		scheduler.add(pedro, true);
+		scheduler.add(_player, true);
+		scheduler.add(_pedro, true);
 
-		engine = new ROT.Engine(scheduler);
-		engine.start();
+		_engine = new ROT.Engine(scheduler);
+		_engine.start();
 	};
 
 	var getBox = function (x, y)
 	{
 		"use strict";
 
-		for (var i = 0; i < boxes.length; i++)
+		for (var i = 0; i < _boxes.length; i++)
 		{
-			if (boxes[i].getX() === x && boxes[i].getY() === y)
+			if (_boxes[i].getX() === x && _boxes[i].getY() === y)
 			{
-				return boxes[i];
+				return _boxes[i];
 			}
 		}
 		return null;
@@ -130,7 +130,7 @@ createGame = function ()
 	{
 		"use strict";
 
-		engine.lock();
+		_engine.lock();
 
 		if (won)
 		{
@@ -142,12 +142,12 @@ createGame = function ()
 		}
 	};
 
-	var getPlayer = function () { return player; };
-	var getMap = function () { return map; };
-	var getDisplay = function () { return display; };
-	var getEngine = function () { return engine; };
-	var getBoxes = function () { return boxes; };
-	var getPedro = function () { return pedro; };
+	var getPlayer = function () { return _player; };
+	var getMap = function () { return _map; };
+	var getDisplay = function () { return _display; };
+	var getEngine = function () { return _engine; };
+	var getBoxes = function () { return _boxes; };
+	var getPedro = function () { return _pedro; };
 
 	var game = {};
 	game.gameOver = gameOver;
