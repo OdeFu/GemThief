@@ -46,7 +46,7 @@ createPlayer = function (x, y)
 
 		var code = event.keyCode;
 
-		if (code === 13 || code === 32)
+		if (code === ROT.VK_RETURN || code === ROT.VK_SPACE)
 		{
 			checkBox();
 			return;
