@@ -1,8 +1,7 @@
-Game = {};
+Game = createGame();
 
 Meteor.startup(function()
 {
-    Game = createGame();
 	Game.init();
 });
 
