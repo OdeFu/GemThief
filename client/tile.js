@@ -1,9 +1,9 @@
 /**
  * Creates a new tile.
  *
- * @param x x-coordinate of the tile
- * @param y y-coordinate of the tile
- * @param wall boolean marking is this tile a wall or not
+ * @param x x-coordinate of the tile, defaults to 0
+ * @param y y-coordinate of the tile, defaults to 0
+ * @param wall boolean marking is this tile a wall or not, defaults to false
  * @returns {{}} a new tile object
  */
 createTile = function (x, y, wall)
@@ -11,9 +11,9 @@ createTile = function (x, y, wall)
 	"use strict";
 
 	// Private fields
-	var _x = x;
-	var _y = y;
-	var _wall = wall;
+	var _x = x || 0;
+	var _y = y || 0;
+	var _wall = wall || false;
 	var _seen = false; // Initially unseen
 
 	// Public methods
