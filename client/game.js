@@ -11,10 +11,18 @@ createGame = function ()
 	{
 		"use strict";
 
-		_display = new ROT.Display();
-		document.body.appendChild(_display.getContainer());
+		var container = document.getElementById("main");
+		if (ROT.isSupported)
+		{
+			_display = new ROT.Display();
+			container.appendChild(_display.getContainer());
 
-		changeState(StartState);
+			changeState(StartState);
+		}
+		else
+		{
+			container.textContent = "Your browser is not supported!";
+		}
 	};
 
 	var changeState = function (newState, params)
