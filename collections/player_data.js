@@ -45,9 +45,10 @@ var calculateScore = function (data)
 {
 	"use strict";
 
-	var ananas = data.ananas;
-	var moves = data.moves;
-	var distance = data.distance;
+	var ananasScore = data.ananas * 1000;
+  var moveScore = data.moves * data.distance;
 
-	return Math.round(distance / moves * ananas);
+  // TODO: Add level multiplier
+
+	return Math.round(ananasScore + moveScore);
 };

@@ -113,7 +113,7 @@ createMap = function (options)
 
 		for (var i = 0; i < _tiles.length; i++)
 		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getChar(),
+			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getDungeonChar(),
 				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
 		}
 

@@ -118,13 +118,15 @@ createPedro = function (x, y)
 
 		Game.getState().getPlayerStats().distance = path.length;
 
+    if (path.length > 0)
+    {
+      Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
+    }
+
 		if (path.length <= 1)
 		{
+      Game.getState().getEngine().lock();
 			Game.gameOver(false);
-		}
-		else
-		{
-			Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
 		}
 	};
 

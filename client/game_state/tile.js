@@ -31,6 +31,21 @@ createTile = function (x, y)
 		return _seen ? _entities[0].getChar() : " ";
 	};
 
+  var getDungeonChar = function ()
+  {
+    if (_seen)
+    {
+      for (var i = 0; i < _entities.length; i++)
+      {
+        if (_entities[i].isDungeonChar())
+        {
+          return _entities[i].getChar();
+        }
+      }
+    }
+    return " ";
+  };
+
 	var addEntity = function (entity)
 	{
 		_entities.unshift(entity);
@@ -59,6 +74,7 @@ createTile = function (x, y)
 	tile.addEntity = addEntity;
 	tile.removeEntity = removeEntity;
 	tile.isEmpty = isEmpty;
+  tile.getDungeonChar = getDungeonChar;
 	return tile;
 };
 
@@ -72,6 +88,7 @@ var createTileEntity = function (params)
 	"use strict";
 
 	params.char = '.';
+  params.dungeonChar = true;
 	return createEntity(params);
 };
 
@@ -87,5 +104,6 @@ var createWall = function (params)
 	params.char = "#";
 	params.color = "#888888";
 	params.blocks = true;
+  params.dungeonChar = true;
 	return createEntity(params);
 };
