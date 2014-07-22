@@ -14,15 +14,25 @@ createGame = function ()
 		_display = new ROT.Display();
 		document.body.appendChild(_display.getContainer());
 
-		_state = createGameState();
+		changeState(StartState);
+	};
+
+	var changeState = function (newState)
+	{
+		"use strict";
+
+		if (_state)
+		{
+			_state.exit();
+		}
+
+		_state = new newState();
 		_state.enter();
 	};
 
 	var gameOver = function (won)
 	{
 		"use strict";
-
-		//_engine.lock();
 
 		if (won)
 		{
@@ -34,6 +44,15 @@ createGame = function ()
 		}
 	};
 
+	var drawTextCentered = function (y, text)
+	{
+		"use strict";
+
+		var textSize = ROT.Text.measure(text);
+		var x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
+		_display.drawText(x, y, text);
+	};
+
 	var getDisplay = function () { return _display; };
 	var getState = function () { return _state; };
 
@@ -42,6 +61,8 @@ createGame = function ()
 	game.init = init;
 	game.getDisplay = getDisplay;
 	game.getState = getState;
+	game.drawTextCentered = drawTextCentered;
+	game.changeState = changeState;
 	return game;
 };
 

@@ -1,4 +1,9 @@
-createGameState = function ()
+GameState = function ()
+{
+	return createGameState();
+};
+
+var createGameState = function ()
 {
 	"use strict";
 
