@@ -59,6 +59,8 @@ Game._draw = function ()
 {
 	"use strict";
 
+	this.display.clear();
+
 	var visibleTiles = this.map.calculateVisibleTiles();
 
 	this.map.draw(this.display, visibleTiles);
