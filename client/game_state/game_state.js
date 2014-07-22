@@ -50,8 +50,8 @@ var createGameState = function ()
 	{
 		"use strict";
 
-		state.getScheduler().clear();
 		state.getEngine().lock();
+		state.getScheduler().clear();
 	};
 
 	// Public methods

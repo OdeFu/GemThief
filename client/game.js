@@ -17,7 +17,7 @@ createGame = function ()
 		changeState(StartState);
 	};
 
-	var changeState = function (newState)
+	var changeState = function (newState, params)
 	{
 		"use strict";
 
@@ -26,22 +26,13 @@ createGame = function ()
 			_state.exit();
 		}
 
-		_state = new newState();
+		_state = new newState(params);
 		_state.enter();
 	};
 
 	var gameOver = function (won)
 	{
-		"use strict";
-
-		if (won)
-		{
-			alert("Hooray! You found the ananas and won this game.");
-		}
-		else
-		{
-			alert("Game Over - you were captured by Pedro!");
-		}
+		changeState(EndState, won);
 	};
 
 	var drawTextCentered = function (y, text)

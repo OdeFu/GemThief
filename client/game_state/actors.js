@@ -18,8 +18,8 @@ createPlayer = function (x, y)
 		}
 		else if (box.containsAnanas())
 		{
+			window.removeEventListener("keydown", player);
 			Game.gameOver(true);
-			window.removeEventListener("keydown", this);
 		}
 		else
 		{
