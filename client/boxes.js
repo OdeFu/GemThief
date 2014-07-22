@@ -1,3 +1,10 @@
+/**
+ * Create a new box.
+ * @param x coordinate
+ * @param y coordinate
+ * @param ananas flag indicating if this box contains an ananas
+ * @returns {*}
+ */
 createBox = function (x, y, ananas)
 {
 	"use strict";
