@@ -1,12 +1,20 @@
+/**
+ * Create a new entity.
+ * @param x coordinate, defaults to 0
+ * @param y coordinate, defaults to 0
+ * @param char the character to draw, defaults to ' '
+ * @param color the foreground color for the char
+ * @returns {{}}
+ */
 createEntity = function (x, y, char, color)
 {
 	"use strict";
 
 	// Private fields
-	var _x = x;
-	var _y = y;
-	var _char = char;
-	var _color = color;
+	var _x = x || 0;
+	var _y = y || 0;
+	var _char = char || ' ';
+	var _color = color || "black";
 
 	// Private methods
 
