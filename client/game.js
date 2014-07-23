@@ -40,9 +40,10 @@ createGame = function ()
 
 	var gameOver = function (won)
 	{
-		Meteor.call("update", _state.getPlayerStats(), function (error, score)
+		Meteor.call("update", _state.getPlayerStats(), function (error, data)
 		{
-			changeState(EndState, { won: won, score: score });
+			data.won = won;
+			changeState(EndState, data);
 		});
 	};
 

@@ -11,13 +11,14 @@ createPlayer = function (x, y)
 		if (gem)
 		{
 			window.removeEventListener("keydown", player);
+			Game.getState().getMap().setMessage("You picked up a gem.");
 			Game.getState().getPlayerStats().gems += 1;
 			Game.getState().getMap().removeGem(gem);
 			Game.getState().getEngine().unlock();
 		}
 		else
 		{
-			alert("There is no gem here!");
+			Game.getState().getMap().setMessage("There is no gem here!");
 		}
 	};
 
@@ -83,51 +84,4 @@ createPlayer = function (x, y)
 	player.handleEvent = handleEvent;
 	player.act = act;
 	return player;
-};
-
-createPedro = function (x, y)
-{
-	"use strict";
-
-	// Public methods
-	var act = function ()
-	{
-		var x = Game.getState().getMap().getPlayer().getX();
-		var y = Game.getState().getMap().getPlayer().getY();
-
-		var passableCallback = function (x, y)
-		{
-			return !Game.getState().getMap().isBlocking(x, y);
-		};
-
-		var astar = new ROT.Path.AStar(x, y, passableCallback, { topology: 4 });
-		var path = [];
-		var pathCallback = function (x, y)
-		{
-			path.push([x, y]);
-		};
-
-		astar.compute(pedro.getX(), pedro.getY(), pathCallback);
-
-		/* Remove Pedro's position */
-		path.shift();
-
-		Game.getState().getPlayerStats().distance = path.length;
-
-		if (path.length > 0)
-		{
-			Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
-		}
-
-		if (path.length <= 1)
-		{
-			Game.getState().getEngine().lock();
-			Game.gameOver(false);
-		}
-	};
-
-	// Create the Pedro actor
-	var pedro = createEntity({ x: x, y: y, char: "P", color: "red" });
-	pedro.act = act;
-	return pedro;
 };

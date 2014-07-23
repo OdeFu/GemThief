@@ -1,7 +1,11 @@
 /**
  * Create a map level.
  *
- * @param options Used options are width, height and those taken by the Digger
+ * @param options
+ *  - width: the width of the map, required
+ *  - height: the height of the map, required
+ *  - level: the level depth of the map, defaults to 1
+ *  - numGems: the number of gems to be generated, defaults to 10
  */
 createMap = function (options)
 {
@@ -13,10 +17,14 @@ createMap = function (options)
 	// Private fields
 	var _tiles = [];
 	var _player;
-	var _gems;
-	var _pedro;
+	var _gems = [];
+	var _dwarves = [];
 	var _width = options.width;
 	var _height = options.height;
+	var _message = "";
+	var _messageLife;
+	var _level = options.level || 1;
+	var _numGems = options.numGems || 10;
 
 	// Private methods
 	var dig = function ()
@@ -43,30 +51,50 @@ createMap = function (options)
 	{
 		"use strict";
 
-		_gems = generateGems();
+		createGems();
+
+		createPlayer();
+
+		createDwarves();
+	};
+
+	var createPlayer = function ()
+	{
+		"use strict";
 
 		var tile = findEmptyTile();
 		_player = createPlayer(tile.getX(), tile.getY());
 		tile.addEntity(_player);
-
-		tile = findEmptyTile();
-		_pedro = createPedro(tile.getX(), tile.getY());
-		tile.addEntity(_pedro);
 	};
 
-	var generateGems = function ()
+	var createDwarves = function ()
 	{
 		"use strict";
 
-		var gems = [];
-		for (var i = 0; i < 10; i++)
+		// Copy the array
+		var names = DWARF_NAMES.slice(0);
+		for (var i = 0; i < _level; i++)
+		{
+			var index = Math.floor(ROT.RNG.getUniform * names.length);
+			var name = names.splice(index, 1)[0];
+			var tile = findEmptyTile();
+			var dwarf = createDwarf({ x: tile.getX(), y: tile.getY(), name: name });
+			tile.addEntity(dwarf);
+			_dwarves.push(dwarf);
+		}
+	};
+
+	var createGems = function ()
+	{
+		"use strict";
+
+		for (var i = 0; i < _numGems; i++)
 		{
 			var tile = findEmptyTile();
 			var gem = createGem({ x: tile.getX(), y: tile.getY() });
 			tile.addEntity(gem);
-			gems.push(gem);
+			_gems.push(gem);
 		}
-		return gems;
 	};
 
 	var getAllEmptyTiles = function ()
@@ -131,9 +159,25 @@ createMap = function (options)
 		return tile && tile.isBlocking();
 	};
 
+	var setMessage = function (msg)
+	{
+		_message = msg;
+		_messageLife = 5;
+	};
+
 	var draw = function (display)
 	{
 		"use strict";
+
+		if (_message)
+		{
+			display.drawText(0, 0, _message);
+			_messageLife--;
+			if (_messageLife === 0)
+			{
+				_message = null;
+			}
+		}
 
 		for (var i = 0; i < _tiles.length; i++)
 		{
@@ -148,7 +192,7 @@ createMap = function (options)
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
 
-		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
+		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems + " ");
 	};
 
 	var findEmptyTile = function ()
@@ -232,6 +276,7 @@ createMap = function (options)
 	map.getGem = getGem;
 	map.removeGem = removeGem;
 	map.moveEntity = moveEntity;
+	map.setMessage = setMessage;
 
 	// Dig the level
 	dig();

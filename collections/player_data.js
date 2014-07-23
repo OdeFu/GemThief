@@ -7,6 +7,7 @@ Meteor.methods(
 			"use strict";
 
 			check(data.gems, Number);
+			check(data.moves, Number);
 			//check(data.gold, Number);
 
 			if (!this.userId)
@@ -41,7 +42,8 @@ Meteor.methods(
 				PlayerData.insert(newUserData);
 			}
 
-			return score;
+			data.score = score;
+			return data;
 		}
 	});
 
@@ -49,8 +51,8 @@ var calculateScore = function (data)
 {
 	"use strict";
 
-	var gemsScore = data.gems * 1000;
-	var moveScore = data.moves * data.distance;
+	var gemsScore = data.gems * 100;
+	var moveScore = data.moves;
 
 	// TODO: Add level multiplier
 
