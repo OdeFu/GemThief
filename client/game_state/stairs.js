@@ -1,8 +1,11 @@
 Stairs = function (params)
 {
 	"use strict";
+
 	return createStairs(params);
 };
+
+Stairs.type = "Stairs";
 
 var createStairs = function (params)
 {
@@ -23,6 +26,7 @@ var createStairs = function (params)
 	params.color = "brown";
 	params.dungeonChar = true;
 	params.priority = Entity.FLOOR;
+	params.type = Stairs.type;
 
 	var stairs = createEntity(params);
 	stairs.isDown = isDown;

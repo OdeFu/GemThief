@@ -15,6 +15,7 @@ Entity =
  *  - color: the color used when drawing the char, defaults to 'white'
  *  - blocks: a flag indicating if this entity is passable
  *  - priority: higher the number, more like it will be drawn, defaults to 0
+ *  - type: The type string for the entity, defaults to "<unknown>"
  * @returns {{}}
  */
 createEntity = function (params)
@@ -29,6 +30,7 @@ createEntity = function (params)
 	var _blocks = params.blocks || false;
 	var _dungeonChar = params.dungeonChar || false;
 	var _priority = params.priority || 0;
+	var _type = params.type || "<unknown>";
 
 	// Public methods
 	var getX = function ()
@@ -81,6 +83,11 @@ createEntity = function (params)
 		return _dungeonChar;
 	};
 
+	var getType = function ()
+	{
+		return _type;
+	}
+
 	var entity = {};
 	entity.getX = getX;
 	entity.setX = setX;
@@ -92,5 +99,6 @@ createEntity = function (params)
 	entity.isBlocking = isBlocking;
 	entity.isDungeonChar = isDungeonChar;
 	entity.getPriority = getPriority;
+	entity.getType = getType;
 	return entity;
 };

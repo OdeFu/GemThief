@@ -18,6 +18,7 @@ var createPlayer = function (params)
 		{
 			action();
 
+			window.removeEventListener("keypress", player);
 			window.removeEventListener("keydown", player);
 			Game.getState().getEngine().unlock();
 		}
@@ -30,6 +31,7 @@ var createPlayer = function (params)
 		Game.getState().getEngine().lock();
 
 		// Wait for user input, do stuff when the user hits a key
+		window.addEventListener("keypress", player);
 		window.addEventListener("keydown", player);
 	};
 

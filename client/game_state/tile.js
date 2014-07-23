@@ -106,6 +106,11 @@ createTile = function (params)
 		return null;
 	};
 
+	var getEntity = function (index)
+	{
+		return _entities[index];
+	};
+
 	// Create the actual tile
 	var tile = {};
 	tile.getX = getX;
@@ -122,6 +127,7 @@ createTile = function (params)
 	tile.isEmpty = isEmpty;
 	tile.getDungeonChar = getDungeonChar;
 	tile.getHighestEntity = getHighestEntity;
+	tile.getEntity = getEntity;
 
 	// Initialize the tile
 	tile.addEntity(new FloorEntity({ x: _x, y: _y }));

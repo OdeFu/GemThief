@@ -14,6 +14,7 @@ Meteor.methods(
 			if (curGame)
 			{
 				curGame.seed = game.seed;
+				curGame.level = game.level;
 				curGame.updated = new Date().getTime();
 				Games.upsert(curGame);
 			}
@@ -22,10 +23,35 @@ Meteor.methods(
 				var newGame =
 				{
 					seed: game.seed,
+					level: game.level,
 					userId: this.userId,
 					created: new Date().getTime()
 				};
 				Games.insert(newGame);
+			}
+		}
+
+		return game;
+	},
+
+	loadLevel: function (nextLevel)
+	{
+		"use strict";
+
+		var game = createNewGame();
+		game.level = nextLevel;
+
+		if (this.userId)
+		{
+			var curGame = Games.findOne({ userId: this.userId });
+			if (curGame)
+			{
+				game.seed = curGame.seed;
+				game.level = checkNextLevel(nextLevel, curGame);
+
+				curGame.level = game.level;
+				curGame.updated = new Date().getTime();
+				Games.upsert(curGame);
 			}
 		}
 
@@ -39,7 +65,16 @@ var createNewGame = function ()
 
 	var game =
 	{
-		seed: new Date().getTime()
+		seed: new Date().getTime(),
+		level: 1
 	};
 	return game;
+};
+
+var checkNextLevel = function (nextLevel, curGame)
+{
+	"use strict";
+
+	var ok = Math.abs(nextLevel - curGame.level) === 1;
+	return ok ? nextLevel : curGame.level;
 };

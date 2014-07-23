@@ -50,12 +50,13 @@ var createClimbStairsAction = function (down)
 
 		var player = Game.getState().getMap().getPlayer();
 		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
-		var entity = tile.getHighestEntity();
-		if (entity instanceof Stairs)
+		var entity = tile.getEntity(Entity.FLOOR);
+		if (entity.getType() === Stairs.type)
 		{
 			if (entity.isDown() === down)
 			{
-
+				var nextLevel = Game.getState().getMap().getLevel() + (down ? 1 : -1);
+				Game.moveToLevel(nextLevel);
 			}
 			else
 			{

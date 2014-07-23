@@ -206,6 +206,7 @@ createMap = function (options)
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
 
+		display.drawText(0, _height + 1, "Mine Level: " + _level);
 		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
 	};
 

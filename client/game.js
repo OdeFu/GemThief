@@ -46,6 +46,25 @@ createGame = function ()
 		});
 	};
 
+	var moveToLevel = function (nextLevel)
+	{
+		"use strict";
+
+		if (nextLevel === 0)
+		{
+			// We exited the mine
+			_state.getPlayerStats().won = true;
+			gameOver();
+		}
+		else
+		{
+			Meteor.call("loadLevel", nextLevel, function (error, game)
+			{
+				changeState(GameState, game);
+			});
+		}
+	};
+
 	var drawTextCentered = function (y, text)
 	{
 		"use strict";
@@ -82,6 +101,7 @@ createGame = function ()
 	game.drawTextCentered = drawTextCentered;
 	game.drawTextRight = drawTextRight;
 	game.changeState = changeState;
+	game.moveToLevel = moveToLevel;
 	return game;
 };
 
