@@ -16,10 +16,6 @@ createPlayerEntity = function (params)
 			Game.getState().getMap().removeGem(gem);
 			Game.getState().getEngine().unlock();
 		}
-		else
-		{
-			Game.getState().getMap().setMessage("There is no gem here!");
-		}
 	};
 
 	// Public methods
@@ -41,16 +37,12 @@ createPlayerEntity = function (params)
 
 		var code = event.keyCode;
 
-		if (code === ROT.VK_RETURN || code === ROT.VK_SPACE)
-		{
-			checkGem();
-			return;
-		}
-
 		if (!(code in keyMap))
 		{
 			return;
 		}
+
+		checkGem();
 
 		var dir = ROT.DIRS[8][keyMap[code]];
 		var newX = player.getX() + dir[0];
