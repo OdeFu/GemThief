@@ -3,8 +3,14 @@ DWARF_NAMES = [ "Doc", "Grumpy", "Happy", "Sleepy", "Bashful", "Sneezy", "Dopey"
 /**
  * Creates a new dwarf.
  * @param params
+ * - name: The name of the dwarf, must be one from the DWARF_NAMES array, required
  */
-createDwarf = function (params)
+Dwarf = function (params)
+{
+	return createDwarf(params);
+};
+
+var createDwarf = function (params)
 {
 	"use strict";
 

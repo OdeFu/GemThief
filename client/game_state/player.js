@@ -1,4 +1,9 @@
-createPlayerEntity = function (params)
+Player = function (params)
+{
+	return createPlayer(params);
+};
+
+var createPlayer = function (params)
 {
 	"use strict";
 

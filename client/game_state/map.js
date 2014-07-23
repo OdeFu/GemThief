@@ -66,7 +66,7 @@ createMap = function (options)
 		"use strict";
 
 		var tile = findEmptyTile();
-		_player = createPlayerEntity({ x: tile.getX(), y: tile.getY() });
+		_player = new Player({ x: tile.getX(), y: tile.getY() });
 		tile.addEntity(_player);
 	};
 
@@ -81,7 +81,7 @@ createMap = function (options)
 			var index = Math.floor(ROT.RNG.getUniform * names.length);
 			var name = names.splice(index, 1)[0];
 			var tile = findEmptyTile();
-			var dwarf = createDwarf({ x: tile.getX(), y: tile.getY(), name: name });
+			var dwarf = new Dwarf({ x: tile.getX(), y: tile.getY(), name: name });
 			tile.addEntity(dwarf);
 			_dwarves.push(dwarf);
 		}
