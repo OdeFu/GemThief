@@ -50,7 +50,10 @@ var createEndState = function (params)
 		if (event.keyCode === ROT.VK_RETURN)
 		{
 			window.removeEventListener("keydown", state);
-			Game.changeState(GameState);
+			Meteor.call("newGame", function (error, game)
+			{
+				Game.changeState(GameState, game);
+			});
 		}
 	};
 
