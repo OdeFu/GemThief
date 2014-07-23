@@ -76,7 +76,8 @@ createMap = function (options)
 
 		// Copy the array
 		var names = DWARF_NAMES.slice(0);
-		for (var i = 0; i < _level; i++)
+		var num = _level < names.length ? _level : names.length;
+		for (var i = 0; i < num; i++)
 		{
 			var index = Math.floor(ROT.RNG.getUniform * names.length);
 			var name = names.splice(index, 1)[0];
