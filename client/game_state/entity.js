@@ -1,3 +1,11 @@
+Entity =
+{
+	FLOOR: 0,
+	ITEM: 1,
+	ENTITY: 2,
+	WALL: 3
+};
+
 /**
  * Create a new entity.
  * @param params object containing the parameters:
@@ -6,6 +14,7 @@
  *  - char: the character to be draw, defaults to ' '
  *  - color: the color used when drawing the char, defaults to 'white'
  *  - blocks: a flag indicating if this entity is passable
+ *  - priority: higher the number, more like it will be drawn, defaults to 0
  * @returns {{}}
  */
 createEntity = function (params)
@@ -19,6 +28,7 @@ createEntity = function (params)
 	var _color = params.color || "white";
 	var _blocks = params.blocks || false;
 	var _dungeonChar = params.dungeonChar || false;
+	var _priority = params.priority || 0;
 
 	// Public methods
 	var getX = function ()
@@ -51,6 +61,11 @@ createEntity = function (params)
 		return _color;
 	};
 
+	var getPriority = function ()
+	{
+		return _priority;
+	}
+
 	var draw = function (display)
 	{
 		display.draw(_x, _y, _char, _color);
@@ -76,5 +91,6 @@ createEntity = function (params)
 	entity.draw = draw;
 	entity.isBlocking = isBlocking;
 	entity.isDungeonChar = isDungeonChar;
+	entity.getPriority = getPriority;
 	return entity;
 };

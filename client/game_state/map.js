@@ -35,7 +35,7 @@ createMap = function (options)
 
 		var digCallback = function (x, y, value)
 		{
-			var tile = createTile(x, y);
+			var tile = createTile({ x: x, y: y });
 			var wall = value === 1;
 			if (wall)
 			{
@@ -63,7 +63,7 @@ createMap = function (options)
 		"use strict";
 
 		var tile = findEmptyTile();
-		_player = createPlayerEntity(tile.getX(), tile.getY());
+		_player = createPlayerEntity({ x: tile.getX(), y: tile.getY() });
 		tile.addEntity(_player);
 	};
 

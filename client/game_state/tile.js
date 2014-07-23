@@ -1,19 +1,35 @@
 /**
  * Creates a new tile.
  *
- * @param x x-coordinate of the tile, defaults to 0
- * @param y y-coordinate of the tile, defaults to 0
+ * @param params
+ * - x: the x-coordinate, defaults to 0
+ * - y: the y-coordinate, defaults to 0
  * @returns {{}} a new tile object
  */
-createTile = function (x, y)
+createTile = function (params)
 {
 	"use strict";
 
 	// Private fields
-	var _x = x || 0;
-	var _y = y || 0;
+	var _x = params.x || 0;
+	var _y = params.y || 0;
 	var _seen = false; // Initially unseen
-	var _entities = [new TileEntity({ x: _x, y: _y })];
+	var _entities = [];
+
+	// Private methods
+	var getHighestEntity = function ()
+	{
+		"use strict";
+
+		for (var i = _entities.length - 1; i >= 0; i--)
+		{
+			if (_entities[i])
+			{
+				return _entities[i];
+			}
+		}
+		return null;
+	};
 
 	// Public methods
 	var getX = function ()
@@ -33,12 +49,12 @@ createTile = function (x, y)
 
 	var isBlocking = function ()
 	{
-		return _entities[0].isBlocking();
+		return getHighestEntity().isBlocking();
 	};
 
 	var getForegroundColor = function ()
 	{
-		return _entities[0].getColor();
+		return getHighestEntity().getColor();
 	};
 
 	var getHiddenForegroundColor = function ()
@@ -63,16 +79,16 @@ createTile = function (x, y)
 
 	var getChar = function ()
 	{
-		return _seen ? _entities[0].getChar() : " ";
+		return _seen ? getHighestEntity().getChar() : " ";
 	};
 
 	var getDungeonChar = function ()
 	{
 		if (_seen)
 		{
-			for (var i = 0; i < _entities.length; i++)
+			for (var i = _entities.length - 1; i >= 0; i--)
 			{
-				if (_entities[i].isDungeonChar())
+				if (_entities[i] && _entities[i].isDungeonChar())
 				{
 					return _entities[i].getChar();
 				}
@@ -83,16 +99,12 @@ createTile = function (x, y)
 
 	var addEntity = function (entity)
 	{
-		_entities.unshift(entity);
+		_entities[entity.getPriority()] = entity;
 	};
 
 	var removeEntity = function (entity)
 	{
-		var index = _entities.indexOf(entity);
-		if (index >= 0)
-		{
-			_entities.splice(index, 1);
-		}
+		_entities[entity.getPriority()] = null;
 	};
 
 	// Create the actual tile
@@ -110,20 +122,25 @@ createTile = function (x, y)
 	tile.removeEntity = removeEntity;
 	tile.isEmpty = isEmpty;
 	tile.getDungeonChar = getDungeonChar;
+
+
+	tile.addEntity(new FloorEntity({ x: _x, y: _y }));
+
 	return tile;
 };
 
-TileEntity = function (params)
+FloorEntity = function (params)
 {
-	return createTileEntity(params);
+	return createFloorEntity(params);
 };
 
-var createTileEntity = function (params)
+var createFloorEntity = function (params)
 {
 	"use strict";
 
 	params.char = '.';
 	params.dungeonChar = true;
+	params.priority = Entity.FLOOR;
 	return createEntity(params);
 };
 
@@ -140,5 +157,6 @@ var createWall = function (params)
 	params.color = "#888888";
 	params.blocks = true;
 	params.dungeonChar = true;
+	params.priority = Entity.WALL;
 	return createEntity(params);
 };

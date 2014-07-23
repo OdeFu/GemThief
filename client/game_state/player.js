@@ -1,4 +1,4 @@
-createPlayerEntity = function (x, y)
+createPlayerEntity = function (params)
 {
 	"use strict";
 
@@ -80,7 +80,11 @@ createPlayerEntity = function (x, y)
 	};
 
 	// Create the player actor
-	var player = createEntity({ x: x, y: y, char: "@", color: "#ff0" });
+	params.priority = Entity.ENTITY;
+	params.char = "@";
+	params.color = "white";
+
+	var player = createEntity(params);
 	player.handleEvent = handleEvent;
 	player.act = act;
 	return player;

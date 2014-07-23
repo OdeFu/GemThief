@@ -12,6 +12,7 @@ createGem = function (params)
 
 	params.char = "*";
 	params.color = "orange";
+	params.priority = Entity.ITEM;
 
 	var gem = createEntity(params);
 	return gem;

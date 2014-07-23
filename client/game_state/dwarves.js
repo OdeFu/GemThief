@@ -56,6 +56,7 @@ createDwarf = function (params)
 
 	params.char = "d";
 	params.color = COLORS[DWARF_NAMES.indexOf(_name)];
+	params.priority = Entity.ENTITY;
 
 	var dwarf = createEntity(params);
 	dwarf.getName = getName;
