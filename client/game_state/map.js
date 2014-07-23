@@ -261,6 +261,11 @@ createMap = function (options)
 		entity.setY(newY);
 	};
 
+	var getLevel = function ()
+	{
+		return _level;
+	};
+
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
@@ -277,6 +282,7 @@ createMap = function (options)
 	map.getDwarves = getDwarves;
 	map.moveEntity = moveEntity;
 	map.setMessage = setMessage;
+	map.getLevel = getLevel;
 
 	// Dig the level
 	dig();

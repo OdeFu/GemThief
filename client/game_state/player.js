@@ -63,7 +63,9 @@ createPlayerEntity = function (params)
 		}
 
 		Game.getState().getMap().moveEntity(player, newX, newY);
-		Game.getState().getPlayerStats().moves += 1;
+
+		var prevMoves = Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()];
+		Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()] = prevMoves ? prevMoves + 1 : 1;
 
 		window.removeEventListener("keydown", player);
 		Game.getState().getEngine().unlock();

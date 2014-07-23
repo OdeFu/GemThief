@@ -7,7 +7,8 @@ Meteor.methods(
 		"use strict";
 
 		check(data.gems, Number);
-		check(data.moves, Number);
+		check(data.moves, [Number]);
+		check(data.won, Boolean);
 		//check(data.gold, Number);
 
 		var score = calculateScore(data);
@@ -50,9 +51,12 @@ var calculateScore = function (data)
 	"use strict";
 
 	var gemsScore = data.gems * 100;
-	var moveScore = data.moves;
+	var moveScore = 0;
+	data.moves.forEach(function (moves, level)
+	{
+		moveScore += moves * level;
+	});
 
-	// TODO: Add level multiplier
-
-	return Math.round(gemsScore + moveScore);
+	// You get nothing if you lost
+	return Math.round(gemsScore + moveScore) * data.won;
 };

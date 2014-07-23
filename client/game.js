@@ -38,12 +38,10 @@ createGame = function ()
 		_state.enter();
 	};
 
-	var gameOver = function (won)
+	var gameOver = function ()
 	{
-		var _won = won;
 		Meteor.call("update", _state.getPlayerStats(), function (error, data)
 		{
-			data.won = _won;
 			changeState(EndState, data);
 		});
 	};

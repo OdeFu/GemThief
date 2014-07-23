@@ -50,7 +50,7 @@ createDwarf = function (params)
 		if (path.length <= 1)
 		{
 			Game.getState().getEngine().lock();
-			Game.gameOver(false);
+			Game.gameOver();
 		}
 	};
 
