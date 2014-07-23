@@ -13,7 +13,6 @@ var createMoveAction = function (dirKey)
 			Game.getState().getMap().setMessage("You picked up a gem.");
 			Game.getState().getPlayerStats().gems += 1;
 			Game.getState().getMap().removeGem(gem);
-			Game.getState().getEngine().unlock();
 		}
 	};
 
