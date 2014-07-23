@@ -1,4 +1,4 @@
-MeteorROTTutorial
-=================
+Gem Thief
+=========
 
-The rot.js tutorial done on top of Meteor.
+A roguelike built with rot.js and meteor.js.
