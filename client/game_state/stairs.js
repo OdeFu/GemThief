@@ -22,6 +22,7 @@ var createStairs = function (params)
 	params.char = _down ? ">" : "<";
 	params.color = "brown";
 	params.dungeonChar = true;
+	params.priority = Entity.FLOOR;
 
 	var stairs = createEntity(params);
 	stairs.isDown = isDown;

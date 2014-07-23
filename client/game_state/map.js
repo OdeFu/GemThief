@@ -19,6 +19,7 @@ createMap = function (options)
 	var _player;
 	var _gems = [];
 	var _dwarves = [];
+	var _stairs = [];
 	var _width = options.width;
 	var _height = options.height;
 	var _message = "";
@@ -56,6 +57,8 @@ createMap = function (options)
 		createPlayer();
 
 		createDwarves();
+
+		createStairs();
 	};
 
 	var createPlayer = function ()
@@ -95,6 +98,16 @@ createMap = function (options)
 			tile.addEntity(gem);
 			_gems.push(gem);
 		}
+	};
+
+	var createStairs = function ()
+	{
+		"use strict";
+
+		// always create stairs going up where the player is
+		var tile = getTile(_player.getX(), _player.getY());
+		_stairs[0] = new Stairs({ x: _player.getX(), y: _player.getY(), down: false });
+		tile.addEntity(_stairs[0]);
 	};
 
 	var getAllEmptyTiles = function ()
