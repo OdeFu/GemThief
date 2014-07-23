@@ -63,7 +63,7 @@ createMap = function (options)
 		"use strict";
 
 		var tile = findEmptyTile();
-		_player = createPlayer(tile.getX(), tile.getY());
+		_player = createPlayerEntity(tile.getX(), tile.getY());
 		tile.addEntity(_player);
 	};
 
@@ -138,9 +138,9 @@ createMap = function (options)
 		return _gems;
 	};
 
-	var getPedro = function ()
+	var getDwarves = function ()
 	{
-		return _pedro;
+		return _dwarves;
 	};
 
 	var isEmpty = function (x, y)
@@ -192,7 +192,7 @@ createMap = function (options)
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
 
-		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems + " ");
+		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
 	};
 
 	var findEmptyTile = function ()
@@ -271,10 +271,10 @@ createMap = function (options)
 	map.findEmptyTile = findEmptyTile;
 	map.calculateVisibleTiles = calculateVisibleTiles;
 	map.getPlayer = getPlayer;
-	map.getPedro = getPedro;
 	map.getGems = getGems;
 	map.getGem = getGem;
 	map.removeGem = removeGem;
+	map.getDwarves = getDwarves;
 	map.moveEntity = moveEntity;
 	map.setMessage = setMessage;
 

@@ -1,4 +1,4 @@
-createPlayer = function (x, y)
+createPlayerEntity = function (x, y)
 {
 	"use strict";
 

@@ -13,7 +13,8 @@ var createStartState = function ()
 		"use strict";
 
 		Game.getDisplay().clear();
-		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M %c{magenta}T %c{aqua}H %c{Coral}I %c{fuchsia}E %c{Indigo}F");
+		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
+		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
 		Game.drawTextCentered(8, "%b{gray}New Game");
 	};
 

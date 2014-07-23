@@ -29,7 +29,11 @@ var createGameState = function (params)
 	{
 		state.getScheduler().add(state, true);
 		state.getScheduler().add(_map.getPlayer(), true);
-		state.getScheduler().add(_map.getPedro(), true);
+
+		for (var i = 0; i < state.getMap().getDwarves().length; i++)
+		{
+			state.getScheduler().add(state.getMap().getDwarves()[i], true);
+		}
 
 		state.getEngine().start();
 	};
