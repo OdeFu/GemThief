@@ -42,12 +42,48 @@ var createMoveAction = function (dirKey)
 	return moveAction;
 };
 
+var createClimbStairsAction = function (down)
+{
+	"use strict";
+
+	var climbStairsAction = function ()
+	{
+		"use strict";
+
+		var player = Game.getState().getMap().getPlayer();
+		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
+		var entity = tile.getHighestEntity();
+		if (entity instanceof Stairs)
+		{
+			if (entity.isDown() === down)
+			{
+
+			}
+			else
+			{
+				Game.getState().getMap().setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
+			}
+		}
+		else
+		{
+			Game.getState().getMap().setMessage("There are no stairs here.");
+		}
+	};
+	return climbStairsAction;
+};
+
 PlayerActions = [];
-PlayerActions[38] = createMoveAction(0);
-PlayerActions[33] = createMoveAction(1);
-PlayerActions[39] = createMoveAction(2);
-PlayerActions[34] = createMoveAction(3);
-PlayerActions[40] = createMoveAction(4);
-PlayerActions[35] = createMoveAction(5);
-PlayerActions[37] = createMoveAction(6);
-PlayerActions[36] = createMoveAction(7);
+
+// Movement
+PlayerActions[ROT.VK_UP] = createMoveAction(0);
+PlayerActions[ROT.VK_PAGE_UP] = createMoveAction(1);
+PlayerActions[ROT.VK_RIGHT] = createMoveAction(2);
+PlayerActions[ROT.VK_PAGE_DOWN] = createMoveAction(3);
+PlayerActions[ROT.VK_DOWN] = createMoveAction(4);
+PlayerActions[ROT.VK_END] = createMoveAction(5);
+PlayerActions[ROT.VK_LEFT] = createMoveAction(6);
+PlayerActions[ROT.VK_HOME] = createMoveAction(7);
+
+// Stairs
+PlayerActions[ROT.VK_LESS_THAN] = createClimbStairsAction(false);
+PlayerActions[ROT.VK_GREATER_THAN] = createClimbStairsAction(true);

@@ -16,21 +16,6 @@ createTile = function (params)
 	var _seen = false; // Initially unseen
 	var _entities = [];
 
-	// Private methods
-	var getHighestEntity = function ()
-	{
-		"use strict";
-
-		for (var i = _entities.length - 1; i >= 0; i--)
-		{
-			if (_entities[i])
-			{
-				return _entities[i];
-			}
-		}
-		return null;
-	};
-
 	// Public methods
 	var getX = function ()
 	{
@@ -107,6 +92,20 @@ createTile = function (params)
 		_entities[entity.getPriority()] = null;
 	};
 
+	var getHighestEntity = function ()
+	{
+		"use strict";
+
+		for (var i = _entities.length - 1; i >= 0; i--)
+		{
+			if (_entities[i])
+			{
+				return _entities[i];
+			}
+		}
+		return null;
+	};
+
 	// Create the actual tile
 	var tile = {};
 	tile.getX = getX;
@@ -122,8 +121,9 @@ createTile = function (params)
 	tile.removeEntity = removeEntity;
 	tile.isEmpty = isEmpty;
 	tile.getDungeonChar = getDungeonChar;
+	tile.getHighestEntity = getHighestEntity;
 
-
+	// Initialize the tile
 	tile.addEntity(new FloorEntity({ x: _x, y: _y }));
 
 	return tile;

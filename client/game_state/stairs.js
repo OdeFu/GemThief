@@ -1,10 +1,10 @@
-Stair = function (params)
+Stairs = function (params)
 {
 	"use strict";
-	return createStair(params);
+	return createStairs(params);
 };
 
-var createStair = function (params)
+var createStairs = function (params)
 {
 	"use strict";
 
@@ -23,7 +23,7 @@ var createStair = function (params)
 	params.color = "brown";
 	params.dungeonChar = true;
 
-	var stair = createEntity(params);
-	stair.isDown = isDown;
-	return stair;
+	var stairs = createEntity(params);
+	stairs.isDown = isDown;
+	return stairs;
 };
