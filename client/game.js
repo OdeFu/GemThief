@@ -55,8 +55,24 @@ createGame = function ()
 		_display.drawText(x, y, text);
 	};
 
-	var getDisplay = function () { return _display; };
-	var getState = function () { return _state; };
+	var drawTextRight = function (y, text)
+	{
+		"use strict";
+
+		var textSize = ROT.Text.measure(text);
+		var x = _display.getOptions().width - textSize.width;
+		_display.drawText(x, y, text);
+	};
+
+	var getDisplay = function ()
+	{
+		return _display;
+	};
+
+	var getState = function ()
+	{
+		return _state;
+	};
 
 	var game = {};
 	game.gameOver = gameOver;
@@ -64,6 +80,7 @@ createGame = function ()
 	game.getDisplay = getDisplay;
 	game.getState = getState;
 	game.drawTextCentered = drawTextCentered;
+	game.drawTextRight = drawTextRight;
 	game.changeState = changeState;
 	return game;
 };

@@ -1,27 +1,23 @@
-
 createPlayer = function (x, y)
 {
 	"use strict";
 
 	// Private methods
-	var checkBox = function ()
+	var checkGem = function ()
 	{
 		"use strict";
 
-		var box = Game.getState().getMap().getBox(player.getX(), player.getY());
-		if (!box)
-		{
-			alert("There is no box here!");
-		}
-		else if (box.containsAnanas())
+		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
+		if (gem)
 		{
 			window.removeEventListener("keydown", player);
-			Game.getState().getPlayerStats().ananas += 1;
+			Game.getState().getPlayerStats().gems += 1;
+			Game.getState().getMap().removeGem(gem);
 			Game.getState().getEngine().unlock();
 		}
 		else
 		{
-			alert("This box is empty.");
+			alert("There is no gem here!");
 		}
 	};
 
@@ -46,7 +42,7 @@ createPlayer = function (x, y)
 
 		if (code === ROT.VK_RETURN || code === ROT.VK_SPACE)
 		{
-			checkBox();
+			checkGem();
 			return;
 		}
 
@@ -118,14 +114,14 @@ createPedro = function (x, y)
 
 		Game.getState().getPlayerStats().distance = path.length;
 
-    if (path.length > 0)
-    {
-      Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
-    }
+		if (path.length > 0)
+		{
+			Game.getState().getMap().moveEntity(pedro, path[0][0], path[0][1]);
+		}
 
 		if (path.length <= 1)
 		{
-      Game.getState().getEngine().lock();
+			Game.getState().getEngine().lock();
 			Game.gameOver(false);
 		}
 	};

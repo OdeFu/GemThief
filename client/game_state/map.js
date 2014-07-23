@@ -1,24 +1,29 @@
 /**
  * Create a map level.
  *
- * @param options Used options are width, height and seed and those taken by the Digger
+ * @param options Used options are width, height and those taken by the Digger
  */
 createMap = function (options)
 {
 	"use strict";
 
+	check(options.width, Number);
+	check(options.height, Number);
+
 	// Private fields
 	var _tiles = [];
 	var _player;
-	var _boxes;
+	var _gems;
 	var _pedro;
+	var _width = options.width;
+	var _height = options.height;
 
 	// Private methods
 	var dig = function ()
 	{
 		"use strict";
 
-		var digger = new ROT.Map.Digger(options.width, options.height, options);
+		var digger = new ROT.Map.Digger(_width, _height, options);
 
 		var digCallback = function (x, y, value)
 		{
@@ -38,7 +43,7 @@ createMap = function (options)
 	{
 		"use strict";
 
-		_boxes = generateBoxes();
+		_gems = generateGems();
 
 		var tile = findEmptyTile();
 		_player = createPlayer(tile.getX(), tile.getY());
@@ -49,19 +54,19 @@ createMap = function (options)
 		tile.addEntity(_pedro);
 	};
 
-	var generateBoxes = function ()
+	var generateGems = function ()
 	{
 		"use strict";
 
-		var boxes = [];
+		var gems = [];
 		for (var i = 0; i < 10; i++)
 		{
 			var tile = findEmptyTile();
-			var box = createBox({ x: tile.getX(), y: tile.getY(), ananas: i % 2 === 0 });
-			tile.addEntity(box);
-			boxes.push(box);
+			var gem = createGem({ x: tile.getX(), y: tile.getY() });
+			tile.addEntity(gem);
+			gems.push(gem);
 		}
-		return boxes;
+		return gems;
 	};
 
 	var getAllEmptyTiles = function ()
@@ -85,11 +90,30 @@ createMap = function (options)
 	};
 
 	// Public methods
-	var getTiles = function () { return _tiles; };
-	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
-	var getPlayer = function () { return _player; };
-	var getBoxes = function () { return _boxes; };
-	var getPedro = function () { return _pedro; };
+	var getTiles = function ()
+	{
+		return _tiles;
+	};
+
+	var getTile = function (x, y)
+	{
+		return _tiles[options.height * x + y];
+	};
+
+	var getPlayer = function ()
+	{
+		return _player;
+	};
+
+	var getGems = function ()
+	{
+		return _gems;
+	};
+
+	var getPedro = function ()
+	{
+		return _pedro;
+	};
 
 	var isEmpty = function (x, y)
 	{
@@ -113,16 +137,18 @@ createMap = function (options)
 
 		for (var i = 0; i < _tiles.length; i++)
 		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getDungeonChar(),
+			display.draw(_tiles[i].getX(), _tiles[i].getY() + 1, _tiles[i].getDungeonChar(),
 				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
 		}
 
 		var visibleTiles = calculateVisibleTiles();
 		for (i = 0; i < visibleTiles.length; i++)
 		{
-			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
+			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY() + 1, visibleTiles[i].getChar(),
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
+
+		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
 	};
 
 	var findEmptyTile = function ()
@@ -150,18 +176,31 @@ createMap = function (options)
 		return tiles;
 	};
 
-	var getBox = function (x, y)
+	var getGem = function (x, y)
 	{
 		"use strict";
 
-		for (var i = 0; i < _boxes.length; i++)
+		for (var i = 0; i < _gems.length; i++)
 		{
-			if (_boxes[i].getX() === x && _boxes[i].getY() === y)
+			if (_gems[i].getX() === x && _gems[i].getY() === y)
 			{
-				return _boxes[i];
+				return _gems[i];
 			}
 		}
 		return null;
+	};
+
+	var removeGem = function (gem)
+	{
+		"use strict";
+
+		var index = _gems.indexOf(gem);
+		if (index >= 0)
+		{
+			_gems.splice(index, 1);
+			var tile = getTile(gem.getX(), gem.getY());
+			tile.removeEntity(gem);
+		}
 	};
 
 	var moveEntity = function (entity, newX, newY)
@@ -189,8 +228,9 @@ createMap = function (options)
 	map.calculateVisibleTiles = calculateVisibleTiles;
 	map.getPlayer = getPlayer;
 	map.getPedro = getPedro;
-	map.getBoxes = getBoxes;
-	map.getBox = getBox;
+	map.getGems = getGems;
+	map.getGem = getGem;
+	map.removeGem = removeGem;
 	map.moveEntity = moveEntity;
 
 	// Dig the level

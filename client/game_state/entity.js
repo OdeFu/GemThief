@@ -18,18 +18,53 @@ createEntity = function (params)
 	var _char = params.char || ' ';
 	var _color = params.color || "white";
 	var _blocks = params.blocks || false;
-  var _dungeonChar = params.dungeonChar || false;
+	var _dungeonChar = params.dungeonChar || false;
 
 	// Public methods
-	var getX = function () { return _x; };
-	var getY = function () { return _y; };
-	var setX = function (x) { _x = x; };
-	var setY = function (y) { _y = y; };
-	var getChar = function () { return _char; };
-	var getColor = function () { return _color; };
-	var draw = function (display) {	display.draw(_x, _y, _char, _color); };
-	var isBlocking = function () { return _blocks; };
-  var isDungeonChar = function () { return _dungeonChar; };
+	var getX = function ()
+	{
+		return _x;
+	};
+
+	var getY = function ()
+	{
+		return _y;
+	};
+
+	var setX = function (x)
+	{
+		_x = x;
+	};
+
+	var setY = function (y)
+	{
+		_y = y;
+	};
+
+	var getChar = function ()
+	{
+		return _char;
+	};
+
+	var getColor = function ()
+	{
+		return _color;
+	};
+
+	var draw = function (display)
+	{
+		display.draw(_x, _y, _char, _color);
+	};
+
+	var isBlocking = function ()
+	{
+		return _blocks;
+	};
+
+	var isDungeonChar = function ()
+	{
+		return _dungeonChar;
+	};
 
 	var entity = {};
 	entity.getX = getX;
@@ -40,6 +75,6 @@ createEntity = function (params)
 	entity.getColor = getColor;
 	entity.draw = draw;
 	entity.isBlocking = isBlocking;
-  entity.isDungeonChar = isDungeonChar;
+	entity.isDungeonChar = isDungeonChar;
 	return entity;
 };

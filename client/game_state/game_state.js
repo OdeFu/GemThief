@@ -1,15 +1,19 @@
-GameState = function ()
+GameState = function (params)
 {
-	return createGameState();
+	return createGameState(params);
 };
 
-var createGameState = function ()
+var createGameState = function (params)
 {
 	"use strict";
+
+	check(params.seed, Number);
 
 	// Private fields
 	var _map;
 	var _playerStats = new PlayerStats();
+
+	ROT.RNG.setSeed(params.seed);
 
 	// Private methods
 	var draw = function ()
@@ -33,20 +37,23 @@ var createGameState = function ()
 	var options = {};
 	options.name = "GameState";
 	options.scheduler = ROT.Scheduler.Simple;
+
 	options.act = function ()
 	{
 		"use strict";
 
 		draw();
 	};
+
 	options.enter = function ()
 	{
 		"use strict";
 
-		_map = createMap({ width: 80, height: 25, seed: new Date().now });
+		_map = createMap({ width: 80, height: 23 });
 
 		initEngine();
 	};
+
 	options.exit = function ()
 	{
 		"use strict";
@@ -56,8 +63,15 @@ var createGameState = function ()
 	};
 
 	// Public methods
-	var getMap = function () { return _map; };
-	var getPlayerStats = function () { return _playerStats; };
+	var getMap = function ()
+	{
+		return _map;
+	};
+
+	var getPlayerStats = function ()
+	{
+		return _playerStats;
+	};
 
 	var state = createState(options);
 	state.getMap = getMap;

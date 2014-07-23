@@ -16,35 +16,70 @@ createTile = function (x, y)
 	var _entities = [new TileEntity({ x: _x, y: _y })];
 
 	// Public methods
-	var getX = function () { return _x; };
-	var getY = function () { return _y; };
-	var isEmpty = function () { return _entities.length === 1; };
-	var isBlocking = function () { return _entities[0].isBlocking(); };
-	var getForegroundColor = function () { return _entities[0].getColor(); };
-	var getHiddenForegroundColor = function () { return "#606060"; };
-	var getBackgroundColor = function () { return "black"; };
-	var isSeen = function () { return _seen; };
-	var setSeen = function (seen) { _seen = seen; };
+	var getX = function ()
+	{
+		return _x;
+	};
+
+	var getY = function ()
+	{
+		return _y;
+	};
+
+	var isEmpty = function ()
+	{
+		return _entities.length === 1;
+	};
+
+	var isBlocking = function ()
+	{
+		return _entities[0].isBlocking();
+	};
+
+	var getForegroundColor = function ()
+	{
+		return _entities[0].getColor();
+	};
+
+	var getHiddenForegroundColor = function ()
+	{
+		return "#606060";
+	};
+
+	var getBackgroundColor = function ()
+	{
+		return "black";
+	};
+
+	var isSeen = function ()
+	{
+		return _seen;
+	};
+
+	var setSeen = function (seen)
+	{
+		_seen = seen;
+	};
 
 	var getChar = function ()
 	{
 		return _seen ? _entities[0].getChar() : " ";
 	};
 
-  var getDungeonChar = function ()
-  {
-    if (_seen)
-    {
-      for (var i = 0; i < _entities.length; i++)
-      {
-        if (_entities[i].isDungeonChar())
-        {
-          return _entities[i].getChar();
-        }
-      }
-    }
-    return " ";
-  };
+	var getDungeonChar = function ()
+	{
+		if (_seen)
+		{
+			for (var i = 0; i < _entities.length; i++)
+			{
+				if (_entities[i].isDungeonChar())
+				{
+					return _entities[i].getChar();
+				}
+			}
+		}
+		return " ";
+	};
 
 	var addEntity = function (entity)
 	{
@@ -74,7 +109,7 @@ createTile = function (x, y)
 	tile.addEntity = addEntity;
 	tile.removeEntity = removeEntity;
 	tile.isEmpty = isEmpty;
-  tile.getDungeonChar = getDungeonChar;
+	tile.getDungeonChar = getDungeonChar;
 	return tile;
 };
 
@@ -88,7 +123,7 @@ var createTileEntity = function (params)
 	"use strict";
 
 	params.char = '.';
-  params.dungeonChar = true;
+	params.dungeonChar = true;
 	return createEntity(params);
 };
 
@@ -104,6 +139,6 @@ var createWall = function (params)
 	params.char = "#";
 	params.color = "#888888";
 	params.blocks = true;
-  params.dungeonChar = true;
+	params.dungeonChar = true;
 	return createEntity(params);
 };
