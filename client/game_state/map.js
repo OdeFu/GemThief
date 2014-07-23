@@ -109,6 +109,10 @@ createMap = function (options)
 		var tile = getTile(_player.getX(), _player.getY());
 		_stairs[0] = new Stairs({ x: _player.getX(), y: _player.getY(), down: false });
 		tile.addEntity(_stairs[0]);
+
+		var downTile = findEmptyTile();
+		_stairs[1] = new Stairs({ x: downTile.getX(), y: downTile.getY(), down: true });
+		downTile.addEntity(_stairs[1]);
 	};
 
 	var getAllEmptyTiles = function ()
