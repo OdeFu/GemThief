@@ -9,7 +9,7 @@ var createMoveAction = function (dirKey)
 		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
 		if (gem)
 		{
-			Game.getState().getMap().setMessage("You picked up a gem.");
+			Game.getState().getMap().setMessage("You picked up a gem.", 1);
 			Game.getState().getPlayerStats().gems += 1;
 			Game.getState().getMap().removeGem(gem);
 		}

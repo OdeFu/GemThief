@@ -1,5 +1,7 @@
 Games = new Meteor.Collection("games");
 
+var DWARF_CONFIG = EJSON.parse(Assets.getText("dwarf_config.json"));
+
 Meteor.methods(
 {
 	newGame: function ()
@@ -31,6 +33,7 @@ Meteor.methods(
 			}
 		}
 
+		game.config = DWARF_CONFIG;
 		return game;
 	},
 

@@ -113,6 +113,11 @@ createTile = function (params)
 		return _color;
 	};
 
+	var toPoint = function ()
+	{
+		return { x: _x, y: _y };
+	};
+
 	// Create the actual tile
 	var tile = {};
 	tile.getX = getX;
@@ -130,9 +135,10 @@ createTile = function (params)
 	tile.getEntity = getEntity;
 	tile.setColor = setColor;
 	tile.getColor = getColor;
+	tile.toPoint = toPoint;
 
 	// Initialize the tile
-	tile.addEntity(new FloorEntity({ x: _x, y: _y }));
+	tile.addEntity(new FloorEntity(tile.toPoint()));
 
 	return tile;
 };

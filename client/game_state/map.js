@@ -108,7 +108,7 @@ createMap = function (options)
 		"use strict";
 
 		var tile = findEmptyTile();
-		_player = new Player({ x: tile.getX(), y: tile.getY() });
+		_player = new Player(tile.toPoint());
 		tile.addEntity(_player);
 	};
 
@@ -117,17 +117,27 @@ createMap = function (options)
 		"use strict";
 
 		// Copy the array
-		var names = DWARF_NAMES.slice(0);
-		var num = _level < names.length ? _level : names.length;
+		var dwarves = Game.getState().getConfig().dwarves.slice(0);
+		var num = _level < dwarves.length ? _level : dwarves.length;
 		for (var i = 0; i < num; i++)
 		{
-			var index = Math.floor(ROT.RNG.getUniform * names.length);
-			var name = names.splice(index, 1)[0];
-			var tile = findEmptyTile();
-			var dwarf = new Dwarf({ x: tile.getX(), y: tile.getY(), name: name });
-			tile.addEntity(dwarf);
-			_dwarves.push(dwarf);
+			var index = Math.floor(ROT.RNG.getUniform() * dwarves.length);
+			var data = dwarves.splice(index, 1)[0];
+			createDwarf(data);
 		}
+	};
+
+	var createDwarf = function (data)
+	{
+		"use strict";
+
+		var tile = findEmptyTile();
+		data.x = tile.getX();
+		data.y = tile.getY();
+		var dwarf = new Dwarf(data);
+		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, data));
+		tile.addEntity(dwarf);
+		_dwarves.push(dwarf);
 	};
 
 	var createGems = function ()
@@ -137,7 +147,7 @@ createMap = function (options)
 		for (var i = 0; i < _numGems; i++)
 		{
 			var tile = findEmptyTile();
-			var gem = createGem({ x: tile.getX(), y: tile.getY() });
+			var gem = createGem(tile.toPoint());
 			tile.addEntity(gem);
 			_gems.push(gem);
 		}
@@ -219,10 +229,10 @@ createMap = function (options)
 		return tile && tile.isBlocking();
 	};
 
-	var setMessage = function (msg)
+	var setMessage = function (msg, messageLife)
 	{
 		_message = msg;
-		_messageLife = 5;
+		_messageLife = messageLife || 3;
 	};
 
 	var draw = function (display)
@@ -332,6 +342,11 @@ createMap = function (options)
 		return _level;
 	};
 
+	var getStairs = function ()
+	{
+		return _stairs;
+	};
+
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
@@ -349,6 +364,7 @@ createMap = function (options)
 	map.moveEntity = moveEntity;
 	map.setMessage = setMessage;
 	map.getLevel = getLevel;
+	map.getStairs = getStairs;
 
 	// Dig the level
 	dig();

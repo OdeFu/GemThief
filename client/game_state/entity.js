@@ -86,7 +86,12 @@ createEntity = function (params)
 	var getType = function ()
 	{
 		return _type;
-	}
+	};
+
+	var toPoint = function ()
+	{
+		return { x: _x, y: _y };
+	};
 
 	var entity = {};
 	entity.getX = getX;
@@ -100,5 +105,6 @@ createEntity = function (params)
 	entity.isDungeonChar = isDungeonChar;
 	entity.getPriority = getPriority;
 	entity.getType = getType;
+	entity.toPoint = toPoint;
 	return entity;
 };

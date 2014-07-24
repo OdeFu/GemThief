@@ -8,10 +8,12 @@ var createGameState = function (params)
 	"use strict";
 
 	check(params.seed, Number);
+	check(params.config, Object);
 
 	// Private fields
 	var _map;
 	var _playerStats = new PlayerStats();
+	var _config = params.config;
 
 	ROT.RNG.setSeed(params.seed);
 
@@ -36,6 +38,11 @@ var createGameState = function (params)
 		}
 
 		state.getEngine().start();
+	};
+
+	var getConfig = function ()
+	{
+		return _config;
 	};
 
 	var options = {};
@@ -80,5 +87,6 @@ var createGameState = function (params)
 	var state = createState(options);
 	state.getMap = getMap;
 	state.getPlayerStats = getPlayerStats;
+	state.getConfig = getConfig;
 	return state;
 }
