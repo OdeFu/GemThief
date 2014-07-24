@@ -1,6 +1,7 @@
 createDocIdleAI = function (dwarf, params)
 {
 	var path = [];
+	var AI = createAI(dwarf, params);
 
 	var idleAI = function ()
 	{
@@ -17,16 +18,14 @@ createDocIdleAI = function (dwarf, params)
 			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
 		}
 
-		if (catchedPlayer(dwarf.toPoint()))
+		if (AI.catchedPlayer())
 		{
 			return;
 		}
 
-		var spottedPlayer = getVisiblePlayerPosition(dwarf.toPoint(), params.idleAIConfig.radius) != null;
-		if (spottedPlayer)
+		if (AI.spottedPlayer(params.idleAIConfig.radius))
 		{
-			Game.getState().getMap().setMessage(dwarf.getName() + " noticed you!");
-			dwarf.setAI(createDocTrackingAI(dwarf, params));
+			AI.changeToTrackingAI(createDocTrackingAI);
 		}
 	};
 	return idleAI;
@@ -36,6 +35,7 @@ var createDocTrackingAI = function (dwarf, params)
 {
 	var lastSeenPlayerPosition = Game.getState().getMap().getPlayer().toPoint();
 	var turnsSinceLastSeen = 0;
+	var AI = createAI(dwarf, params);
 
 	var trackingAI = function ()
 	{
@@ -53,12 +53,12 @@ var createDocTrackingAI = function (dwarf, params)
 			Game.getState().getMap().moveEntity(dwarf, path[0][0], path[0][1]);
 		}
 
-		if (catchedPlayer(dwarf.toPoint()))
+		if (AI.catchedPlayer())
 		{
 			return;
 		}
 
-		var playerPos = getVisiblePlayerPosition(dwarf.toPoint(), params.trackingAIConfig.radius);
+		var playerPos = AI.getVisiblePlayerPosition(params.trackingAIConfig.radius);
 		lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
 
 		if (playerPos == null)
@@ -76,7 +76,8 @@ var createDocTrackingAI = function (dwarf, params)
 
 var createDocGuardAI = function (dwarf, params)
 {
-	var path = getShortestPathToStairs(dwarf.toPoint());
+	var AI = createAI(dwarf, params);
+	var path = AI.getShortestPathToStairs();
 
 	var guardAI = function ()
 	{
@@ -88,60 +89,10 @@ var createDocGuardAI = function (dwarf, params)
 			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
 		}
 
-		var spottedPlayer = getVisiblePlayerPosition(dwarf.toPoint(), params.guardAIConfig.radius) != null;
-		if (spottedPlayer)
+		if (AI.spottedPlayer())
 		{
-			dwarf.setAI(createDocTrackingAI(dwarf, params));
+			AI.changeToTrackingAI(createDocTrackingAI);
 		}
 	};
 	return guardAI;
-};
-
-var catchedPlayer = function (pos)
-{
-	"use strict";
-
-	var playerPos = Game.getState().getMap().getPlayer().toPoint();
-	if (playerPos.x === pos.x && playerPos.y === pos.y)
-	{
-		Game.getState().getEngine().lock();
-		Game.gameOver();
-		return true;
-	}
-	return false;
-};
-
-var getVisiblePlayerPosition = function (from, radius)
-{
-	"use strict";
-
-	var spottedPlayer = false;
-	var playerPos = Game.getState().getMap().getPlayer().toPoint();
-	Path.runFOV(from, radius, function (x, y, r, visibility)
-	{
-		if (playerPos.x === x && playerPos.y === y)
-		{
-			spottedPlayer = true;
-		}
-	});
-	return spottedPlayer ? playerPos : null;
-};
-
-var getShortestPathToStairs = function (pos)
-{
-	"use strict";
-
-	var shortestPath = [pos.x, pos.y];
-	var closestDistance = Number.MAX_VALUE;
-	var stairs = Game.getState().getMap().getStairs();
-	for (var i = 0; i < stairs.length; i++)
-	{
-		var path = Path.generatePath(pos, stairs[i].toPoint());
-		if (path.length < closestDistance)
-		{
-			shortestPath = path;
-			closestDistance = path.length;
-		}
-	}
-	return shortestPath;
 };
