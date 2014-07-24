@@ -15,6 +15,7 @@ createTile = function (params)
 	var _y = params.y || 0;
 	var _seen = false; // Initially unseen
 	var _entities = [];
+	var _color;
 
 	// Public methods
 	var getX = function ()
@@ -39,12 +40,18 @@ createTile = function (params)
 
 	var getForegroundColor = function ()
 	{
-		return getHighestEntity().getColor();
-	};
+		var entityColor = ROT.Color.fromString(getHighestEntity().getColor());
+		var ambientLight = [100, 100, 100];
+		var light = ambientLight.slice(0);
 
-	var getHiddenForegroundColor = function ()
-	{
-		return "#606060";
+		if (_color)
+		{
+			light = ROT.Color.add(light, _color);
+		}
+
+		var finalColor = ROT.Color.multiply(entityColor, light);
+		return ROT.Color.toRGB(finalColor);
+		;
 	};
 
 	var getBackgroundColor = function ()
@@ -65,21 +72,6 @@ createTile = function (params)
 	var getChar = function ()
 	{
 		return _seen ? getHighestEntity().getChar() : " ";
-	};
-
-	var getDungeonChar = function ()
-	{
-		if (_seen)
-		{
-			for (var i = _entities.length - 1; i >= 0; i--)
-			{
-				if (_entities[i] && _entities[i].isDungeonChar())
-				{
-					return _entities[i].getChar();
-				}
-			}
-		}
-		return " ";
 	};
 
 	var addEntity = function (entity)
@@ -111,6 +103,16 @@ createTile = function (params)
 		return _entities[index];
 	};
 
+	var setColor = function (color)
+	{
+		_color = color;
+	};
+
+	var getColor = function ()
+	{
+		return _color;
+	}
+
 	// Create the actual tile
 	var tile = {};
 	tile.getX = getX;
@@ -118,16 +120,16 @@ createTile = function (params)
 	tile.isBlocking = isBlocking;
 	tile.getChar = getChar;
 	tile.getForegroundColor = getForegroundColor;
-	tile.getHiddenForegroundColor = getHiddenForegroundColor;
 	tile.getBackgroundColor = getBackgroundColor;
 	tile.isSeen = isSeen;
 	tile.setSeen = setSeen;
 	tile.addEntity = addEntity;
 	tile.removeEntity = removeEntity;
 	tile.isEmpty = isEmpty;
-	tile.getDungeonChar = getDungeonChar;
 	tile.getHighestEntity = getHighestEntity;
 	tile.getEntity = getEntity;
+	tile.setColor = setColor;
+	tile.getColor = getColor;
 
 	// Initialize the tile
 	tile.addEntity(new FloorEntity({ x: _x, y: _y }));

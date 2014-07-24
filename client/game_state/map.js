@@ -48,6 +48,48 @@ createMap = function (options)
 		digger.create(digCallback.bind(this));
 	};
 
+	var generateLightingData = function ()
+	{
+		"use strict";
+
+		var fov = new ROT.FOV.PreciseShadowcasting(lightPass, { topology: 4 });
+
+		var reflectivityCallback = function (x, y)
+		{
+			var tile = getTile(x, y);
+			return tile.isEmpty() ? 0.3 : 0;
+		};
+
+		var lighting = new ROT.Lighting(reflectivityCallback, { range: 12, passes: 2 });
+		lighting.setFOV(fov);
+
+		var lightColor = [200, 200, 0];
+		var lightLocations = getLightLocations();
+		for (var i = 0; i < lightLocations.length; i++)
+		{
+			lighting.setLight(lightLocations[i].getX(), lightLocations[i].getY(), lightColor);
+		}
+
+		var lightingCallback = function (x, y, color)
+		{
+			var tile = getTile(x, y);
+			tile.setColor(color);
+		};
+		lighting.compute(lightingCallback);
+	};
+
+	var getLightLocations = function ()
+	{
+		"use strict";
+
+		var locations = [];
+		for (var i = 0; i < 5; i++)
+		{
+			locations.push(findEmptyTile());
+		}
+		return locations;
+	}
+
 	var createEntities = function ()
 	{
 		"use strict";
@@ -197,14 +239,8 @@ createMap = function (options)
 			}
 		}
 
-		for (var i = 0; i < _tiles.length; i++)
-		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY() + 1, _tiles[i].getDungeonChar(),
-				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
-		}
-
 		var visibleTiles = calculateVisibleTiles();
-		for (i = 0; i < visibleTiles.length; i++)
+		for (var i = 0; i < visibleTiles.length; i++)
 		{
 			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY() + 1, visibleTiles[i].getChar(),
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
@@ -229,11 +265,22 @@ createMap = function (options)
 
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(_player.getX(), _player.getY(), 10, function (x, y, r, visibility)
+		fov.compute(_player.getX(), _player.getY(), 2, function (x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
 			tile.setSeen(true);
 			tiles.push(tile);
+		});
+
+		// Do another pass for tiles that have light
+		fov.compute(_player.getX(), _player.getY(), 20, function (x, y, r, visibility)
+		{
+			var tile = getTile(x, y);
+			if (tile.getColor())
+			{
+				tile.setSeen(true);
+				tiles.push(tile);
+			}
 		});
 
 		return tiles;
@@ -305,6 +352,7 @@ createMap = function (options)
 
 	// Dig the level
 	dig();
+	generateLightingData();
 	createEntities();
 
 	return map;
