@@ -1,0 +1,34 @@
+Doc
+---
+	Idle AI: Wanders around checking on others.
+	Tracking AI: Carefully tries to follow the thief, might stop to mutter to himself. If loses the player for long enough
+		will go to the nearest stairs to wait for him/her.
+	Guard AI: Goest to the nearest stairs and stays there until the thief is spotted again.
+
+Grumpy
+------
+	Idle AI: Digging away somewhere, probably near a lightsource.
+	Tracking AI: Unerringly follows the thief.
+
+Dopey
+-----
+	Idle AI: Randomly wanders around.
+	Tracking AI: Tries to follow the thief, but has a high chance of losing interest and going back to idle mode.
+
+Bashful
+-------
+	Idle AI: Digging somwhere where is't probably quite dark, so no-one can see him.
+	Scared AI: When first noticing the thief, he will get scared and run away. He'll collect his courage and start tracking
+		him/her after a short while.
+	Tracking AI: Shyly follows the thief. Might stop randomly to watch.
+
+Sleepy
+------
+	Idle AI: Sleeps somewhere dark. Not easily woken.
+	Tracking AI: While following the thief, might fall back to sleep.
+
+Sneezy
+------
+	Idle AI: Digging somewhere close to a lightsource.
+	Tracking AI: While trying to catch the thief, might sneeze at a completely wrong time and lose him/her.
+	Sneeze AI: Sneezing might take a couple turns to recover from.

@@ -6,38 +6,43 @@ Meteor.methods(
 	{
 		"use strict";
 
-		if (!this.userId)
-		{
-			return 0;
-		}
+		check(data.gems, Number);
+		check(data.moves, [Number]);
+		check(data.won, Boolean);
+		//check(data.gold, Number);
 
 		var score = calculateScore(data);
+		data.score = score;
 
-		var userData = PlayerData.findOne({ userId: this.userId });
-		if (userData)
+		if (this.userId)
 		{
-			userData.gold += data.gold;
-			if (userData.best_score < score)
+			var userData = PlayerData.findOne({ userId: this.userId });
+			if (userData)
 			{
-				userData.best_score = score;
+				userData.gold += data.gold;
+				if (userData.best_score < score)
+				{
+					userData.best_score = score;
+				}
+				userData.total_score += score;
+				userData.updated = new Date().getTime();
+				PlayerData.upsert(userData);
 			}
-			userData.total_score += score;
-			userData.updated = new Date().getTime();
-		}
-		else
-		{
-			userData =
+			else
 			{
-				userId: this.userId,
-				gold: data.gold,
-				best_score: score,
-				total_score: score,
-				created: new Date().getTime()
-			};
+				var newUserData =
+				{
+					userId: this.userId,
+					gold: data.gold,
+					best_score: score,
+					total_score: score,
+					created: new Date().getTime()
+				};
+				PlayerData.insert(newUserData);
+			}
 		}
-		PlayerData.upsert(userData);
 
-		return score;
+		return data;
 	}
 });
 
@@ -45,10 +50,13 @@ var calculateScore = function (data)
 {
 	"use strict";
 
-	var ananasScore = data.ananas * 1000;
-  var moveScore = data.moves * data.distance;
+	var gemsScore = data.gems * 100;
+	var moveScore = 0;
+	data.moves.forEach(function (moves, level)
+	{
+		moveScore += moves * level;
+	});
 
-  // TODO: Add level multiplier
-
-	return Math.round(ananasScore + moveScore);
+	// You get nothing if you lost
+	return Math.round(gemsScore + moveScore) * data.won;
 };

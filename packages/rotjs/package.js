@@ -1,7 +1,7 @@
 Package.describe(
-{
-	summary: "ROTJS"
-});
+	{
+		summary: "ROTJS"
+	});
 
 Package.on_use(function (api)
 {

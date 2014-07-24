@@ -1,28 +1,42 @@
 /**
  * Create a map level.
  *
- * @param options Used options are width, height and seed and those taken by the Digger
+ * @param options
+ *  - width: the width of the map, required
+ *  - height: the height of the map, required
+ *  - level: the level depth of the map, defaults to 1
+ *  - numGems: the number of gems to be generated, defaults to 10
  */
 createMap = function (options)
 {
 	"use strict";
 
+	check(options.width, Number);
+	check(options.height, Number);
+
 	// Private fields
 	var _tiles = [];
 	var _player;
-	var _boxes;
-	var _pedro;
+	var _gems = [];
+	var _dwarves = [];
+	var _stairs = [];
+	var _width = options.width;
+	var _height = options.height;
+	var _message = "";
+	var _messageLife;
+	var _level = options.level || 1;
+	var _numGems = options.numGems || 10;
 
 	// Private methods
 	var dig = function ()
 	{
 		"use strict";
 
-		var digger = new ROT.Map.Digger(options.width, options.height, options);
+		var digger = new ROT.Map.Digger(_width, _height, options);
 
 		var digCallback = function (x, y, value)
 		{
-			var tile = createTile(x, y);
+			var tile = createTile({ x: x, y: y });
 			var wall = value === 1;
 			if (wall)
 			{
@@ -34,34 +48,123 @@ createMap = function (options)
 		digger.create(digCallback.bind(this));
 	};
 
+	var generateLightingData = function ()
+	{
+		"use strict";
+
+		var fov = new ROT.FOV.PreciseShadowcasting(lightPass, { topology: 4 });
+
+		var reflectivityCallback = function (x, y)
+		{
+			var tile = getTile(x, y);
+			return tile.isEmpty() ? 0.3 : 0;
+		};
+
+		var lighting = new ROT.Lighting(reflectivityCallback, { range: 12, passes: 2 });
+		lighting.setFOV(fov);
+
+		var lightColor = [200, 200, 0];
+		var lightLocations = getLightLocations();
+		for (var i = 0; i < lightLocations.length; i++)
+		{
+			lighting.setLight(lightLocations[i].getX(), lightLocations[i].getY(), lightColor);
+		}
+
+		var lightingCallback = function (x, y, color)
+		{
+			var tile = getTile(x, y);
+			tile.setColor(color);
+		};
+		lighting.compute(lightingCallback);
+	};
+
+	var getLightLocations = function ()
+	{
+		"use strict";
+
+		var locations = [];
+		for (var i = 0; i < 5; i++)
+		{
+			locations.push(findEmptyTile());
+		}
+		return locations;
+	}
+
 	var createEntities = function ()
 	{
 		"use strict";
 
-		_boxes = generateBoxes();
+		createGems();
 
-		var tile = findEmptyTile();
-		_player = createPlayer(tile.getX(), tile.getY());
-		tile.addEntity(_player);
+		createPlayer();
 
-		tile = findEmptyTile();
-		_pedro = createPedro(tile.getX(), tile.getY());
-		tile.addEntity(_pedro);
+		createDwarves();
+
+		createStairs();
 	};
 
-	var generateBoxes = function ()
+	var createPlayer = function ()
 	{
 		"use strict";
 
-		var boxes = [];
-		for (var i = 0; i < 10; i++)
+		var tile = findEmptyTile();
+		_player = new Player(tile.toPoint());
+		tile.addEntity(_player);
+	};
+
+	var createDwarves = function ()
+	{
+		"use strict";
+
+		// Copy the array
+		var dwarves = Game.getState().getConfig().dwarves.slice(0);
+		var num = _level < dwarves.length ? _level : dwarves.length;
+		for (var i = 0; i < num; i++)
+		{
+			var index = Math.floor(ROT.RNG.getUniform() * dwarves.length);
+			var data = dwarves.splice(index, 1)[0];
+			createDwarf(data);
+		}
+	};
+
+	var createDwarf = function (data)
+	{
+		"use strict";
+
+		var tile = findEmptyTile();
+		data.x = tile.getX();
+		data.y = tile.getY();
+		var dwarf = new Dwarf(data);
+		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, data));
+		tile.addEntity(dwarf);
+		_dwarves.push(dwarf);
+	};
+
+	var createGems = function ()
+	{
+		"use strict";
+
+		for (var i = 0; i < _numGems; i++)
 		{
 			var tile = findEmptyTile();
-			var box = createBox({ x: tile.getX(), y: tile.getY(), ananas: i % 2 === 0 });
-			tile.addEntity(box);
-			boxes.push(box);
+			var gem = createGem(tile.toPoint());
+			tile.addEntity(gem);
+			_gems.push(gem);
 		}
-		return boxes;
+	};
+
+	var createStairs = function ()
+	{
+		"use strict";
+
+		// always create stairs going up where the player is
+		var tile = getTile(_player.getX(), _player.getY());
+		_stairs[0] = new Stairs({ x: _player.getX(), y: _player.getY(), down: false });
+		tile.addEntity(_stairs[0]);
+
+		var downTile = findEmptyTile();
+		_stairs[1] = new Stairs({ x: downTile.getX(), y: downTile.getY(), down: true });
+		downTile.addEntity(_stairs[1]);
 	};
 
 	var getAllEmptyTiles = function ()
@@ -85,11 +188,30 @@ createMap = function (options)
 	};
 
 	// Public methods
-	var getTiles = function () { return _tiles; };
-	var getTile = function (x, y) {	return _tiles[options.height * x + y]; };
-	var getPlayer = function () { return _player; };
-	var getBoxes = function () { return _boxes; };
-	var getPedro = function () { return _pedro; };
+	var getTiles = function ()
+	{
+		return _tiles;
+	};
+
+	var getTile = function (x, y)
+	{
+		return _tiles[options.height * x + y];
+	};
+
+	var getPlayer = function ()
+	{
+		return _player;
+	};
+
+	var getGems = function ()
+	{
+		return _gems;
+	};
+
+	var getDwarves = function ()
+	{
+		return _dwarves;
+	};
 
 	var isEmpty = function (x, y)
 	{
@@ -107,22 +229,35 @@ createMap = function (options)
 		return tile && tile.isBlocking();
 	};
 
+	var setMessage = function (msg, messageLife)
+	{
+		_message = msg;
+		_messageLife = messageLife || 3;
+	};
+
 	var draw = function (display)
 	{
 		"use strict";
 
-		for (var i = 0; i < _tiles.length; i++)
+		if (_message)
 		{
-			display.draw(_tiles[i].getX(), _tiles[i].getY(), _tiles[i].getDungeonChar(),
-				_tiles[i].getHiddenForegroundColor(), _tiles[i].getBackgroundColor());
+			display.drawText(0, 0, _message);
+			_messageLife--;
+			if (_messageLife === 0)
+			{
+				_message = null;
+			}
 		}
 
 		var visibleTiles = calculateVisibleTiles();
-		for (i = 0; i < visibleTiles.length; i++)
+		for (var i = 0; i < visibleTiles.length; i++)
 		{
-			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY(), visibleTiles[i].getChar(),
+			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY() + 1, visibleTiles[i].getChar(),
 				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
+
+		display.drawText(0, _height + 1, "Mine Level: " + _level);
+		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
 	};
 
 	var findEmptyTile = function ()
@@ -140,28 +275,52 @@ createMap = function (options)
 
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(_player.getX(), _player.getY(), 10, function (x, y, r, visibility)
+		fov.compute(_player.getX(), _player.getY(), 2, function (x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
 			tile.setSeen(true);
 			tiles.push(tile);
 		});
 
+		// Do another pass for tiles that have light
+		fov.compute(_player.getX(), _player.getY(), 20, function (x, y, r, visibility)
+		{
+			var tile = getTile(x, y);
+			if (tile.getColor())
+			{
+				tile.setSeen(true);
+				tiles.push(tile);
+			}
+		});
+
 		return tiles;
 	};
 
-	var getBox = function (x, y)
+	var getGem = function (x, y)
 	{
 		"use strict";
 
-		for (var i = 0; i < _boxes.length; i++)
+		for (var i = 0; i < _gems.length; i++)
 		{
-			if (_boxes[i].getX() === x && _boxes[i].getY() === y)
+			if (_gems[i].getX() === x && _gems[i].getY() === y)
 			{
-				return _boxes[i];
+				return _gems[i];
 			}
 		}
 		return null;
+	};
+
+	var removeGem = function (gem)
+	{
+		"use strict";
+
+		var index = _gems.indexOf(gem);
+		if (index >= 0)
+		{
+			_gems.splice(index, 1);
+			var tile = getTile(gem.getX(), gem.getY());
+			tile.removeEntity(gem);
+		}
 	};
 
 	var moveEntity = function (entity, newX, newY)
@@ -178,6 +337,16 @@ createMap = function (options)
 		entity.setY(newY);
 	};
 
+	var getLevel = function ()
+	{
+		return _level;
+	};
+
+	var getStairs = function ()
+	{
+		return _stairs;
+	};
+
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
@@ -188,13 +357,18 @@ createMap = function (options)
 	map.findEmptyTile = findEmptyTile;
 	map.calculateVisibleTiles = calculateVisibleTiles;
 	map.getPlayer = getPlayer;
-	map.getPedro = getPedro;
-	map.getBoxes = getBoxes;
-	map.getBox = getBox;
+	map.getGems = getGems;
+	map.getGem = getGem;
+	map.removeGem = removeGem;
+	map.getDwarves = getDwarves;
 	map.moveEntity = moveEntity;
+	map.setMessage = setMessage;
+	map.getLevel = getLevel;
+	map.getStairs = getStairs;
 
 	// Dig the level
 	dig();
+	generateLightingData();
 	createEntities();
 
 	return map;

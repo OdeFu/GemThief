@@ -1,0 +1,122 @@
+{
+	"dwarves": [
+		{
+			"name": "Doc",
+			"color": "orange",
+			"idleAI": "createDocIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Grumpy",
+			"idleRadius": 10,
+			"color": "red",
+			"idleAI": "createGrumpyIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Dopey",
+			"idleRadius": 10,
+			"color": "green",
+			"idleAI": "createDopeyIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Happy",
+			"idleRadius": 10,
+			"color": "yellow",
+			"idleAI": "createHappyIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Sleepy",
+			"idleRadius": 10,
+			"color": "brown",
+			"idleAI": "createSleepyIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Sneezy",
+			"idleRadius": 10,
+			"color": "goldenrod",
+			"idleAI": "createSneezyIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		},
+		{
+			"name": "Bashful",
+			"idleRadius": 10,
+			"color": "purple",
+			"idleAI": "createBashfulIdleAI",
+			"idleAIConfig": {
+				"radius": 5
+			},
+			"trackingAIConfig": {
+				"chanceToStop": 25,
+				"radius": 10,
+				"turnsUntilLost": 3
+			},
+			"guardAIConfig": {
+				"radius": 12
+			}
+		}
+	]
+}

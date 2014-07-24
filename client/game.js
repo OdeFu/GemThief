@@ -38,12 +38,31 @@ createGame = function ()
 		_state.enter();
 	};
 
-	var gameOver = function (won)
+	var gameOver = function ()
 	{
-		Meteor.call("update", _state.getPlayerStats(), function (error, score)
+		Meteor.call("update", _state.getPlayerStats(), function (error, data)
 		{
-			changeState(EndState, { won: won, score: score });
+			changeState(EndState, data);
 		});
+	};
+
+	var moveToLevel = function (nextLevel)
+	{
+		"use strict";
+
+		if (nextLevel === 0)
+		{
+			// We exited the mine
+			_state.getPlayerStats().won = true;
+			gameOver();
+		}
+		else
+		{
+			Meteor.call("loadLevel", nextLevel, function (error, game)
+			{
+				changeState(GameState, game);
+			});
+		}
 	};
 
 	var drawTextCentered = function (y, text)
@@ -55,8 +74,24 @@ createGame = function ()
 		_display.drawText(x, y, text);
 	};
 
-	var getDisplay = function () { return _display; };
-	var getState = function () { return _state; };
+	var drawTextRight = function (y, text)
+	{
+		"use strict";
+
+		var textSize = ROT.Text.measure(text);
+		var x = _display.getOptions().width - textSize.width;
+		_display.drawText(x, y, text);
+	};
+
+	var getDisplay = function ()
+	{
+		return _display;
+	};
+
+	var getState = function ()
+	{
+		return _state;
+	};
 
 	var game = {};
 	game.gameOver = gameOver;
@@ -64,7 +99,9 @@ createGame = function ()
 	game.getDisplay = getDisplay;
 	game.getState = getState;
 	game.drawTextCentered = drawTextCentered;
+	game.drawTextRight = drawTextRight;
 	game.changeState = changeState;
+	game.moveToLevel = moveToLevel;
 	return game;
 };
 

@@ -1,6 +1,6 @@
 Game = createGame();
 
-Meteor.startup(function()
+Meteor.startup(function ()
 {
 	Game.init();
 });
