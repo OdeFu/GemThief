@@ -111,7 +111,7 @@ createTile = function (params)
 	var getColor = function ()
 	{
 		return _color;
-	}
+	};
 
 	// Create the actual tile
 	var tile = {};
