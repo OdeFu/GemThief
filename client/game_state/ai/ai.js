@@ -2,6 +2,9 @@ createAI = function (dwarf, params)
 {
 	"use strict";
 
+	var lastSeenPlayerPosition = Game.getState().getMap().getPlayer().toPoint();
+	var turnsSinceLastSeen = 0;
+
 	var catchedPlayer = function ()
 	{
 		"use strict";
@@ -58,8 +61,62 @@ createAI = function (dwarf, params)
 
 	var changeToTrackingAI = function (ai)
 	{
-		Game.getState().getMap().setMessage(dwarf.getName() + " noticed you!");
+		Game.getState().getMap().setMessage(params.idleAIConfig.noticeMessage);
 		dwarf.setAI(ai(dwarf, params));
+	};
+
+	var move = function (to)
+	{
+		"use strict";
+
+		var path = Path.generatePath(dwarf.toPoint(), to);
+		if (path.length > 0)
+		{
+			Game.getState().getMap().moveEntity(dwarf, path[0][0], path[0][1]);
+		}
+		return path.length > 0;
+	};
+
+	var getTrackingAI = function (lostCallback)
+	{
+		var trackingAI = function ()
+		{
+			"use strict";
+
+			if (params.trackingAIConfig.chanceToStop)
+			{
+				var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
+				if (stop)
+				{
+					if (params.trackingAIConfig.stopMessage)
+					{
+						Game.getState().getMap().setMessage(params.trackingAIConfig.stopMessage, 1);
+					}
+					return;
+				}
+			}
+
+			move(lastSeenPlayerPosition);
+
+			if (catchedPlayer())
+			{
+				return;
+			}
+
+			var playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
+			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
+
+			if (playerPos == null)
+			{
+				turnsSinceLastSeen++;
+			}
+
+			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost)
+			{
+				lostCallback();
+			}
+		};
+		return trackingAI;
 	};
 
 	var AI = {};
@@ -68,5 +125,7 @@ createAI = function (dwarf, params)
 	AI.catchedPlayer = catchedPlayer;
 	AI.spottedPlayer = spottedPlayer;
 	AI.changeToTrackingAI = changeToTrackingAI;
+	AI.move = move;
+	AI.getTrackingAI = getTrackingAI;
 	return AI;
 };

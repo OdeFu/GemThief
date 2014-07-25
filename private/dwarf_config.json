@@ -5,12 +5,14 @@
 			"color": "orange",
 			"idleAI": "createDocIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Doc hmpfs as he spots you skulking in the tunnels.."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 25,
 				"radius": 10,
-				"turnsUntilLost": 3
+				"turnsUntilLost": 3,
+				"stopMessage": "Doc stops and starts muttering something to himself."
 			},
 			"guardAIConfig": {
 				"radius": 12
@@ -107,15 +109,14 @@
 			"color": "purple",
 			"idleAI": "createBashfulIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Bashful meeps loudly as he notices you."
 			},
 			"trackingAIConfig": {
-				"chanceToStop": 25,
+				"chanceToStop": 30,
 				"radius": 10,
-				"turnsUntilLost": 3
-			},
-			"guardAIConfig": {
-				"radius": 12
+				"turnsUntilLost": 2,
+				"stopMessage": "Bashful shyly stops and pulls his arms behind him."
 			}
 		}
 	]

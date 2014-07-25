@@ -33,45 +33,14 @@ createDocIdleAI = function (dwarf, params)
 
 var createDocTrackingAI = function (dwarf, params)
 {
-	var lastSeenPlayerPosition = Game.getState().getMap().getPlayer().toPoint();
-	var turnsSinceLastSeen = 0;
 	var AI = createAI(dwarf, params);
 
-	var trackingAI = function ()
+	var lostCallback = function ()
 	{
-		"use strict";
-		var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
-		if (stop)
-		{
-			Game.getState().getMap().setMessage("Doc stops and starts muttering something to himself.", 1);
-			return;
-		}
-
-		var path = Path.generatePath(dwarf.toPoint(), lastSeenPlayerPosition);
-		if (path.length > 0)
-		{
-			Game.getState().getMap().moveEntity(dwarf, path[0][0], path[0][1]);
-		}
-
-		if (AI.catchedPlayer())
-		{
-			return;
-		}
-
-		var playerPos = AI.getVisiblePlayerPosition(params.trackingAIConfig.radius);
-		lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
-
-		if (playerPos == null)
-		{
-			turnsSinceLastSeen++;
-		}
-
-		if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost)
-		{
-			dwarf.setAI(createDocGuardAI(dwarf, params));
-		}
+		dwarf.setAI(createDocGuardAI(dwarf, params));
 	};
-	return trackingAI;
+
+	return AI.getTrackingAI(lostCallback);
 };
 
 var createDocGuardAI = function (dwarf, params)
