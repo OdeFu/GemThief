@@ -137,8 +137,6 @@ createMap = function (params)
 		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
 		tile.addEntity(dwarf);
 		_dwarves.push(dwarf);
-
-		console.log("Created dwarf: " + dwarf.getName());
 	};
 
 	var createGems = function ()
@@ -270,7 +268,7 @@ createMap = function (params)
 		for (var i = 0; i < visibleTiles.length; i++)
 		{
 			display.draw(visibleTiles[i].getX(), visibleTiles[i].getY() + 1, visibleTiles[i].getChar(),
-				visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
+			visibleTiles[i].getForegroundColor(), visibleTiles[i].getBackgroundColor());
 		}
 
 		display.drawText(0, _height + 1, "Mine Level: " + _level);
