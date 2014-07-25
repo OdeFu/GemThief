@@ -98,7 +98,7 @@ createMap = function (params)
 
 		createPlayer();
 
-		createDwarves();
+		createDwarf();
 
 		createStairs();
 	};
@@ -112,27 +112,21 @@ createMap = function (params)
 		tile.addEntity(_player);
 	};
 
-	var createDwarves = function ()
+	var createDwarf = function ()
 	{
 		"use strict";
 
-		// Copy the array
 		var dwarves = params.config.dwarves.slice(0);
 		dwarves.sort(function (dwarf1, dwarf2)
 		{
 			return dwarf1.level - dwarf2.level;
 		});
-
-		createDwarf(dwarves[_level - 1]);
-	};
-
-	var createDwarf = function (data)
-	{
-		"use strict";
+		var data = dwarves[_level - 1];
 
 		var tile = DWARF_START_LOCATIONS[data.startLocation](map);
 		data.x = tile.getX();
 		data.y = tile.getY();
+
 		var dwarf = new Dwarf(data);
 		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
 		tile.addEntity(dwarf);
