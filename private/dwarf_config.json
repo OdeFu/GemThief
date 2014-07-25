@@ -67,19 +67,18 @@
 		},
 		{
 			"name": "Sleepy",
-			"idleRadius": 10,
+			"idleRadius": 3,
 			"color": "brown",
 			"idleAI": "createSleepyIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Sleepy yawns and stretches before picking up his pick and starting towards you."
 			},
 			"trackingAIConfig": {
-				"chanceToStop": 25,
+				"chanceToStop": 40,
 				"radius": 10,
-				"turnsUntilLost": 3
-			},
-			"guardAIConfig": {
-				"radius": 12
+				"turnsUntilLost": 2,
+				"stopMessage": "Sleepy yawns and closes his eyes and starts snoring."
 			}
 		},
 		{
