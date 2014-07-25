@@ -6,7 +6,7 @@
 			"idleAI": "createDocIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
-				"noticeMessage": "Doc hmpfs as he spots you skulking in the tunnels.."
+				"noticeMessage": "Doc hmpfs as he spots you skulking in the tunnels."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 25,
@@ -24,15 +24,11 @@
 			"color": "red",
 			"idleAI": "createGrumpyIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 7,
+				"noticeMessage": "Grumpy growls as he notices you and starts to stomp towards you."
 			},
 			"trackingAIConfig": {
-				"chanceToStop": 25,
-				"radius": 10,
-				"turnsUntilLost": 3
-			},
-			"guardAIConfig": {
-				"radius": 12
+				"radius": 10
 			}
 		},
 		{
