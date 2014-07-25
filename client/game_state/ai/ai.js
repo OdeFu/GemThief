@@ -88,7 +88,7 @@ createAI = function (dwarf, params)
 		}
 	};
 
-	var getTrackingAI = function (lostCallback)
+	var getTrackingAI = function (lostCallback, stoppedCallback)
 	{
 		var trackingAI = function ()
 		{
@@ -102,6 +102,11 @@ createAI = function (dwarf, params)
 					if (params.trackingAIConfig.stopMessage)
 					{
 						Game.getState().getMap().setMessage(params.trackingAIConfig.stopMessage, 1);
+					}
+
+					if (stoppedCallback)
+					{
+						stoppedCallback();
 					}
 					return;
 				}
@@ -122,7 +127,7 @@ createAI = function (dwarf, params)
 				turnsSinceLastSeen++;
 			}
 
-			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost)
+			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost && lostCallback)
 			{
 				lostCallback();
 			}

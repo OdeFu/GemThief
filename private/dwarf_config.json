@@ -90,12 +90,12 @@
 				"radius": 5
 			},
 			"trackingAIConfig": {
-				"chanceToStop": 25,
+				"chanceToStop": 20,
 				"radius": 10,
 				"turnsUntilLost": 3
 			},
-			"guardAIConfig": {
-				"radius": 12
+			"sneezingAIConfig": {
+				"maxDuration": 3
 			}
 		},
 		{
