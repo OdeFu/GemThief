@@ -1,7 +1,7 @@
 createDocIdleAI = function (dwarf, params)
 {
-	var path = [];
 	var AI = createAI(dwarf, params);
+	var path = [];
 
 	var idleAI = function ()
 	{
@@ -12,11 +12,7 @@ createDocIdleAI = function (dwarf, params)
 			path = Path.generatePath(dwarf.toPoint(), Game.getState().getMap().findEmptyTile().toPoint());
 		}
 
-		if (path.length > 0)
-		{
-			var step = path.splice(0, 1)[0];
-			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
-		}
+		AI.movePath(path);
 
 		if (AI.catchedPlayer())
 		{
@@ -52,11 +48,7 @@ var createDocGuardAI = function (dwarf, params)
 	{
 		"use strict";
 
-		if (path.length > 0)
-		{
-			var step = path.splice(0, 1)[0];
-			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
-		}
+		AI.movePath(path);
 
 		if (AI.spottedPlayer())
 		{

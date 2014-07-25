@@ -32,3 +32,9 @@ Sneezy
 	Idle AI: Digging somewhere close to a lightsource.
 	Tracking AI: While trying to catch the thief, might sneeze at a completely wrong time and lose him/her.
 	Sneeze AI: Sneezing might take a couple turns to recover from.
+
+Happy
+-----
+	Idle: Laughing at his own jokes somewhere.
+	Tracking AI: While trying to catch the thief, stops to yell stupid jokes at him/her. If lost the thief, goes back to
+		wandering around.
