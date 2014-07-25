@@ -118,13 +118,38 @@ createMap = function (options)
 
 		// Copy the array
 		var dwarves = Game.getState().getConfig().dwarves.slice(0);
+		dwarves.sort(function (dwarf1, dwarf2)
+		{
+			return dwarf2.weight - dwarf1.weight;
+		});
+
 		var num = _level < dwarves.length ? _level : dwarves.length;
 		for (var i = 0; i < num; i++)
 		{
-			var index = ROT.RNG.getUniformInt(0, dwarves.length - 1);
+			var index = getNextDwarfIndex(dwarves);
 			var data = dwarves.splice(index, 1)[0];
 			createDwarf(data);
 		}
+	};
+
+	var getNextDwarfIndex = function (dwarves)
+	{
+		"use strict";
+
+		if (dwarves.length === 1)
+		{
+			return 0;
+		}
+
+		for (var i = 0; i < dwarves.length; i++)
+		{
+			var selected = ROT.RNG.getPercentage() < dwarves[i].weight;
+			if (selected)
+			{
+				return i;
+			}
+		}
+		return -1;
 	};
 
 	var createDwarf = function (data)

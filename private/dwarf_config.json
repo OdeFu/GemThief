@@ -2,6 +2,7 @@
 	"dwarves": [
 		{
 			"name": "Doc",
+			"weight": 40,
 			"color": "orange",
 			"startLocation": "randomStartLocation",
 			"idleAI": "createDocIdleAI",
@@ -21,6 +22,7 @@
 		},
 		{
 			"name": "Grumpy",
+			"weight": 30,
 			"idleRadius": 10,
 			"color": "red",
 			"startLocation": "lightStartLocation",
@@ -35,6 +37,7 @@
 		},
 		{
 			"name": "Dopey",
+			"weight": 90,
 			"idleRadius": 6,
 			"color": "green",
 			"startLocation": "randomStartLocation",
@@ -53,6 +56,7 @@
 		},
 		{
 			"name": "Happy",
+			"weight": 50,
 			"idleRadius": 10,
 			"color": "yellow",
 			"startLocation": "randomStartLocation",
@@ -78,6 +82,7 @@
 		},
 		{
 			"name": "Sleepy",
+			"weight": 70,
 			"idleRadius": 3,
 			"color": "brown",
 			"startLocation": "darkStartLocation",
@@ -95,6 +100,7 @@
 		},
 		{
 			"name": "Sneezy",
+			"weight": 60,
 			"idleRadius": 10,
 			"color": "goldenrod",
 			"startLocation": "lightStartLocation",
@@ -114,6 +120,7 @@
 		},
 		{
 			"name": "Bashful",
+			"weight": 80,
 			"idleRadius": 10,
 			"color": "purple",
 			"startLocation": "brightLightStartLocation",
