@@ -22,13 +22,9 @@ var createGrumpyTrackingAI = function (dwarf, params)
 	{
 		"use strict";
 
-		var path = Path.generatePath(dwarf.toPoint(), Game.getState().getMap().getPlayer().toPoint());
-		if (path.length > 0)
-		{
-			Game.getState().getMap().moveEntity(dwarf, path[0][0], path[0][1]);
-		}
+		AI.move(Game.getState().getMap().getPlayer().toPoint());
 
-		AI.catchedPlayer(dwarf.toPoint());
+		AI.catchedPlayer();
 	};
 	return trackingAI;
 };

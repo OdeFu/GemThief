@@ -33,19 +33,19 @@
 		},
 		{
 			"name": "Dopey",
-			"idleRadius": 10,
+			"idleRadius": 6,
 			"color": "green",
 			"idleAI": "createDopeyIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Dopey looks funny and then starts skipping at you.",
+				"pathChangeChance": 50
 			},
 			"trackingAIConfig": {
-				"chanceToStop": 25,
-				"radius": 10,
-				"turnsUntilLost": 3
-			},
-			"guardAIConfig": {
-				"radius": 12
+				"chanceToStop": 45,
+				"radius": 8,
+				"turnsUntilLost": 1,
+				"stopMessage": "Dopey notices a butterfly and stops to admire it."
 			}
 		},
 		{

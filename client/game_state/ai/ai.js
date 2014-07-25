@@ -77,6 +77,17 @@ createAI = function (dwarf, params)
 		return path.length > 0;
 	};
 
+	var movePath = function (path)
+	{
+		"use strict";
+
+		if (path.length > 0)
+		{
+			var step = path.splice(0, 1)[0];
+			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
+		}
+	};
+
 	var getTrackingAI = function (lostCallback)
 	{
 		var trackingAI = function ()
@@ -126,6 +137,7 @@ createAI = function (dwarf, params)
 	AI.spottedPlayer = spottedPlayer;
 	AI.changeToTrackingAI = changeToTrackingAI;
 	AI.move = move;
+	AI.movePath = movePath;
 	AI.getTrackingAI = getTrackingAI;
 	return AI;
 };
