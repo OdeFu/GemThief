@@ -9,6 +9,7 @@ var createGameState = function (params)
 
 	check(params.seed, Number);
 	check(params.config, Object);
+	check(params.level, Number);
 
 	// Private fields
 	var _map;
@@ -39,11 +40,6 @@ var createGameState = function (params)
 		state.getEngine().start();
 	};
 
-	var getConfig = function ()
-	{
-		return params.config;
-	};
-
 	var options = {};
 	options.name = "GameState";
 	options.scheduler = ROT.Scheduler.Simple;
@@ -59,7 +55,9 @@ var createGameState = function (params)
 	{
 		"use strict";
 
-		_map = createMap({ width: 80, height: 23 });
+		params.width = 80;
+		params.height = 23;
+		_map = createMap(params);
 
 		initEngine();
 	};
@@ -86,6 +84,5 @@ var createGameState = function (params)
 	var state = createState(options);
 	state.getMap = getMap;
 	state.getPlayerStats = getPlayerStats;
-	state.getConfig = getConfig;
 	return state;
 }

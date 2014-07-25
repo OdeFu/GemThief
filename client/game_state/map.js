@@ -1,18 +1,18 @@
 /**
  * Create a map level.
  *
- * @param options
+ * @param params
  *  - width: the width of the map, required
  *  - height: the height of the map, required
  *  - level: the level depth of the map, defaults to 1
  *  - numGems: the number of gems to be generated, defaults to 10
  */
-createMap = function (options)
+createMap = function (params)
 {
 	"use strict";
 
-	check(options.width, Number);
-	check(options.height, Number);
+	check(params.width, Number);
+	check(params.height, Number);
 
 	// Private fields
 	var _tiles = [];
@@ -20,12 +20,12 @@ createMap = function (options)
 	var _gems = [];
 	var _dwarves = [];
 	var _stairs = [];
-	var _width = options.width;
-	var _height = options.height;
+	var _width = params.width;
+	var _height = params.height;
 	var _message = "";
 	var _messageLife;
-	var _level = options.level || 1;
-	var _numGems = options.numGems || 10;
+	var _level = params.level || 1;
+	var _numGems = params.numGems || 10;
 	var _lightLocations = [];
 
 	// Private methods
@@ -33,7 +33,7 @@ createMap = function (options)
 	{
 		"use strict";
 
-		var digger = new ROT.Map.Digger(_width, _height, options);
+		var digger = new ROT.Map.Digger(_width, _height, params);
 
 		var digCallback = function (x, y, value)
 		{
@@ -117,39 +117,13 @@ createMap = function (options)
 		"use strict";
 
 		// Copy the array
-		var dwarves = Game.getState().getConfig().dwarves.slice(0);
+		var dwarves = params.config.dwarves.slice(0);
 		dwarves.sort(function (dwarf1, dwarf2)
 		{
-			return dwarf2.weight - dwarf1.weight;
+			return dwarf1.level - dwarf2.level;
 		});
 
-		var num = _level < dwarves.length ? _level : dwarves.length;
-		for (var i = 0; i < num; i++)
-		{
-			var index = getNextDwarfIndex(dwarves);
-			var data = dwarves.splice(index, 1)[0];
-			createDwarf(data);
-		}
-	};
-
-	var getNextDwarfIndex = function (dwarves)
-	{
-		"use strict";
-
-		if (dwarves.length === 1)
-		{
-			return 0;
-		}
-
-		for (var i = 0; i < dwarves.length; i++)
-		{
-			var selected = ROT.RNG.getPercentage() < dwarves[i].weight;
-			if (selected)
-			{
-				return i;
-			}
-		}
-		return -1;
+		createDwarf(dwarves[_level - 1]);
 	};
 
 	var createDwarf = function (data)
@@ -238,7 +212,7 @@ createMap = function (options)
 
 	var getTile = function (x, y)
 	{
-		return _tiles[options.height * x + y];
+		return _tiles[params.height * x + y];
 	};
 
 	var getPlayer = function ()

@@ -33,7 +33,6 @@ Meteor.methods(
 			}
 		}
 
-		game.config = DWARF_CONFIG;
 		return game;
 	},
 
@@ -69,7 +68,8 @@ var createNewGame = function ()
 	var game =
 	{
 		seed: new Date().getTime(),
-		level: 1
+		level: 1,
+		config: DWARF_CONFIG
 	};
 	return game;
 };

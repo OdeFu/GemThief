@@ -2,12 +2,12 @@
 	"dwarves": [
 		{
 			"name": "Doc",
-			"weight": 40,
+			"level": 6,
 			"color": "orange",
 			"startLocation": "randomStartLocation",
 			"idleAI": "createDocIdleAI",
 			"idleAIConfig": {
-				"radius": 5,
+				"radius": 9,
 				"noticeMessage": "Doc hmpfs as he spots you skulking in the tunnels."
 			},
 			"trackingAIConfig": {
@@ -22,23 +22,21 @@
 		},
 		{
 			"name": "Grumpy",
-			"weight": 30,
-			"idleRadius": 10,
+			"level": 7,
 			"color": "red",
 			"startLocation": "lightStartLocation",
 			"idleAI": "createGrumpyIdleAI",
 			"idleAIConfig": {
-				"radius": 7,
+				"radius": 10,
 				"noticeMessage": "Grumpy growls as he notices you and starts to stomp towards you."
 			},
 			"trackingAIConfig": {
-				"radius": 10
+				"radius": 12
 			}
 		},
 		{
 			"name": "Dopey",
-			"weight": 90,
-			"idleRadius": 6,
+			"level": 1,
 			"color": "green",
 			"startLocation": "randomStartLocation",
 			"idleAI": "createDopeyIdleAI",
@@ -49,20 +47,19 @@
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 45,
-				"radius": 8,
+				"radius": 7,
 				"turnsUntilLost": 1,
 				"stopMessage": "Dopey notices a butterfly and stops to admire it."
 			}
 		},
 		{
 			"name": "Happy",
-			"weight": 50,
-			"idleRadius": 10,
+			"level": 5,
 			"color": "yellow",
 			"startLocation": "randomStartLocation",
 			"idleAI": "createHappyIdleAI",
 			"idleAIConfig": {
-				"radius": 5,
+				"radius": 8,
 				"noticeMessage": "Happy laughs maniacally and starts following you."
 			},
 			"trackingAIConfig": {
@@ -82,26 +79,24 @@
 		},
 		{
 			"name": "Sleepy",
-			"weight": 70,
-			"idleRadius": 3,
+			"level": 2,
 			"color": "brown",
 			"startLocation": "darkStartLocation",
 			"idleAI": "createSleepyIdleAI",
 			"idleAIConfig": {
-				"radius": 5,
+				"radius": 3,
 				"noticeMessage": "Sleepy yawns and stretches before picking up his pick and starting towards you."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 40,
-				"radius": 10,
+				"radius": 7,
 				"turnsUntilLost": 2,
 				"stopMessage": "Sleepy yawns and closes his eyes and starts snoring."
 			}
 		},
 		{
 			"name": "Sneezy",
-			"weight": 60,
-			"idleRadius": 10,
+			"level": 3,
 			"color": "goldenrod",
 			"startLocation": "lightStartLocation",
 			"idleAI": "createSneezyIdleAI",
@@ -111,7 +106,7 @@
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 20,
-				"radius": 10,
+				"radius": 8,
 				"turnsUntilLost": 3
 			},
 			"sneezingAIConfig": {
@@ -120,18 +115,17 @@
 		},
 		{
 			"name": "Bashful",
-			"weight": 80,
-			"idleRadius": 10,
+			"level": 4,
 			"color": "purple",
 			"startLocation": "brightLightStartLocation",
 			"idleAI": "createBashfulIdleAI",
 			"idleAIConfig": {
-				"radius": 5,
+				"radius": 6,
 				"noticeMessage": "Bashful meeps loudly as he notices you."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 30,
-				"radius": 10,
+				"radius": 9,
 				"turnsUntilLost": 2,
 				"stopMessage": "Bashful shyly stops and pulls his arms behind him."
 			},
