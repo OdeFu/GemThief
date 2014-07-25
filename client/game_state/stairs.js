@@ -13,16 +13,13 @@ var createStairs = function (params)
 
 	check(params.down, Boolean);
 
-	// Private fields
-	var _down = params.down;
-
 	// Public methods
 	var isDown = function ()
 	{
-		return _down;
+		return params.down;
 	};
 
-	params.char = _down ? ">" : "<";
+	params.char = params.down ? ">" : "<";
 	params.color = "brown";
 	params.dungeonChar = true;
 	params.priority = Entity.FLOOR;

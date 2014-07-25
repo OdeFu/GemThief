@@ -11,11 +11,6 @@ var createEndState = function (params)
 	check(params.score, Number);
 	check(params.gems, Number);
 
-	// Private fields
-	var _won = params.won;
-	var _score = params.score;
-	var _gems = params.gems;
-
 	// Private methods
 	var draw = function ()
 	{
@@ -23,10 +18,10 @@ var createEndState = function (params)
 
 		Game.getDisplay().clear();
 
-		var text = _won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
+		var text = params.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
 		Game.drawTextCentered(5, text);
-		Game.drawTextCentered(6, "Gems Looted: " + _gems);
-		Game.drawTextCentered(7, "Score: " + _score);
+		Game.drawTextCentered(6, "Gems Looted: " + params.gems);
+		Game.drawTextCentered(7, "Score: " + params.score);
 		Game.drawTextCentered(9, "%b{gray}New Game");
 	};
 

@@ -13,7 +13,6 @@ var createGameState = function (params)
 	// Private fields
 	var _map;
 	var _playerStats = new PlayerStats();
-	var _config = params.config;
 
 	ROT.RNG.setSeed(params.seed);
 
@@ -42,7 +41,7 @@ var createGameState = function (params)
 
 	var getConfig = function ()
 	{
-		return _config;
+		return params.config;
 	};
 
 	var options = {};

@@ -2,19 +2,15 @@ createAI = function (dwarf, map, params)
 {
 	"use strict";
 
-	var _dwarf = dwarf;
-	var _map = map;
-	var _params = params;
-
-	var _lastSeenPlayerPosition = _map.getPlayer().toPoint();
-	var _turnsSinceLastSeen = 0;
+	var lastSeenPlayerPosition = map.getPlayer().toPoint();
+	var turnsSinceLastSeen = 0;
 
 	var catchedPlayer = function ()
 	{
 		"use strict";
 
-		var playerPos = _map.getPlayer().toPoint();
-		if (playerPos.x === _dwarf.getX() && playerPos.y === _dwarf.getY())
+		var playerPos = map.getPlayer().toPoint();
+		if (playerPos.x === dwarf.getX() && playerPos.y === dwarf.getY())
 		{
 			Game.getState().getEngine().lock();
 			Game.gameOver();
@@ -28,8 +24,8 @@ createAI = function (dwarf, map, params)
 		"use strict";
 
 		var spottedPlayer = false;
-		var playerPos = _map.getPlayer().toPoint();
-		Path.runFOV(_dwarf.toPoint(), radius, function (x, y, r, visibility)
+		var playerPos = map.getPlayer().toPoint();
+		Path.runFOV(dwarf.toPoint(), radius, function (x, y, r, visibility)
 		{
 			if (playerPos.x === x && playerPos.y === y)
 			{
@@ -43,12 +39,12 @@ createAI = function (dwarf, map, params)
 	{
 		"use strict";
 
-		var shortestPath = [_dwarf.getX(), _dwarf.getY()];
+		var shortestPath = [dwarf.getX(), dwarf.getY()];
 		var closestDistance = Number.MAX_VALUE;
-		var stairs = _map.getStairs();
+		var stairs = map.getStairs();
 		for (var i = 0; i < stairs.length; i++)
 		{
-			var path = Path.generatePath(_dwarf.toPoint(), stairs[i].toPoint());
+			var path = Path.generatePath(dwarf.toPoint(), stairs[i].toPoint());
 			if (path.length < closestDistance)
 			{
 				shortestPath = path;
@@ -60,24 +56,24 @@ createAI = function (dwarf, map, params)
 
 	var spottedPlayer = function (radius)
 	{
-		radius = radius || _params.idleAIConfig.radius;
+		radius = radius || params.idleAIConfig.radius;
 		return getVisiblePlayerPosition(radius) != null;
 	};
 
 	var changeToTrackingAI = function (ai)
 	{
-		_map.setMessage(_params.idleAIConfig.noticeMessage);
-		_dwarf.setAI(ai(_dwarf, _map, _params));
+		map.setMessage(params.idleAIConfig.noticeMessage);
+		dwarf.setAI(ai(dwarf, map, params));
 	};
 
 	var move = function (to)
 	{
 		"use strict";
 
-		var path = Path.generatePath(_dwarf.toPoint(), to);
+		var path = Path.generatePath(dwarf.toPoint(), to);
 		if (path.length > 0)
 		{
-			_map.moveEntity(_dwarf, path[0][0], path[0][1]);
+			map.moveEntity(dwarf, path[0][0], path[0][1]);
 		}
 		return path.length > 0;
 	};
@@ -89,7 +85,7 @@ createAI = function (dwarf, map, params)
 		if (path.length > 0)
 		{
 			var step = path.splice(0, 1)[0];
-			_map.moveEntity(_dwarf, step[0], step[1]);
+			map.moveEntity(dwarf, step[0], step[1]);
 		}
 	};
 
@@ -99,14 +95,14 @@ createAI = function (dwarf, map, params)
 		{
 			"use strict";
 
-			if (_params.trackingAIConfig.chanceToStop)
+			if (params.trackingAIConfig.chanceToStop)
 			{
-				var stop = ROT.RNG.getPercentage() < _params.trackingAIConfig.chanceToStop;
+				var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
 				if (stop)
 				{
-					if (_params.trackingAIConfig.stopMessage)
+					if (params.trackingAIConfig.stopMessage)
 					{
-						_map.setMessage(_params.trackingAIConfig.stopMessage, 1);
+						map.setMessage(params.trackingAIConfig.stopMessage, 1);
 					}
 
 					if (stoppedCallback)
@@ -117,22 +113,22 @@ createAI = function (dwarf, map, params)
 				}
 			}
 
-			move(_lastSeenPlayerPosition);
+			move(lastSeenPlayerPosition);
 
 			if (catchedPlayer())
 			{
 				return;
 			}
 
-			var playerPos = getVisiblePlayerPosition(_params.trackingAIConfig.radius);
-			_lastSeenPlayerPosition = playerPos || _lastSeenPlayerPosition;
+			var playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
+			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
 
 			if (playerPos == null)
 			{
-				_turnsSinceLastSeen++;
+				turnsSinceLastSeen++;
 			}
 
-			if (_turnsSinceLastSeen > _params.trackingAIConfig.turnsUntilLost && lostCallback)
+			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost && lostCallback)
 			{
 				lostCallback();
 			}

@@ -16,12 +16,11 @@ var createDwarf = function (params)
 	check(params.color, String);
 
 	// Private fields
-	var _name = params.name;
 
 	// Public methods
 	var getName = function ()
 	{
-		return _name;
+		return params.name;
 	};
 
 	var setAI = function (ai)

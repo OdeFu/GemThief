@@ -51,7 +51,6 @@ createTile = function (params)
 
 		var finalColor = ROT.Color.multiply(entityColor, light);
 		return ROT.Color.toRGB(finalColor);
-		;
 	};
 
 	var getBackgroundColor = function ()
