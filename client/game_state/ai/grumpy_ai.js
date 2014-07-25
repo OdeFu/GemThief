@@ -1,6 +1,6 @@
-createGrumpyIdleAI = function (dwarf, params)
+createGrumpyIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var idleAI = function ()
 	{
@@ -14,15 +14,15 @@ createGrumpyIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createGrumpyTrackingAI = function (dwarf, params)
+var createGrumpyTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var trackingAI = function ()
 	{
 		"use strict";
 
-		AI.move(Game.getState().getMap().getPlayer().toPoint());
+		AI.move(map.getPlayer().toPoint());
 
 		AI.catchedPlayer();
 	};

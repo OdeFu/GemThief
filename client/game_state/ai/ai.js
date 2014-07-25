@@ -1,16 +1,20 @@
-createAI = function (dwarf, params)
+createAI = function (dwarf, map, params)
 {
 	"use strict";
 
-	var lastSeenPlayerPosition = Game.getState().getMap().getPlayer().toPoint();
-	var turnsSinceLastSeen = 0;
+	var _dwarf = dwarf;
+	var _map = map;
+	var _params = params;
+
+	var _lastSeenPlayerPosition = _map.getPlayer().toPoint();
+	var _turnsSinceLastSeen = 0;
 
 	var catchedPlayer = function ()
 	{
 		"use strict";
 
-		var playerPos = Game.getState().getMap().getPlayer().toPoint();
-		if (playerPos.x === dwarf.getX() && playerPos.y === dwarf.getY())
+		var playerPos = _map.getPlayer().toPoint();
+		if (playerPos.x === _dwarf.getX() && playerPos.y === _dwarf.getY())
 		{
 			Game.getState().getEngine().lock();
 			Game.gameOver();
@@ -24,8 +28,8 @@ createAI = function (dwarf, params)
 		"use strict";
 
 		var spottedPlayer = false;
-		var playerPos = Game.getState().getMap().getPlayer().toPoint();
-		Path.runFOV(dwarf.toPoint(), radius, function (x, y, r, visibility)
+		var playerPos = _map.getPlayer().toPoint();
+		Path.runFOV(_dwarf.toPoint(), radius, function (x, y, r, visibility)
 		{
 			if (playerPos.x === x && playerPos.y === y)
 			{
@@ -39,12 +43,12 @@ createAI = function (dwarf, params)
 	{
 		"use strict";
 
-		var shortestPath = [dwarf.getX(), dwarf.getY()];
+		var shortestPath = [_dwarf.getX(), _dwarf.getY()];
 		var closestDistance = Number.MAX_VALUE;
-		var stairs = Game.getState().getMap().getStairs();
+		var stairs = _map.getStairs();
 		for (var i = 0; i < stairs.length; i++)
 		{
-			var path = Path.generatePath(dwarf.toPoint(), stairs[i].toPoint());
+			var path = Path.generatePath(_dwarf.toPoint(), stairs[i].toPoint());
 			if (path.length < closestDistance)
 			{
 				shortestPath = path;
@@ -56,23 +60,24 @@ createAI = function (dwarf, params)
 
 	var spottedPlayer = function (radius)
 	{
-		return getVisiblePlayerPosition(dwarf.toPoint(), radius) != null;
+		radius = radius || _params.idleAIConfig.radius;
+		return getVisiblePlayerPosition(radius) != null;
 	};
 
 	var changeToTrackingAI = function (ai)
 	{
-		Game.getState().getMap().setMessage(params.idleAIConfig.noticeMessage);
-		dwarf.setAI(ai(dwarf, params));
+		_map.setMessage(_params.idleAIConfig.noticeMessage);
+		_dwarf.setAI(ai(_dwarf, _map, _params));
 	};
 
 	var move = function (to)
 	{
 		"use strict";
 
-		var path = Path.generatePath(dwarf.toPoint(), to);
+		var path = Path.generatePath(_dwarf.toPoint(), to);
 		if (path.length > 0)
 		{
-			Game.getState().getMap().moveEntity(dwarf, path[0][0], path[0][1]);
+			_map.moveEntity(_dwarf, path[0][0], path[0][1]);
 		}
 		return path.length > 0;
 	};
@@ -84,7 +89,7 @@ createAI = function (dwarf, params)
 		if (path.length > 0)
 		{
 			var step = path.splice(0, 1)[0];
-			Game.getState().getMap().moveEntity(dwarf, step[0], step[1]);
+			_map.moveEntity(_dwarf, step[0], step[1]);
 		}
 	};
 
@@ -94,14 +99,14 @@ createAI = function (dwarf, params)
 		{
 			"use strict";
 
-			if (params.trackingAIConfig.chanceToStop)
+			if (_params.trackingAIConfig.chanceToStop)
 			{
-				var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
+				var stop = ROT.RNG.getPercentage() < _params.trackingAIConfig.chanceToStop;
 				if (stop)
 				{
-					if (params.trackingAIConfig.stopMessage)
+					if (_params.trackingAIConfig.stopMessage)
 					{
-						Game.getState().getMap().setMessage(params.trackingAIConfig.stopMessage, 1);
+						_map.setMessage(_params.trackingAIConfig.stopMessage, 1);
 					}
 
 					if (stoppedCallback)
@@ -112,22 +117,22 @@ createAI = function (dwarf, params)
 				}
 			}
 
-			move(lastSeenPlayerPosition);
+			move(_lastSeenPlayerPosition);
 
 			if (catchedPlayer())
 			{
 				return;
 			}
 
-			var playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
-			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
+			var playerPos = getVisiblePlayerPosition(_params.trackingAIConfig.radius);
+			_lastSeenPlayerPosition = playerPos || _lastSeenPlayerPosition;
 
 			if (playerPos == null)
 			{
-				turnsSinceLastSeen++;
+				_turnsSinceLastSeen++;
 			}
 
-			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost && lostCallback)
+			if (_turnsSinceLastSeen > _params.trackingAIConfig.turnsUntilLost && lostCallback)
 			{
 				lostCallback();
 			}

@@ -1,6 +1,6 @@
-createDopeyIdleAI = function (dwarf, params)
+createDopeyIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 	var path = [];
 
 	var idleAI = function ()
@@ -15,7 +15,7 @@ createDopeyIdleAI = function (dwarf, params)
 
 		if (path.length === 0)
 		{
-			path = Path.generatePath(dwarf.toPoint(), Game.getState().getMap().findEmptyTile().toPoint());
+			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
 		}
 
 		AI.movePath(path);
@@ -33,13 +33,13 @@ createDopeyIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createDopeyTrackingAI = function (dwarf, params)
+var createDopeyTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var lostCallback = function ()
 	{
-		dwarf.setAI(createDopeyIdleAI(dwarf, params));
+		dwarf.setAI(createDopeyIdleAI(dwarf, map, params));
 	};
 
 	return AI.getTrackingAI(lostCallback);

@@ -3,6 +3,7 @@
 		{
 			"name": "Doc",
 			"color": "orange",
+			"startLocation": "randomStartLocation",
 			"idleAI": "createDocIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
@@ -22,6 +23,7 @@
 			"name": "Grumpy",
 			"idleRadius": 10,
 			"color": "red",
+			"startLocation": "lightStartLocation",
 			"idleAI": "createGrumpyIdleAI",
 			"idleAIConfig": {
 				"radius": 7,
@@ -35,6 +37,7 @@
 			"name": "Dopey",
 			"idleRadius": 6,
 			"color": "green",
+			"startLocation": "randomStartLocation",
 			"idleAI": "createDopeyIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
@@ -52,9 +55,11 @@
 			"name": "Happy",
 			"idleRadius": 10,
 			"color": "yellow",
+			"startLocation": "randomStartLocation",
 			"idleAI": "createHappyIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Happy laughs maniacally and starts following you."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 25,
@@ -75,6 +80,7 @@
 			"name": "Sleepy",
 			"idleRadius": 3,
 			"color": "brown",
+			"startLocation": "darkStartLocation",
 			"idleAI": "createSleepyIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
@@ -91,9 +97,11 @@
 			"name": "Sneezy",
 			"idleRadius": 10,
 			"color": "goldenrod",
+			"startLocation": "lightStartLocation",
 			"idleAI": "createSneezyIdleAI",
 			"idleAIConfig": {
-				"radius": 5
+				"radius": 5,
+				"noticeMessage": "Sneezy turns his red eyes towards you."
 			},
 			"trackingAIConfig": {
 				"chanceToStop": 20,
@@ -108,6 +116,7 @@
 			"name": "Bashful",
 			"idleRadius": 10,
 			"color": "purple",
+			"startLocation": "brightLightStartLocation",
 			"idleAI": "createBashfulIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
@@ -118,6 +127,9 @@
 				"radius": 10,
 				"turnsUntilLost": 2,
 				"stopMessage": "Bashful shyly stops and pulls his arms behind him."
+			},
+			"scaredAIConfig": {
+				"maxDuration": 4
 			}
 		}
 	]

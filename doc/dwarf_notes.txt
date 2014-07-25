@@ -17,7 +17,7 @@ Dopey
 
 Bashful
 -------
-	Idle AI: Digging somwhere where it's probably quite dark, so no-one can see him.
+	Idle AI: Digging somwhere near a bright light.
 	Scared AI: When first noticing the thief, he will get scared and run away. He'll collect his courage and start tracking
 		him/her after a short while.
 	Tracking AI: Shyly follows the thief. Might stop randomly to watch.

@@ -1,6 +1,6 @@
-createBashfulIdleAI = function (dwarf, params)
+createBashfulIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var idleAI = function ()
 	{
@@ -14,10 +14,10 @@ createBashfulIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createScaredAI = function (dwarf, params)
+var createScaredAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
-	var turnsScared = 2 + Math.floor(ROT.RNG.getUniform() * 3); // 2 - 4
+	var AI = createAI(dwarf, map, params);
+	var turnsScared = ROT.RNG.getUniformInt(2, params.scaredAIConfig.maxDuration);
 
 	var scaredAI = function ()
 	{
@@ -26,26 +26,25 @@ var createScaredAI = function (dwarf, params)
 		if (turnsScared > 0)
 		{
 			var pos = dwarf.toPoint();
-			var playerPos = Game.getState().getMap().getPlayer().toPoint();
+			var playerPos = map.getPlayer().toPoint();
 			var dirX = pos.x - playerPos.x >= 0 ? 1 : -1;
 			var dirY = pos.y - playerPos.y >= 0 ? 1 : -1;
 
 			if (AI.move({ x: pos.x + dirX, y: pos.y + dirY }))
 			{
-				Game.getState().getMap().setMessage("Bashful screams in terror as he runs away from you.", 1);
+				map.setMessage("Bashful screams in terror as he runs away from you.", 1);
 			}
 			else
 			{
-				Game.getState().getMap().setMessage("Bashful screams in terror as he tries runs away from you and collides with a wall.",
-				1);
+				map.setMessage("Bashful screams in terror as he tries runs away from you and collides with a wall.", 1);
 			}
 
 			turnsScared--;
 
 			if (turnsScared === 0)
 			{
-				Game.getState().getMap().setMessage("Bashful collects his courage and turns towards you.");
-				dwarf.setAI(createBashfulTrackingAI(dwarf, params));
+				map.setMessage("Bashful collects his courage and turns towards you.");
+				dwarf.setAI(createBashfulTrackingAI(dwarf, map, params));
 			}
 		}
 
@@ -53,12 +52,12 @@ var createScaredAI = function (dwarf, params)
 	return scaredAI;
 };
 
-var createBashfulTrackingAI = function (dwarf, params)
+var createBashfulTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 	var lostCallback = function ()
 	{
-		dwarf.setAI(createBashfulIdleAI(dwarf, params));
+		dwarf.setAI(createBashfulIdleAI(dwarf, map, params));
 	};
 
 	return AI.getTrackingAI(lostCallback);

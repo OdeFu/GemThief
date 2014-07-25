@@ -26,6 +26,7 @@ createMap = function (options)
 	var _messageLife;
 	var _level = options.level || 1;
 	var _numGems = options.numGems || 10;
+	var _lightLocations = [];
 
 	// Private methods
 	var dig = function ()
@@ -64,10 +65,11 @@ createMap = function (options)
 		lighting.setFOV(fov);
 
 		var lightColor = [200, 200, 0];
-		var lightLocations = getLightLocations();
-		for (var i = 0; i < lightLocations.length; i++)
+
+		initializeLightLocations();
+		for (var i = 0; i < _lightLocations.length; i++)
 		{
-			lighting.setLight(lightLocations[i].getX(), lightLocations[i].getY(), lightColor);
+			lighting.setLight(_lightLocations[i].getX(), _lightLocations[i].getY(), lightColor);
 		}
 
 		var lightingCallback = function (x, y, color)
@@ -78,17 +80,15 @@ createMap = function (options)
 		lighting.compute(lightingCallback);
 	};
 
-	var getLightLocations = function ()
+	var initializeLightLocations = function ()
 	{
 		"use strict";
 
-		var locations = [];
 		for (var i = 0; i < 5; i++)
 		{
-			locations.push(findEmptyTile());
+			_lightLocations.push(findEmptyTile());
 		}
-		return locations;
-	}
+	};
 
 	var createEntities = function ()
 	{
@@ -121,7 +121,7 @@ createMap = function (options)
 		var num = _level < dwarves.length ? _level : dwarves.length;
 		for (var i = 0; i < num; i++)
 		{
-			var index = Math.floor(ROT.RNG.getUniform() * dwarves.length);
+			var index = ROT.RNG.getUniformInt(0, dwarves.length - 1);
 			var data = dwarves.splice(index, 1)[0];
 			createDwarf(data);
 		}
@@ -131,13 +131,15 @@ createMap = function (options)
 	{
 		"use strict";
 
-		var tile = findEmptyTile();
+		var tile = DWARF_START_LOCATIONS[data.startLocation](map);
 		data.x = tile.getX();
 		data.y = tile.getY();
 		var dwarf = new Dwarf(data);
-		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, data));
+		dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
 		tile.addEntity(dwarf);
 		_dwarves.push(dwarf);
+
+		console.log("Created dwarf: " + dwarf.getName());
 	};
 
 	var createGems = function ()
@@ -191,6 +193,22 @@ createMap = function (options)
 	var getTiles = function ()
 	{
 		return _tiles;
+	};
+
+	var getSomeTiles = function (func)
+	{
+		"use strict";
+
+		var selectedTiles = [];
+
+		for (var i = 0; i < _tiles.length; i++)
+		{
+			if (func(_tiles[i]))
+			{
+				selectedTiles.push(_tiles[i]);
+			}
+		}
+		return selectedTiles;
 	};
 
 	var getTile = function (x, y)
@@ -265,8 +283,7 @@ createMap = function (options)
 		"use strict";
 
 		var empties = getAllEmptyTiles();
-		var index = Math.floor(ROT.RNG.getUniform() * empties.length);
-		return empties[index];
+		return empties.random();
 	};
 
 	var calculateVisibleTiles = function ()
@@ -347,9 +364,15 @@ createMap = function (options)
 		return _stairs;
 	};
 
+	var getLightLocations = function ()
+	{
+		return _lightLocations;
+	};
+
 	// Create the actual map object
 	var map = {};
 	map.getTiles = getTiles;
+	map.getSomeTiles = getSomeTiles;
 	map.getTile = getTile;
 	map.draw = draw;
 	map.isEmpty = isEmpty;
@@ -365,6 +388,7 @@ createMap = function (options)
 	map.setMessage = setMessage;
 	map.getLevel = getLevel;
 	map.getStairs = getStairs;
+	map.getLightLocations = getLightLocations;
 
 	// Dig the level
 	dig();

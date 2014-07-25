@@ -1,6 +1,6 @@
-createSleepyIdleAI = function (dwarf, params)
+createSleepyIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var idleAI = function ()
 	{
@@ -14,13 +14,13 @@ createSleepyIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createSleepyTrackingAI = function (dwarf, params)
+var createSleepyTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var lostCallback = function ()
 	{
-		dwarf.setAI(createSleepyIdleAI(dwarf, params));
+		dwarf.setAI(createSleepyIdleAI(dwarf, map, params));
 	};
 
 	return AI.getTrackingAI(lostCallback);

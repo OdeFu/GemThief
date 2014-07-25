@@ -1,6 +1,6 @@
-createHappyIdleAI = function (dwarf, params)
+createHappyIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 	var path = [];
 
 	var idleAI = function ()
@@ -9,7 +9,7 @@ createHappyIdleAI = function (dwarf, params)
 
 		if (path.length === 0)
 		{
-			path = Path.generatePath(dwarf.toPoint(), Game.getState().getMap().findEmptyTile().toPoint());
+			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
 		}
 
 		AI.movePath(path);
@@ -19,7 +19,7 @@ createHappyIdleAI = function (dwarf, params)
 			return;
 		}
 
-		if (AI.spottedPlayer(params.idleAIConfig.radius))
+		if (AI.spottedPlayer())
 		{
 			AI.changeToTrackingAI(createHappyTrackingAI);
 		}
@@ -27,20 +27,20 @@ createHappyIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createHappyTrackingAI = function (dwarf, params)
+var createHappyTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var tellJoke = function ()
 	{
 		"use strict";
-		var joke = Math.floor(ROT.RNG.getUniform() * params.jokes.length);
-		Game.getState().getMap().setMessage("\"" + joke + "\"");
+		var joke = params.jokes.random();
+		map.setMessage("\"" + joke + "\"");
 	};
 
 	var lostCallback = function ()
 	{
-		dwarf.setAI(createHappyIdleAI(dwarf, params));
+		dwarf.setAI(createHappyIdleAI(dwarf, map, params));
 	};
 
 	var stoppedCallback = function ()

@@ -1,6 +1,6 @@
-createDocIdleAI = function (dwarf, params)
+createDocIdleAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 	var path = [];
 
 	var idleAI = function ()
@@ -9,7 +9,7 @@ createDocIdleAI = function (dwarf, params)
 
 		if (path.length === 0)
 		{
-			path = Path.generatePath(dwarf.toPoint(), Game.getState().getMap().findEmptyTile().toPoint());
+			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
 		}
 
 		AI.movePath(path);
@@ -19,7 +19,7 @@ createDocIdleAI = function (dwarf, params)
 			return;
 		}
 
-		if (AI.spottedPlayer(params.idleAIConfig.radius))
+		if (AI.spottedPlayer())
 		{
 			AI.changeToTrackingAI(createDocTrackingAI);
 		}
@@ -27,21 +27,21 @@ createDocIdleAI = function (dwarf, params)
 	return idleAI;
 };
 
-var createDocTrackingAI = function (dwarf, params)
+var createDocTrackingAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 
 	var lostCallback = function ()
 	{
-		dwarf.setAI(createDocGuardAI(dwarf, params));
+		dwarf.setAI(createDocGuardAI(dwarf, map, params));
 	};
 
 	return AI.getTrackingAI(lostCallback);
 };
 
-var createDocGuardAI = function (dwarf, params)
+var createDocGuardAI = function (dwarf, map, params)
 {
-	var AI = createAI(dwarf, params);
+	var AI = createAI(dwarf, map, params);
 	var path = AI.getShortestPathToStairs();
 
 	var guardAI = function ()
@@ -50,7 +50,7 @@ var createDocGuardAI = function (dwarf, params)
 
 		AI.movePath(path);
 
-		if (AI.spottedPlayer())
+		if (AI.spottedPlayer(params.guardAIConfig.radius))
 		{
 			AI.changeToTrackingAI(createDocTrackingAI);
 		}
