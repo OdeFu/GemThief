@@ -15,7 +15,7 @@ var createStartState = function ()
 		Game.getDisplay().clear();
 		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
 		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-		Game.drawTextCentered(8, "%b{gray}New Game");
+		Game.drawTextCentered(8, "%b{gray}Press Enter");
 	};
 
 	var initEngine = function ()
