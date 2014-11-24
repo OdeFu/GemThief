@@ -10,8 +10,6 @@ var createStartState = function ()
 	// Private methods
 	var draw = function ()
 	{
-		"use strict";
-
 		Game.getDisplay().clear();
 		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
 		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
@@ -20,8 +18,6 @@ var createStartState = function ()
 
 	var initEngine = function ()
 	{
-		"use strict";
-
 		state.getScheduler().add(state, true);
 
 		state.getEngine().start();
@@ -30,8 +26,6 @@ var createStartState = function ()
 	// Public methods
 	var handleEvent = function (event)
 	{
-		"use strict";
-
 		// Process user input
 		if (event.keyCode === ROT.VK_RETURN)
 		{
