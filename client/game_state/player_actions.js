@@ -4,8 +4,6 @@ var createMoveAction = function (dirKey)
 
 	var checkGem = function (player)
 	{
-		"use strict";
-
 		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
 		if (gem)
 		{
@@ -17,8 +15,6 @@ var createMoveAction = function (dirKey)
 
 	var moveAction = function ()
 	{
-		"use strict";
-
 		var player = Game.getState().getMap().getPlayer();
 		var dir = ROT.DIRS[8][dirKey];
 		var newX = player.getX() + dir[0];
@@ -46,8 +42,6 @@ var createClimbStairsAction = function (down)
 
 	var climbStairsAction = function ()
 	{
-		"use strict";
-
 		var player = Game.getState().getMap().getPlayer();
 		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
 		var entity = tile.getEntity(Entity.FLOOR);

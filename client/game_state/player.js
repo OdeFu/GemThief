@@ -10,8 +10,6 @@ var createPlayer = function (params)
 	// Public methods
 	var handleEvent = function (event)
 	{
-		"use strict";
-
 		// Process user input
 		var action = PlayerActions[event.keyCode];
 		if (action)
@@ -26,8 +24,6 @@ var createPlayer = function (params)
 
 	var act = function ()
 	{
-		"use strict";
-
 		Game.getState().getEngine().lock();
 
 		// Wait for user input, do stuff when the user hits a key

@@ -31,8 +31,6 @@ createMap = function (params)
 	// Private methods
 	var dig = function ()
 	{
-		"use strict";
-
 		var digger = new ROT.Map.Digger(_width, _height, params);
 
 		var digCallback = function (x, y, value)
@@ -51,8 +49,6 @@ createMap = function (params)
 
 	var generateLightingData = function ()
 	{
-		"use strict";
-
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass, { topology: 4 });
 
 		var reflectivityCallback = function (x, y)
@@ -82,8 +78,6 @@ createMap = function (params)
 
 	var initializeLightLocations = function ()
 	{
-		"use strict";
-
 		for (var i = 0; i < 5; i++)
 		{
 			_lightLocations.push(findEmptyTile());
@@ -92,8 +86,6 @@ createMap = function (params)
 
 	var createEntities = function ()
 	{
-		"use strict";
-
 		createGems();
 
 		createPlayer();
@@ -105,8 +97,6 @@ createMap = function (params)
 
 	var createPlayer = function ()
 	{
-		"use strict";
-
 		var tile = findEmptyTile();
 		_player = new Player(tile.toPoint());
 		tile.addEntity(_player);
@@ -114,8 +104,6 @@ createMap = function (params)
 
 	var createDwarf = function ()
 	{
-		"use strict";
-
 		var dwarves = params.config.dwarves.slice(0);
 		dwarves.sort(function (dwarf1, dwarf2)
 		{
@@ -135,8 +123,6 @@ createMap = function (params)
 
 	var createGems = function ()
 	{
-		"use strict";
-
 		for (var i = 0; i < _numGems; i++)
 		{
 			var tile = findEmptyTile();
@@ -148,8 +134,6 @@ createMap = function (params)
 
 	var createStairs = function ()
 	{
-		"use strict";
-
 		// always create stairs going up where the player is
 		var tile = getTile(_player.getX(), _player.getY());
 		_stairs[0] = new Stairs({ x: _player.getX(), y: _player.getY(), down: false });
@@ -162,8 +146,6 @@ createMap = function (params)
 
 	var getAllEmptyTiles = function ()
 	{
-		"use strict";
-
 		var empties = [];
 		for (var i = 0; i < _tiles.length; i++)
 		{
@@ -188,8 +170,6 @@ createMap = function (params)
 
 	var getSomeTiles = function (func)
 	{
-		"use strict";
-
 		var selectedTiles = [];
 
 		for (var i = 0; i < _tiles.length; i++)
@@ -224,16 +204,12 @@ createMap = function (params)
 
 	var isEmpty = function (x, y)
 	{
-		"use strict";
-
 		var tile = getTile(x, y);
 		return tile && tile.isEmpty();
 	};
 
 	var isBlocking = function (x, y)
 	{
-		"use strict";
-
 		var tile = getTile(x, y);
 		return tile && tile.isBlocking();
 	};
@@ -246,8 +222,6 @@ createMap = function (params)
 
 	var draw = function (display)
 	{
-		"use strict";
-
 		if (_message)
 		{
 			display.drawText(0, 0, _message);
@@ -271,16 +245,12 @@ createMap = function (params)
 
 	var findEmptyTile = function ()
 	{
-		"use strict";
-
 		var empties = getAllEmptyTiles();
 		return empties.random();
 	};
 
 	var calculateVisibleTiles = function ()
 	{
-		"use strict";
-
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
 		fov.compute(_player.getX(), _player.getY(), 2, function (x, y, r, visibility)
@@ -306,8 +276,6 @@ createMap = function (params)
 
 	var getGem = function (x, y)
 	{
-		"use strict";
-
 		for (var i = 0; i < _gems.length; i++)
 		{
 			if (_gems[i].getX() === x && _gems[i].getY() === y)
@@ -320,8 +288,6 @@ createMap = function (params)
 
 	var removeGem = function (gem)
 	{
-		"use strict";
-
 		var index = _gems.indexOf(gem);
 		if (index >= 0)
 		{
@@ -333,8 +299,6 @@ createMap = function (params)
 
 	var moveEntity = function (entity, newX, newY)
 	{
-		"use strict";
-
 		var oldTile = getTile(entity.getX(), entity.getY());
 		oldTile.removeEntity(entity);
 

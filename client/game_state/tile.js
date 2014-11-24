@@ -85,8 +85,6 @@ createTile = function (params)
 
 	var getHighestEntity = function ()
 	{
-		"use strict";
-
 		for (var i = _entities.length - 1; i >= 0; i--)
 		{
 			if (_entities[i])

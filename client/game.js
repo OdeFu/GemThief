@@ -9,8 +9,6 @@ createGame = function ()
 	// Public methods
 	var init = function ()
 	{
-		"use strict";
-
 		var container = document.getElementById("main");
 		if (ROT.isSupported)
 		{
@@ -27,8 +25,6 @@ createGame = function ()
 
 	var changeState = function (newState, params)
 	{
-		"use strict";
-
 		if (_state)
 		{
 			_state.exit();
@@ -48,8 +44,6 @@ createGame = function ()
 
 	var moveToLevel = function (nextLevel)
 	{
-		"use strict";
-
 		if (nextLevel === 0)
 		{
 			// We exited the mine
@@ -67,8 +61,6 @@ createGame = function ()
 
 	var drawTextCentered = function (y, text)
 	{
-		"use strict";
-
 		var textSize = ROT.Text.measure(text);
 		var x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
 		_display.drawText(x, y, text);
@@ -76,8 +68,6 @@ createGame = function ()
 
 	var drawTextRight = function (y, text)
 	{
-		"use strict";
-
 		var textSize = ROT.Text.measure(text);
 		var x = _display.getOptions().width - textSize.width;
 		_display.drawText(x, y, text);

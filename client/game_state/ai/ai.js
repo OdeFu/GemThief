@@ -7,8 +7,6 @@ createAI = function (dwarf, map, params)
 
 	var catchedPlayer = function ()
 	{
-		"use strict";
-
 		var playerPos = map.getPlayer().toPoint();
 		if (playerPos.x === dwarf.getX() && playerPos.y === dwarf.getY())
 		{
@@ -21,8 +19,6 @@ createAI = function (dwarf, map, params)
 
 	var getVisiblePlayerPosition = function (radius)
 	{
-		"use strict";
-
 		var spottedPlayer = false;
 		var playerPos = map.getPlayer().toPoint();
 		Path.runFOV(dwarf.toPoint(), radius, function (x, y, r, visibility)
@@ -37,8 +33,6 @@ createAI = function (dwarf, map, params)
 
 	var getShortestPathToStairs = function ()
 	{
-		"use strict";
-
 		var shortestPath = [dwarf.getX(), dwarf.getY()];
 		var closestDistance = Number.MAX_VALUE;
 		var stairs = map.getStairs();
@@ -68,8 +62,6 @@ createAI = function (dwarf, map, params)
 
 	var move = function (to)
 	{
-		"use strict";
-
 		var path = Path.generatePath(dwarf.toPoint(), to);
 		if (path.length > 0)
 		{
@@ -80,8 +72,6 @@ createAI = function (dwarf, map, params)
 
 	var movePath = function (path)
 	{
-		"use strict";
-
 		if (path.length > 0)
 		{
 			var step = path.splice(0, 1)[0];
@@ -93,8 +83,6 @@ createAI = function (dwarf, map, params)
 	{
 		var trackingAI = function ()
 		{
-			"use strict";
-
 			if (params.trackingAIConfig.chanceToStop)
 			{
 				var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;

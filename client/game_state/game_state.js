@@ -20,8 +20,6 @@ var createGameState = function (params)
 	// Private methods
 	var draw = function ()
 	{
-		"use strict";
-
 		Game.getDisplay().clear();
 
 		_map.draw(Game.getDisplay());
@@ -46,15 +44,11 @@ var createGameState = function (params)
 
 	options.act = function ()
 	{
-		"use strict";
-
 		draw();
 	};
 
 	options.enter = function ()
 	{
-		"use strict";
-
 		params.width = 80;
 		params.height = 23;
 		_map = createMap(params);
@@ -64,8 +58,6 @@ var createGameState = function (params)
 
 	options.exit = function ()
 	{
-		"use strict";
-
 		state.getEngine().lock();
 		state.getScheduler().clear();
 	};

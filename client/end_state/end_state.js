@@ -14,8 +14,6 @@ var createEndState = function (params)
 	// Private methods
 	var draw = function ()
 	{
-		"use strict";
-
 		Game.getDisplay().clear();
 
 		var text = params.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
@@ -27,8 +25,6 @@ var createEndState = function (params)
 
 	var initEngine = function ()
 	{
-		"use strict";
-
 		state.getScheduler().add(state, true);
 
 		state.getEngine().start();
@@ -37,8 +33,6 @@ var createEndState = function (params)
 	// Public methods
 	var handleEvent = function (event)
 	{
-		"use strict";
-
 		check(event.keyCode, Number);
 
 		// Process user input
