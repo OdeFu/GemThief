@@ -1,80 +1,55 @@
 GameState = function (params)
 {
-	return createGameState(params);
-};
-
-var createGameState = function (params)
-{
 	"use strict";
 
 	check(params.seed, Number);
 	check(params.config, Object);
 	check(params.level, Number);
-
-	// Private fields
-	var _map;
-	var _playerStats = new PlayerStats();
+	
+	this.name = "GameState";
+	this.playerStats = new PlayerStats();
 
 	ROT.RNG.setSeed(params.seed);
+};
+GameState.extend(State);
 
-	// Private methods
-	var draw = function ()
+GameState.prototype.draw = function ()
+{
+	Game.display.clear();
+
+	this.map.draw(Game.display);
+};
+
+GameState.prototype.initEngine = function ()
+{
+	this.scheduler.add(state, true);
+	this.scheduler.add(this.map.player, true);
+
+	for (var i = 0; i < this.map.getDwarves().length; i++)
 	{
-		Game.getDisplay().clear();
+		this.scheduler.add(this.map.getDwarves()[i], true);
+	}
 
-		_map.draw(Game.getDisplay());
-	};
+	this.engine.start();
+};
 
-	var initEngine = function ()
-	{
-		state.getScheduler().add(state, true);
-		state.getScheduler().add(_map.getPlayer(), true);
+GameState.prototype.act = function ()
+{
+	this.draw();
+};
 
-		for (var i = 0; i < state.getMap().getDwarves().length; i++)
-		{
-			state.getScheduler().add(state.getMap().getDwarves()[i], true);
-		}
+GameState.prototype.enter = function ()
+{
+	params.width = 80;
+	params.height = 23;
+	this.map = new Map(params);
 
-		state.getEngine().start();
-	};
+	this.initEngine();
+};
 
-	var options = {};
-	options.name = "GameState";
-	options.scheduler = ROT.Scheduler.Simple;
+GameState.prototype.exit = function ()
+{
+	this.engine.lock();
+	this.scheduler.clear();
+};
 
-	options.act = function ()
-	{
-		draw();
-	};
-
-	options.enter = function ()
-	{
-		params.width = 80;
-		params.height = 23;
-		_map = createMap(params);
-
-		initEngine();
-	};
-
-	options.exit = function ()
-	{
-		state.getEngine().lock();
-		state.getScheduler().clear();
-	};
-
-	// Public methods
-	var getMap = function ()
-	{
-		return _map;
-	};
-
-	var getPlayerStats = function ()
-	{
-		return _playerStats;
-	};
-
-	var state = createState(options);
-	state.getMap = getMap;
-	state.getPlayerStats = getPlayerStats;
-	return state;
-}

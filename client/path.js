@@ -1,55 +1,56 @@
 Path =
 {
-	generatePath: function (from, to, topology)
+};
+
+Path.prototype.generatePath = function (from, to, topology)
+{
+	"use strict";
+
+	topology = topology || 4;
+
+	var passableCallback = function (x, y)
 	{
-		"use strict";
+		return !Game.getState().getMap().isBlocking(x, y);
+	};
 
-		topology = topology || 4;
-
-		var passableCallback = function (x, y)
-		{
-			return !Game.getState().getMap().isBlocking(x, y);
-		};
-
-		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
-		var path = [];
-		var pathCallback = function (x, y)
-		{
-			path.push([x, y]);
-		};
-
-		astar.compute(from.x, from.y, pathCallback);
-
-		// Remove starting position
-		path.shift();
-		return path;
-	},
-
-	getSeenTiles: function (from, radius)
+	var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
+	var path = [];
+	var pathCallback = function (x, y)
 	{
-		"use strict";
+		path.push([x, y]);
+	};
 
-		var tiles = [];
-		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
-		{
-			var tile = Game.getState().getMap().getTile(x, y);
-			tiles.push(tile);
-		});
+	astar.compute(from.x, from.y, pathCallback);
 
-		return tiles;
-	},
+	// Remove starting position
+	path.shift();
+	return path;
+};
 
-	runFOV: function (from, radius, callback)
+Path.prototype.getSeenTiles = function (from, radius)
+{
+	"use strict";
+
+	var tiles = [];
+	var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
+	fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
 	{
-		"use strict";
+		var tile = Game.getState().getMap().getTile(x, y);
+		tiles.push(tile);
+	});
 
-		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
-		{
-			callback(x, y, r, visibility);
-		});
-	}
+	return tiles;
+};
+
+Path.prototype.runFOV = function (from, radius, callback)
+{
+	"use strict";
+
+	var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
+	fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
+	{
+		callback(x, y, r, visibility);
+	});
 };
 
 var lightPass = function (x, y)

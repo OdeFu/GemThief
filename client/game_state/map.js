@@ -7,7 +7,7 @@
  *  - level: the level depth of the map, defaults to 1
  *  - numGems: the number of gems to be generated, defaults to 10
  */
-createMap = function (params)
+Map = function (params)
 {
 	"use strict";
 
