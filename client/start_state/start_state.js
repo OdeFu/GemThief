@@ -8,23 +8,23 @@ var createStartState = function ()
 	"use strict";
 
 	// Private methods
-	var draw = function ()
+	function draw()
 	{
 		Game.getDisplay().clear();
 		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
 		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
 		Game.drawTextCentered(8, "%b{gray}Press Enter");
-	};
+	}
 
-	var initEngine = function ()
+	function initEngine()
 	{
 		state.getScheduler().add(state, true);
 
 		state.getEngine().start();
-	};
+	}
 
 	// Public methods
-	var handleEvent = function (event)
+	function handleEvent(event)
 	{
 		// Process user input
 		if (event.keyCode === ROT.VK_RETURN)
@@ -35,12 +35,12 @@ var createStartState = function ()
 				Game.changeState(GameState, game);
 			});
 		}
-	};
+	}
 
 	var options = {};
 	options.name = "StartState";
 
-	options.act = function ()
+	options.act = function act()
 	{
 		draw();
 
@@ -48,12 +48,12 @@ var createStartState = function ()
 		window.addEventListener("keydown", state);
 	};
 
-	options.enter = function ()
+	options.enter = function enter()
 	{
 		initEngine();
 	};
 
-	options.exit = function ()
+	options.exit = function exit()
 	{
 		state.getEngine().lock();
 		state.getScheduler().clear();

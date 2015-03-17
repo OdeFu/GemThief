@@ -1,12 +1,12 @@
 createHappyIdleAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 	var path = [];
 
-	var idleAI = function ()
+	function idleAI()
 	{
-		"use strict";
-
 		if (path.length === 0)
 		{
 			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
@@ -23,30 +23,31 @@ createHappyIdleAI = function (dwarf, map, params)
 		{
 			AI.changeToTrackingAI(createHappyTrackingAI);
 		}
-	};
+	}
 	return idleAI;
 };
 
 var createHappyTrackingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var tellJoke = function ()
+	function tellJoke()
 	{
-		"use strict";
 		var joke = params.jokes.random();
 		map.setMessage("\"" + joke + "\"");
-	};
+	}
 
-	var lostCallback = function ()
+	function lostCallback()
 	{
 		dwarf.setAI(createHappyIdleAI(dwarf, map, params));
-	};
+	}
 
-	var stoppedCallback = function ()
+	function stoppedCallback()
 	{
 		tellJoke();
-	};
+	}
 
 	return AI.getTrackingAI(lostCallback, stoppedCallback);
 };

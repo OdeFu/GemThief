@@ -18,15 +18,15 @@ var createDwarf = function (params)
 	// Private fields
 
 	// Public methods
-	var getName = function ()
+	function getName()
 	{
 		return params.name;
-	};
+	}
 
-	var setAI = function (ai)
+	function setAI(ai)
 	{
 		dwarf.act = ai;
-	};
+	}
 
 	params.char = "P";
 	params.priority = Entity.ENTITY;

@@ -2,7 +2,7 @@ var createMoveAction = function (dirKey)
 {
 	"use strict";
 
-	var checkGem = function (player)
+	function checkGem(player)
 	{
 		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
 		if (gem)
@@ -11,9 +11,9 @@ var createMoveAction = function (dirKey)
 			Game.getState().getPlayerStats().gems += 1;
 			Game.getState().getMap().removeGem(gem);
 		}
-	};
+	}
 
-	var moveAction = function ()
+	function moveAction()
 	{
 		var player = Game.getState().getMap().getPlayer();
 		var dir = ROT.DIRS[8][dirKey];
@@ -32,7 +32,7 @@ var createMoveAction = function (dirKey)
 
 		var prevMoves = Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()];
 		Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()] = prevMoves ? prevMoves + 1 : 1;
-	};
+	}
 	return moveAction;
 };
 
@@ -40,7 +40,7 @@ var createClimbStairsAction = function (down)
 {
 	"use strict";
 
-	var climbStairsAction = function ()
+	function climbStairsAction()
 	{
 		var player = Game.getState().getMap().getPlayer();
 		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
@@ -61,7 +61,7 @@ var createClimbStairsAction = function (down)
 		{
 			Game.getState().getMap().setMessage("There are no stairs here.");
 		}
-	};
+	}
 	return climbStairsAction;
 };
 

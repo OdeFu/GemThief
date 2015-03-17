@@ -52,7 +52,7 @@ Path =
 	}
 };
 
-var lightPass = function (x, y)
+function lightPass(x, y)
 {
 	return !Game.getState().getMap().isBlocking(x, y);
-};
+}

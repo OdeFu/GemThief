@@ -5,7 +5,7 @@ createAI = function (dwarf, map, params)
 	var lastSeenPlayerPosition = map.getPlayer().toPoint();
 	var turnsSinceLastSeen = 0;
 
-	var catchedPlayer = function ()
+	function catchedPlayer()
 	{
 		var playerPos = map.getPlayer().toPoint();
 		if (playerPos.x === dwarf.getX() && playerPos.y === dwarf.getY())
@@ -15,13 +15,13 @@ createAI = function (dwarf, map, params)
 			return true;
 		}
 		return false;
-	};
+	}
 
-	var getVisiblePlayerPosition = function (radius)
+	function getVisiblePlayerPosition(radius)
 	{
 		var spottedPlayer = false;
 		var playerPos = map.getPlayer().toPoint();
-		Path.runFOV(dwarf.toPoint(), radius, function (x, y, r, visibility)
+		Path.runFOV(dwarf.toPoint(), radius, function fovCallback(x, y, r, visibility)
 		{
 			if (playerPos.x === x && playerPos.y === y)
 			{
@@ -29,9 +29,9 @@ createAI = function (dwarf, map, params)
 			}
 		});
 		return spottedPlayer ? playerPos : null;
-	};
+	}
 
-	var getShortestPathToStairs = function ()
+	function getShortestPathToStairs()
 	{
 		var shortestPath = [dwarf.getX(), dwarf.getY()];
 		var closestDistance = Number.MAX_VALUE;
@@ -46,21 +46,21 @@ createAI = function (dwarf, map, params)
 			}
 		}
 		return shortestPath;
-	};
+	}
 
-	var spottedPlayer = function (radius)
+	function spottedPlayer(radius)
 	{
 		radius = radius || params.idleAIConfig.radius;
 		return getVisiblePlayerPosition(radius) != null;
-	};
+	}
 
-	var changeToTrackingAI = function (ai)
+	function changeToTrackingAI(ai)
 	{
 		map.setMessage(params.idleAIConfig.noticeMessage);
 		dwarf.setAI(ai(dwarf, map, params));
-	};
+	}
 
-	var move = function (to)
+	function move(to)
 	{
 		var path = Path.generatePath(dwarf.toPoint(), to);
 		if (path.length > 0)
@@ -68,20 +68,20 @@ createAI = function (dwarf, map, params)
 			map.moveEntity(dwarf, path[0][0], path[0][1]);
 		}
 		return path.length > 0;
-	};
+	}
 
-	var movePath = function (path)
+	function movePath(path)
 	{
 		if (path.length > 0)
 		{
 			var step = path.splice(0, 1)[0];
 			map.moveEntity(dwarf, step[0], step[1]);
 		}
-	};
+	}
 
-	var getTrackingAI = function (lostCallback, stoppedCallback)
+	function getTrackingAI(lostCallback, stoppedCallback)
 	{
-		var trackingAI = function ()
+		function trackingAI()
 		{
 			if (params.trackingAIConfig.chanceToStop)
 			{
@@ -111,7 +111,7 @@ createAI = function (dwarf, map, params)
 			var playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
 			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
 
-			if (playerPos == null)
+			if (playerPos === null)
 			{
 				turnsSinceLastSeen++;
 			}
@@ -120,9 +120,9 @@ createAI = function (dwarf, map, params)
 			{
 				lostCallback();
 			}
-		};
+		}
 		return trackingAI;
-	};
+	}
 
 	var AI = {};
 	AI.getShortestPathToStairs = getShortestPathToStairs;

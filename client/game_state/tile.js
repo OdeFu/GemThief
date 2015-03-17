@@ -18,27 +18,27 @@ createTile = function (params)
 	var _color;
 
 	// Public methods
-	var getX = function ()
+	function getX()
 	{
 		return _x;
-	};
+	}
 
-	var getY = function ()
+	function getY()
 	{
 		return _y;
-	};
+	}
 
-	var isEmpty = function ()
+	function isEmpty()
 	{
 		return _entities.length === 1;
-	};
+	}
 
-	var isBlocking = function ()
+	function isBlocking()
 	{
 		return getHighestEntity().isBlocking();
-	};
+	}
 
-	var getForegroundColor = function ()
+	function getForegroundColor()
 	{
 		var entityColor = ROT.Color.fromString(getHighestEntity().getColor());
 		var ambientLight = [100, 100, 100];
@@ -51,39 +51,39 @@ createTile = function (params)
 
 		var finalColor = ROT.Color.multiply(entityColor, light);
 		return ROT.Color.toRGB(finalColor);
-	};
+	}
 
-	var getBackgroundColor = function ()
+	function getBackgroundColor()
 	{
 		return "black";
-	};
+	}
 
-	var isSeen = function ()
+	function isSeen()
 	{
 		return _seen;
-	};
+	}
 
-	var setSeen = function (seen)
+	function setSeen(seen)
 	{
 		_seen = seen;
-	};
+	}
 
-	var getChar = function ()
+	function getChar()
 	{
 		return _seen ? getHighestEntity().getChar() : " ";
-	};
+	}
 
-	var addEntity = function (entity)
+	function addEntity(entity)
 	{
 		_entities[entity.getPriority()] = entity;
-	};
+	}
 
-	var removeEntity = function (entity)
+	function removeEntity(entity)
 	{
 		_entities[entity.getPriority()] = null;
-	};
+	}
 
-	var getHighestEntity = function ()
+	function getHighestEntity()
 	{
 		for (var i = _entities.length - 1; i >= 0; i--)
 		{
@@ -93,27 +93,27 @@ createTile = function (params)
 			}
 		}
 		return null;
-	};
+	}
 
-	var getEntity = function (index)
+	function getEntity(index)
 	{
 		return _entities[index];
-	};
+	}
 
-	var setColor = function (color)
+	function setColor(color)
 	{
 		_color = color;
-	};
+	}
 
-	var getColor = function ()
+	function getColor()
 	{
 		return _color;
-	};
+	}
 
-	var toPoint = function ()
+	function toPoint()
 	{
 		return { x: _x, y: _y };
-	};
+	}
 
 	// Create the actual tile
 	var tile = {};

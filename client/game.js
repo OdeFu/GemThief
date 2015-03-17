@@ -7,7 +7,7 @@ createGame = function ()
 	var _state;
 
 	// Public methods
-	var init = function ()
+	function init()
 	{
 		var container = document.getElementById("main");
 		if (ROT.isSupported)
@@ -21,9 +21,9 @@ createGame = function ()
 		{
 			container.textContent = "Your browser is not supported!";
 		}
-	};
+	}
 
-	var changeState = function (newState, params)
+	function changeState(newState, params)
 	{
 		if (_state)
 		{
@@ -32,17 +32,17 @@ createGame = function ()
 
 		_state = new newState(params);
 		_state.enter();
-	};
+	}
 
-	var gameOver = function ()
+	function gameOver()
 	{
 		Meteor.call("update", _state.getPlayerStats(), function (error, data)
 		{
 			changeState(EndState, data);
 		});
-	};
+	}
 
-	var moveToLevel = function (nextLevel)
+	function moveToLevel(nextLevel)
 	{
 		if (nextLevel === 0)
 		{
@@ -57,31 +57,31 @@ createGame = function ()
 				changeState(GameState, game);
 			});
 		}
-	};
+	}
 
-	var drawTextCentered = function (y, text)
+	function drawTextCentered(y, text)
 	{
 		var textSize = ROT.Text.measure(text);
 		var x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
 		_display.drawText(x, y, text);
-	};
+	}
 
-	var drawTextRight = function (y, text)
+	function drawTextRight(y, text)
 	{
 		var textSize = ROT.Text.measure(text);
 		var x = _display.getOptions().width - textSize.width;
 		_display.drawText(x, y, text);
-	};
+	}
 
-	var getDisplay = function ()
+	function getDisplay()
 	{
 		return _display;
-	};
+	}
 
-	var getState = function ()
+	function getState()
 	{
 		return _state;
-	};
+	}
 
 	var game = {};
 	game.gameOver = gameOver;

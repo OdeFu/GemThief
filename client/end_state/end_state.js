@@ -12,7 +12,7 @@ var createEndState = function (params)
 	check(params.gems, Number);
 
 	// Private methods
-	var draw = function ()
+	function draw()
 	{
 		Game.getDisplay().clear();
 
@@ -21,17 +21,17 @@ var createEndState = function (params)
 		Game.drawTextCentered(6, "Gems Looted: " + params.gems);
 		Game.drawTextCentered(7, "Score: " + params.score);
 		Game.drawTextCentered(9, "%b{gray}New Game");
-	};
+	}
 
-	var initEngine = function ()
+	function initEngine()
 	{
 		state.getScheduler().add(state, true);
 
 		state.getEngine().start();
-	};
+	}
 
 	// Public methods
-	var handleEvent = function (event)
+	function handleEvent(event)
 	{
 		check(event.keyCode, Number);
 
@@ -44,12 +44,12 @@ var createEndState = function (params)
 				Game.changeState(GameState, game);
 			});
 		}
-	};
+	}
 
 	var options = {};
 	options.name = "EndState";
 
-	options.act = function ()
+	options.act = function act()
 	{
 		draw();
 
@@ -57,12 +57,12 @@ var createEndState = function (params)
 		window.addEventListener("keydown", state);
 	};
 
-	options.enter = function ()
+	options.enter = function enter()
 	{
 		initEngine();
 	};
 
-	options.exit = function ()
+	options.exit = function exit()
 	{
 		state.getEngine().lock();
 		state.getScheduler().clear();

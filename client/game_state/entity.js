@@ -33,65 +33,65 @@ createEntity = function (params)
 	var _type = params.type || "<unknown>";
 
 	// Public methods
-	var getX = function ()
+	function getX()
 	{
 		return _x;
-	};
+	}
 
-	var getY = function ()
+	function getY()
 	{
 		return _y;
-	};
+	}
 
-	var setX = function (x)
+	function setX(x)
 	{
 		_x = x;
-	};
+	}
 
-	var setY = function (y)
+	function setY(y)
 	{
 		_y = y;
-	};
+	}
 
-	var getChar = function ()
+	function getChar()
 	{
 		return _char;
-	};
+	}
 
-	var getColor = function ()
+	function getColor()
 	{
 		return _color;
-	};
+	}
 
-	var getPriority = function ()
+	function getPriority()
 	{
 		return _priority;
 	}
 
-	var draw = function (display)
+	function draw(display)
 	{
 		display.draw(_x, _y, _char, _color);
-	};
+	}
 
-	var isBlocking = function ()
+	function isBlocking()
 	{
 		return _blocks;
-	};
+	}
 
-	var isDungeonChar = function ()
+	function isDungeonChar()
 	{
 		return _dungeonChar;
-	};
+	}
 
-	var getType = function ()
+	function getType()
 	{
 		return _type;
-	};
+	}
 
-	var toPoint = function ()
+	function toPoint()
 	{
 		return { x: _x, y: _y };
-	};
+	}
 
 	var entity = {};
 	entity.getX = getX;

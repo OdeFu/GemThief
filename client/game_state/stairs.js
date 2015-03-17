@@ -14,10 +14,10 @@ var createStairs = function (params)
 	check(params.down, Boolean);
 
 	// Public methods
-	var isDown = function ()
+	function isDown()
 	{
 		return params.down;
-	};
+	}
 
 	params.char = params.down ? ">" : "<";
 	params.color = "brown";

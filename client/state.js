@@ -17,38 +17,38 @@ createState = function (options)
 	var _engine = new ROT.Engine(_scheduler);
 
 	// Public methods
-	var getId = function ()
+	function getId()
 	{
 		return _id;
-	};
+	}
 
-	var getName = function ()
+	function getName()
 	{
 		return _name;
-	};
+	}
 
-	var getEngine = function ()
+	function getEngine()
 	{
 		return _engine;
-	};
+	}
 
-	var getScheduler = function ()
+	function getScheduler()
 	{
 		return _scheduler;
-	};
+	}
 
 	// Abstract methods
-	var act = function ()
+	function act()
 	{
-	};
+	}
 
-	var enter = function ()
+	function enter()
 	{
-	};
+	}
 
-	var exit = function ()
+	function exit()
 	{
-	};
+	}
 
 	var state = {};
 	state.getId = getId;
@@ -59,4 +59,4 @@ createState = function (options)
 	state.enter = options.enter || enter;
 	state.exit = options.exit || exit;
 	return state;
-}
+};

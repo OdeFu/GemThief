@@ -1,30 +1,30 @@
 createGrumpyIdleAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var idleAI = function ()
+	function idleAI()
 	{
-		"use strict";
-
 		if (AI.spottedPlayer())
 		{
 			AI.changeToTrackingAI(createGrumpyTrackingAI);
 		}
-	};
+	}
 	return idleAI;
 };
 
 var createGrumpyTrackingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var trackingAI = function ()
+	function trackingAI()
 	{
-		"use strict";
-
 		AI.move(map.getPlayer().toPoint());
 
 		AI.catchedPlayer();
-	};
+	}
 	return trackingAI;
 };

@@ -8,7 +8,7 @@ var createPlayer = function (params)
 	"use strict";
 
 	// Public methods
-	var handleEvent = function (event)
+	function handleEvent(event)
 	{
 		// Process user input
 		var action = PlayerActions[event.keyCode];
@@ -20,16 +20,16 @@ var createPlayer = function (params)
 			window.removeEventListener("keydown", player);
 			Game.getState().getEngine().unlock();
 		}
-	};
+	}
 
-	var act = function ()
+	function act()
 	{
 		Game.getState().getEngine().lock();
 
 		// Wait for user input, do stuff when the user hits a key
 		window.addEventListener("keypress", player);
 		window.addEventListener("keydown", player);
-	};
+	}
 
 	// Create the player actor
 	params.priority = Entity.ENTITY;

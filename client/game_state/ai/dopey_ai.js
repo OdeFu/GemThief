@@ -1,12 +1,12 @@
 createDopeyIdleAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 	var path = [];
 
-	var idleAI = function ()
+	function idleAI()
 	{
-		"use strict";
-
 		var pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
 		if (pathChange)
 		{
@@ -29,18 +29,20 @@ createDopeyIdleAI = function (dwarf, map, params)
 		{
 			AI.changeToTrackingAI(createDopeyTrackingAI);
 		}
-	};
+	}
 	return idleAI;
 };
 
 var createDopeyTrackingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var lostCallback = function ()
+	function lostCallback()
 	{
 		dwarf.setAI(createDopeyIdleAI(dwarf, map, params));
-	};
+	}
 
 	return AI.getTrackingAI(lostCallback);
 };

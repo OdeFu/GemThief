@@ -18,14 +18,14 @@ var createGameState = function (params)
 	ROT.RNG.setSeed(params.seed);
 
 	// Private methods
-	var draw = function ()
+	function draw()
 	{
 		Game.getDisplay().clear();
 
 		_map.draw(Game.getDisplay());
-	};
+	}
 
-	var initEngine = function ()
+	function initEngine ()
 	{
 		state.getScheduler().add(state, true);
 		state.getScheduler().add(_map.getPlayer(), true);
@@ -36,18 +36,18 @@ var createGameState = function (params)
 		}
 
 		state.getEngine().start();
-	};
+	}
 
 	var options = {};
 	options.name = "GameState";
 	options.scheduler = ROT.Scheduler.Simple;
 
-	options.act = function ()
+	options.act = function act()
 	{
 		draw();
 	};
 
-	options.enter = function ()
+	options.enter = function enter()
 	{
 		params.width = 80;
 		params.height = 23;
@@ -56,25 +56,25 @@ var createGameState = function (params)
 		initEngine();
 	};
 
-	options.exit = function ()
+	options.exit = function exit()
 	{
 		state.getEngine().lock();
 		state.getScheduler().clear();
 	};
 
 	// Public methods
-	var getMap = function ()
+	function getMap()
 	{
 		return _map;
-	};
+	}
 
-	var getPlayerStats = function ()
+	function getPlayerStats()
 	{
 		return _playerStats;
-	};
+	}
 
 	var state = createState(options);
 	state.getMap = getMap;
 	state.getPlayerStats = getPlayerStats;
 	return state;
-}
+};

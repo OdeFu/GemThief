@@ -7,10 +7,10 @@ getDarkStartLocation = function (map)
 {
 	"use strict";
 
-	var darkTiles = function (tile)
+	function darkTiles(tile)
 	{
 		return !tile.getColor();
-	};
+	}
 	return map.getSomeTiles(darkTiles).random();
 };
 
@@ -18,10 +18,10 @@ getLightStartLocation = function (map)
 {
 	"use strict";
 
-	var lightTiles = function (tile)
+	function lightTiles(tile)
 	{
 		return tile.getColor();
-	};
+	}
 	return map.getSomeTiles(lightTiles).random();
 };
 

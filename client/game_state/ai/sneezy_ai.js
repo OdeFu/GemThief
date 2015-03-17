@@ -1,45 +1,47 @@
 createSneezyIdleAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var idleAI = function ()
+	function idleAI()
 	{
-		"use strict";
-
 		if (AI.spottedPlayer())
 		{
 			AI.changeToTrackingAI(createSneezyTrackingAI);
 		}
-	};
+	}
 	return idleAI;
 };
 
 var createSneezyTrackingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var lostCallback = function ()
+	function lostCallback()
 	{
 		dwarf.setAI(createSleepyIdleAI(dwarf, map, params));
-	};
+	}
 
-	var stoppedCallback = function ()
+	function stoppedCallback()
 	{
 		dwarf.setAI(createSneezingAI(dwarf, map, params));
-	};
+	}
 
 	return AI.getTrackingAI(lostCallback, stoppedCallback);
 };
 
 var createSneezingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 	var sneezeDuration = ROT.RNG.getUniformInt(1, params.sneezingAIConfig.maxDuration);
 
-	var sneezingAI = function ()
+	function sneezingAI()
 	{
-		"use strict";
-
 		sneezeDuration--;
 
 		if (sneezeDuration === 0)
@@ -49,6 +51,6 @@ var createSneezingAI = function (dwarf, map, params)
 			dwarf.setAI(playerPos === null ? createSneezyIdleAI(dwarf, map, params) :
 			            createSneezyTrackingAI(dwarf, map, params));
 		}
-	};
+	}
 	return sneezingAI;
 };

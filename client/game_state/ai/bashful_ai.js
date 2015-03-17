@@ -1,28 +1,28 @@
 createBashfulIdleAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 
-	var idleAI = function ()
+	function idleAI()
 	{
-		"use strict";
-
 		if (AI.spottedPlayer())
 		{
 			AI.changeToTrackingAI(createScaredAI);
 		}
-	};
+	}
 	return idleAI;
 };
 
 var createScaredAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
 	var turnsScared = ROT.RNG.getUniformInt(2, params.scaredAIConfig.maxDuration);
 
-	var scaredAI = function ()
+	function scaredAI()
 	{
-		"use strict";
-
 		if (turnsScared > 0)
 		{
 			var pos = dwarf.toPoint();
@@ -48,17 +48,20 @@ var createScaredAI = function (dwarf, map, params)
 			}
 		}
 
-	};
+	}
 	return scaredAI;
 };
 
 var createBashfulTrackingAI = function (dwarf, map, params)
 {
+	"use strict";
+
 	var AI = createAI(dwarf, map, params);
-	var lostCallback = function ()
+
+	function lostCallback()
 	{
 		dwarf.setAI(createBashfulIdleAI(dwarf, map, params));
-	};
+	}
 
 	return AI.getTrackingAI(lostCallback);
 };
