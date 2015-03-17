@@ -1,52 +1,65 @@
 StartState = function ()
 {
-	this.name = "StartState";
-};
-StartState.extend(State);
-
-StartState.prototype.draw = function ()
-{
-	Game.display.clear();
-	Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
-	Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-	Game.drawTextCentered(8, "%b{gray}Press Enter");
+	return createStartState();
 };
 
-StartState.prototype.initEngine = function ()
+var createStartState = function ()
 {
-	this.scheduler.add(this, true);
-	this.engine.start();
-};
+	"use strict";
 
-// Public methods
-StartState.prototype.handleEvent = function (event)
-{
-	// Process user input
-	if (event.keyCode === ROT.VK_RETURN)
+	// Private methods
+	var draw = function ()
 	{
-		window.removeEventListener("keydown", this);
-		Meteor.call("newGame", function (error, game)
+		Game.getDisplay().clear();
+		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
+		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
+		Game.drawTextCentered(8, "%b{gray}Press Enter");
+	};
+
+	var initEngine = function ()
+	{
+		state.getScheduler().add(state, true);
+
+		state.getEngine().start();
+	};
+
+	// Public methods
+	var handleEvent = function (event)
+	{
+		// Process user input
+		if (event.keyCode === ROT.VK_RETURN)
 		{
-			Game.changeState(GameState, game);
-		});
-	}
-};
+			window.removeEventListener("keydown", state);
+			Meteor.call("newGame", function (error, game)
+			{
+				Game.changeState(GameState, game);
+			});
+		}
+	};
 
-StartState.prototype.act = function ()
-{
-	this.draw();
-	this.engine.lock();
-	
-	window.addEventListener("keydown", state);
-};
+	var options = {};
+	options.name = "StartState";
 
-StartState.prototype.enter = function ()
-{
-	this.initEngine();
-};
+	options.act = function ()
+	{
+		draw();
 
-StartState.prototype.exit = function ()
-{
-	this.engine.lock();
-	this.scheduler.clear();
+		state.getEngine().lock();
+		window.addEventListener("keydown", state);
+	};
+
+	options.enter = function ()
+	{
+		initEngine();
+	};
+
+	options.exit = function ()
+	{
+		state.getEngine().lock();
+		state.getScheduler().clear();
+	};
+
+	var state = createState(options);
+	state.handleEvent = handleEvent;
+	return state;
 };

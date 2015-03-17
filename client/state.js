@@ -1,23 +1,62 @@
 var idCounter = 0;
 
-State = function (options)
+/**
+ * Create a new state. You should provide implementations for the abstract methods; act, enter and exit.
+ * @param options Supported options are the name, scheduler and act, enter and exit methods.
+ * @returns {{}}
+ */
+createState = function (options)
 {
 	"use strict";
 
-	this.id = idCounter++;
-	this.name = "State_" + this.id;
-	this.scheduler = new ROT.Scheduler.Simple();
-	this.engine = new ROT.Engine(this.scheduler);
-};
+	// Private fields
+	var _id = idCounter++;
+	var _name = options.name || "State_" + _id;
+	var _schedulerClass = options.scheduler || ROT.Scheduler.Simple;
+	var _scheduler = new _schedulerClass();
+	var _engine = new ROT.Engine(_scheduler);
 
-State.prototype.act = function ()
-{	
-};
+	// Public methods
+	var getId = function ()
+	{
+		return _id;
+	};
 
-State.prototype.enter = function ()
-{	
-};
+	var getName = function ()
+	{
+		return _name;
+	};
 
-State.prototype.exit = function ()
-{	
-};
+	var getEngine = function ()
+	{
+		return _engine;
+	};
+
+	var getScheduler = function ()
+	{
+		return _scheduler;
+	};
+
+	// Abstract methods
+	var act = function ()
+	{
+	};
+
+	var enter = function ()
+	{
+	};
+
+	var exit = function ()
+	{
+	};
+
+	var state = {};
+	state.getId = getId;
+	state.getName = getName;
+	state.getEngine = getEngine;
+	state.getScheduler = getScheduler;
+	state.act = options.act || act;
+	state.enter = options.enter || enter;
+	state.exit = options.exit || exit;
+	return state;
+}

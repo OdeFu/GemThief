@@ -1,4 +1,4 @@
-Game = new Game();
+Game = createGame();
 
 Meteor.startup(function ()
 {
