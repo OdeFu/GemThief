@@ -18,7 +18,7 @@ function createGrumpyTrackingAI(dwarf, map, params) {
 	var AI = createAI(dwarf, map, params);
 
 	function trackingAI() {
-		AI.move(map.getPlayer().toPoint());
+		AI.move(map.player.toPoint());
 
 		AI.catchedPlayer();
 	}

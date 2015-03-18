@@ -21,11 +21,11 @@ function createScaredAI(dwarf, map, params) {
 	function scaredAI() {
 		if (turnsScared > 0) {
 			var pos = dwarf.toPoint();
-			var playerPos = map.getPlayer().toPoint();
+			var playerPos = map.player.toPoint();
 			var dirX = pos.x - playerPos.x >= 0 ? 1 : -1;
 			var dirY = pos.y - playerPos.y >= 0 ? 1 : -1;
 
-			if (AI.move({x: pos.x + dirX, y: pos.y + dirY})) {
+			if (AI.move({ x: pos.x + dirX, y: pos.y + dirY })) {
 				map.setMessage("Bashful screams in terror as he runs away from you.", 1);
 			}
 			else {

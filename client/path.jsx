@@ -8,7 +8,7 @@ Path = {
 			return !Game.state.map.isBlocking(x, y);
 		}
 
-		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, {topology: topology});
+		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
 		var path = [];
 
 		function pathCallback(x, y) {

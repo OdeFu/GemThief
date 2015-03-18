@@ -60,8 +60,7 @@ createGame = function () {
 	}
 
 	return {
-		get display()
-		{
+		get display() {
 			return _display;
 		},
 
@@ -69,12 +68,12 @@ createGame = function () {
 			return _state;
 		},
 
-		gameOver: gameOver,
-		init: init,
+		gameOver:         gameOver,
+		init:             init,
 		drawTextCentered: drawTextCentered,
-		drawTextRight: drawTextRight,
-		changeState: changeState,
-		moveToLevel: moveToLevel
+		drawTextRight:    drawTextRight,
+		changeState:      changeState,
+		moveToLevel:      moveToLevel
 	};
 };
 
