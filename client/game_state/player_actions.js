@@ -1,4 +1,4 @@
-var createMoveAction = function (dirKey)
+function createMoveAction(dirKey)
 {
 	"use strict";
 
@@ -34,9 +34,9 @@ var createMoveAction = function (dirKey)
 		Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()] = prevMoves ? prevMoves + 1 : 1;
 	}
 	return moveAction;
-};
+}
 
-var createClimbStairsAction = function (down)
+function createClimbStairsAction(down)
 {
 	"use strict";
 
@@ -63,7 +63,7 @@ var createClimbStairsAction = function (down)
 		}
 	}
 	return climbStairsAction;
-};
+}
 
 PlayerActions = [];
 

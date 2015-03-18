@@ -33,7 +33,7 @@ createDopeyIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createDopeyTrackingAI = function (dwarf, map, params)
+function createDopeyTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -45,4 +45,4 @@ var createDopeyTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback);
-};
+}

@@ -27,7 +27,7 @@ createDocIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createDocTrackingAI = function (dwarf, map, params)
+function createDocTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -39,9 +39,9 @@ var createDocTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback);
-};
+}
 
-var createDocGuardAI = function (dwarf, map, params)
+function createDocGuardAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -58,4 +58,4 @@ var createDocGuardAI = function (dwarf, map, params)
 		}
 	}
 	return guardAI;
-};
+}

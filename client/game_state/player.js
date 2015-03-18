@@ -3,7 +3,7 @@ Player = function (params)
 	return createPlayer(params);
 };
 
-var createPlayer = function (params)
+function createPlayer(params)
 {
 	"use strict";
 
@@ -40,4 +40,4 @@ var createPlayer = function (params)
 	player.handleEvent = handleEvent;
 	player.act = act;
 	return player;
-};
+}

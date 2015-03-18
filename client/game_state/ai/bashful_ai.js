@@ -14,7 +14,7 @@ createBashfulIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createScaredAI = function (dwarf, map, params)
+function createScaredAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -50,9 +50,9 @@ var createScaredAI = function (dwarf, map, params)
 
 	}
 	return scaredAI;
-};
+}
 
-var createBashfulTrackingAI = function (dwarf, map, params)
+function createBashfulTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -64,4 +64,4 @@ var createBashfulTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback);
-};
+}

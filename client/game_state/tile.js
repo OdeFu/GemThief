@@ -145,7 +145,7 @@ FloorEntity = function (params)
 	return createFloorEntity(params);
 };
 
-var createFloorEntity = function (params)
+function createFloorEntity(params)
 {
 	"use strict";
 
@@ -153,14 +153,14 @@ var createFloorEntity = function (params)
 	params.dungeonChar = true;
 	params.priority = Entity.FLOOR;
 	return createEntity(params);
-};
+}
 
 Wall = function (params)
 {
 	return createWall(params);
 };
 
-var createWall = function (params)
+function createWall(params)
 {
 	"use strict";
 
@@ -170,4 +170,4 @@ var createWall = function (params)
 	params.dungeonChar = true;
 	params.priority = Entity.WALL;
 	return createEntity(params);
-};
+}

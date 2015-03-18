@@ -7,7 +7,7 @@ Stairs = function (params)
 
 Stairs.type = "Stairs";
 
-var createStairs = function (params)
+function createStairs(params)
 {
 	"use strict";
 
@@ -28,4 +28,4 @@ var createStairs = function (params)
 	var stairs = createEntity(params);
 	stairs.isDown = isDown;
 	return stairs;
-};
+}

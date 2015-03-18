@@ -3,7 +3,7 @@ GameState = function (params)
 	return createGameState(params);
 };
 
-var createGameState = function (params)
+function createGameState(params)
 {
 	"use strict";
 
@@ -77,4 +77,4 @@ var createGameState = function (params)
 	state.getMap = getMap;
 	state.getPlayerStats = getPlayerStats;
 	return state;
-};
+}

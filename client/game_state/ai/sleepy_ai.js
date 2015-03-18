@@ -14,7 +14,7 @@ createSleepyIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createSleepyTrackingAI = function (dwarf, map, params)
+function createSleepyTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -26,4 +26,4 @@ var createSleepyTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback);
-};
+}

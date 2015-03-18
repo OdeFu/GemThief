@@ -3,7 +3,7 @@ StartState = function ()
 	return createStartState();
 };
 
-var createStartState = function ()
+function createStartState()
 {
 	"use strict";
 
@@ -62,4 +62,4 @@ var createStartState = function ()
 	var state = createState(options);
 	state.handleEvent = handleEvent;
 	return state;
-};
+}

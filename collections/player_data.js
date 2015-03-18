@@ -46,7 +46,7 @@ Meteor.methods(
 	}
 });
 
-var calculateScore = function (data)
+function calculateScore(data)
 {
 	"use strict";
 
@@ -59,4 +59,4 @@ var calculateScore = function (data)
 
 	// You get nothing if you lost
 	return Math.round(gemsScore + moveScore) * data.won;
-};
+}

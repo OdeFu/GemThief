@@ -3,7 +3,7 @@ EndState = function (params)
 	return createEndState(params);
 };
 
-var createEndState = function (params)
+function createEndState(params)
 {
 	"use strict";
 
@@ -71,4 +71,4 @@ var createEndState = function (params)
 	var state = createState(options);
 	state.handleEvent = handleEvent;
 	return state;
-};
+}

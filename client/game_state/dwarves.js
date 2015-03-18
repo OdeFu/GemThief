@@ -8,7 +8,7 @@ Dwarf = function (params)
 	return createDwarf(params);
 };
 
-var createDwarf = function (params)
+function createDwarf(params)
 {
 	"use strict";
 
@@ -35,4 +35,4 @@ var createDwarf = function (params)
 	dwarf.getName = getName;
 	dwarf.setAI = setAI;
 	return dwarf;
-};
+}

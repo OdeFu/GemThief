@@ -61,7 +61,7 @@ Meteor.methods(
 	}
 });
 
-var createNewGame = function ()
+function createNewGame()
 {
 	"use strict";
 
@@ -72,12 +72,12 @@ var createNewGame = function ()
 		config: DWARF_CONFIG
 	};
 	return game;
-};
+}
 
-var checkNextLevel = function (nextLevel, curGame)
+function checkNextLevel(nextLevel, curGame)
 {
 	"use strict";
 
 	var ok = Math.abs(nextLevel - curGame.level) === 1;
 	return ok ? nextLevel : curGame.level;
-};
+}

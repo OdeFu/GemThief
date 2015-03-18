@@ -14,7 +14,7 @@ createSneezyIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createSneezyTrackingAI = function (dwarf, map, params)
+function createSneezyTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -31,9 +31,9 @@ var createSneezyTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback, stoppedCallback);
-};
+}
 
-var createSneezingAI = function (dwarf, map, params)
+function createSneezingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -53,4 +53,4 @@ var createSneezingAI = function (dwarf, map, params)
 		}
 	}
 	return sneezingAI;
-};
+}

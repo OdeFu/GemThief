@@ -27,7 +27,7 @@ createHappyIdleAI = function (dwarf, map, params)
 	return idleAI;
 };
 
-var createHappyTrackingAI = function (dwarf, map, params)
+function createHappyTrackingAI(dwarf, map, params)
 {
 	"use strict";
 
@@ -50,5 +50,4 @@ var createHappyTrackingAI = function (dwarf, map, params)
 	}
 
 	return AI.getTrackingAI(lostCallback, stoppedCallback);
-};
-
+}
