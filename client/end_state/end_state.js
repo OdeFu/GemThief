@@ -16,6 +16,8 @@ EndState = {
 	}
 };
 
+// Private methods
+
 function draw(state) {
 	"use strict";
 

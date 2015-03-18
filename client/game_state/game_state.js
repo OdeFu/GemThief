@@ -40,6 +40,7 @@ function initEngine(state) {
 	state.engine.start();
 }
 
+// Public methods
 function act() {
 	"use strict";
 

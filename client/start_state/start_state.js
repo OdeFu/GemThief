@@ -11,6 +11,8 @@ StartState = {
 	}
 };
 
+// Public methods
+
 function act() {
 	draw();
 
@@ -41,6 +43,7 @@ function handleEvent(event) {
 }
 
 // Private methods
+
 function draw() {
 	"use strict";
 
