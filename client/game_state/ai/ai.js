@@ -7,7 +7,7 @@ createAI = function (dwarf, map, params) {
 	function catchedPlayer() {
 		var playerPos = map.getPlayer().toPoint();
 		if (playerPos.x === dwarf.getX() && playerPos.y === dwarf.getY()) {
-			Game.getState().getEngine().lock();
+			Game.state.engine.lock();
 			Game.gameOver();
 			return true;
 		}
@@ -17,7 +17,7 @@ createAI = function (dwarf, map, params) {
 	function getVisiblePlayerPosition(radius) {
 		var spottedPlayer = false;
 		var playerPos = map.getPlayer().toPoint();
-		Path.runFOV(dwarf.toPoint(), radius, function fovCallback(x, y, r, visibility) {
+		Path.runFOV(dwarf.toPoint(), radius, function fovCallback(x, y) {
 			if (playerPos.x === x && playerPos.y === y) {
 				spottedPlayer = true;
 			}

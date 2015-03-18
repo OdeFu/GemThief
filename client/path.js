@@ -5,7 +5,7 @@ Path = {
 		topology = topology || 4;
 
 		function passableCallback(x, y) {
-			return !Game.getState().getMap().isBlocking(x, y);
+			return !Game.state.map.isBlocking(x, y);
 		}
 
 		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, {topology: topology});
@@ -28,7 +28,7 @@ Path = {
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
 		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
-			var tile = Game.getState().getMap().getTile(x, y);
+			var tile = Game.state.map.getTile(x, y);
 			tiles.push(tile);
 		});
 
@@ -46,5 +46,5 @@ Path = {
 };
 
 function lightPass(x, y) {
-	return !Game.getState().getMap().isBlocking(x, y);
+	return !Game.state.map.isBlocking(x, y);
 }

@@ -206,7 +206,7 @@ createMap = function (params) {
 		}
 
 		display.drawText(0, _height + 1, "Mine Level: " + _level);
-		Game.drawTextRight(_height + 1, "Gems Found: " + Game.getState().getPlayerStats().gems);
+		Game.drawTextRight(_height + 1, "Gems Found: " + Game.state.playerStats.gems);
 	}
 
 	function findEmptyTile() {

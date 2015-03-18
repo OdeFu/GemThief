@@ -14,12 +14,12 @@ function createPlayer(params) {
 
 			window.removeEventListener("keypress", player);
 			window.removeEventListener("keydown", player);
-			Game.getState().getEngine().unlock();
+			Game.state.engine.unlock();
 		}
 	}
 
 	function act() {
-		Game.getState().getEngine().lock();
+		Game.state.engine.lock();
 
 		// Wait for user input, do stuff when the user hits a key
 		window.addEventListener("keypress", player);

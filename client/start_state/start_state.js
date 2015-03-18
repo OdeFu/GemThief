@@ -1,55 +1,58 @@
-StartState = function () {
-	return createStartState();
+StartState = {
+	instantiate: function () {
+		"use strict";
+
+		var state = Object.create(State.instantiate({ name: "StartState" }));
+		state.handleEvent = handleEvent.bind(state);
+		state.act = act.bind(state);
+		state.enter = enter.bind(state);
+		state.exit = exit.bind(state);
+		return state;
+	}
 };
 
-function createStartState() {
+function act() {
+	draw();
+
+	this.engine.lock();
+	window.addEventListener("keydown", this);
+}
+
+function enter() {
+	initEngine(this);
+}
+
+function exit() {
+	this.engine.lock();
+	this.scheduler.clear();
+}
+
+function handleEvent(event) {
 	"use strict";
 
-	// Private methods
-	function draw() {
-		Game.display.clear();
-		Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
-		Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-		Game.drawTextCentered(8, "%b{gray}Press Enter");
+	// Process user input
+	if (event.keyCode === ROT.VK_RETURN) {
+		window.removeEventListener("keydown", this);
+
+		Meteor.call("newGame", function newGameCallback(error, game) {
+			Game.changeState(GameState.instantiate(game));
+		});
 	}
+}
 
-	function initEngine() {
-		state.getScheduler().add(state, true);
+// Private methods
+function draw() {
+	"use strict";
 
-		state.getEngine().start();
-	}
+	Game.display.clear();
+	Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
+	Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
+	Game.drawTextCentered(8, "%b{gray}Press Enter");
+}
 
-	// Public methods
-	function handleEvent(event) {
-		// Process user input
-		if (event.keyCode === ROT.VK_RETURN) {
-			window.removeEventListener("keydown", state);
-			Meteor.call("newGame", function newGameCallback(error, game) {
-				Game.changeState(GameState, game);
-			});
-		}
-	}
+function initEngine(state) {
+	"use strict";
 
-	var options = {};
-	options.name = "StartState";
-
-	options.act = function act() {
-		draw();
-
-		state.getEngine().lock();
-		window.addEventListener("keydown", state);
-	};
-
-	options.enter = function enter() {
-		initEngine();
-	};
-
-	options.exit = function exit() {
-		state.getEngine().lock();
-		state.getScheduler().clear();
-	};
-
-	var state = createState(options);
-	state.handleEvent = handleEvent;
-	return state;
+	state.scheduler.add(state, true);
+	state.engine.start();
 }

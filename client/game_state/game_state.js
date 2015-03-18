@@ -1,70 +1,64 @@
-GameState = function (params) {
-	return createGameState(params);
+GameState = {
+	instantiate: function (params) {
+		"use strict";
+
+		check(params.seed, Number);
+		check(params.config, Object);
+		check(params.level, Number);
+
+		ROT.RNG.setSeed(params.seed);
+
+		var state = Object.create(State.instantiate({ name: "GameState", scheduler: ROT.Scheduler.Simple }));
+		state.act = act.bind(state);
+		state.enter = enter.bind(state);
+		state.exit = exit.bind(state);
+		state.params = params;
+		state.playerStats = new PlayerStats();
+		return state;
+	}
 };
 
-function createGameState(params) {
+// Private methods
+function draw(state) {
 	"use strict";
 
-	check(params.seed, Number);
-	check(params.config, Object);
-	check(params.level, Number);
+	Game.display.clear();
 
-	// Private fields
-	var _map;
-	var _playerStats = new PlayerStats();
+	state.map.draw(Game.display);
+}
 
-	ROT.RNG.setSeed(params.seed);
+function initEngine(state) {
+	"use strict";
 
-	// Private methods
-	function draw() {
-		Game.display.clear();
+	state.scheduler.add(state, true);
+	state.scheduler.add(state.map.getPlayer(), true);
 
-		_map.draw(Game.display);
-	}
+	state.map.getDwarves().forEach(function dwarfLoop(dwarf) {
+		state.scheduler.add(dwarf, true)
+	});
 
-	function initEngine() {
-		state.getScheduler().add(state, true);
-		state.getScheduler().add(_map.getPlayer(), true);
+	state.engine.start();
+}
 
-		for (var i = 0; i < state.getMap().getDwarves().length; i++) {
-			state.getScheduler().add(state.getMap().getDwarves()[i], true);
-		}
+function act() {
+	"use strict";
 
-		state.getEngine().start();
-	}
+	draw(this);
+}
 
-	var options = {};
-	options.name = "GameState";
-	options.scheduler = ROT.Scheduler.Simple;
+function enter() {
+	"use strict";
 
-	options.act = function act() {
-		draw();
-	};
+	this.params.width = 80;
+	this.params.height = 23;
+	this.map = createMap(this.params);
 
-	options.enter = function enter() {
-		params.width = 80;
-		params.height = 23;
-		_map = createMap(params);
+	initEngine(this);
+}
 
-		initEngine();
-	};
+function exit() {
+	"use strict";
 
-	options.exit = function exit() {
-		state.getEngine().lock();
-		state.getScheduler().clear();
-	};
-
-	// Public methods
-	function getMap() {
-		return _map;
-	}
-
-	function getPlayerStats() {
-		return _playerStats;
-	}
-
-	var state = createState(options);
-	state.getMap = getMap;
-	state.getPlayerStats = getPlayerStats;
-	return state;
+	this.engine.lock();
+	this.scheduler.clear();
 }

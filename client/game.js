@@ -12,37 +12,37 @@ createGame = function () {
 			_display = new ROT.Display();
 			container.appendChild(_display.getContainer());
 
-			changeState(StartState);
+			changeState(StartState.instantiate());
 		}
 		else {
 			container.textContent = "Your browser is not supported!";
 		}
 	}
 
-	function changeState(newState, params) {
+	function changeState(newState) {
 		if (_state) {
 			_state.exit();
 		}
 
-		_state = new newState(params);
+		_state = newState;
 		_state.enter();
 	}
 
 	function gameOver() {
-		Meteor.call("update", _state.getPlayerStats(), function updateCallback(error, data) {
-			changeState(EndState, data);
+		Meteor.call("update", _state.playerStats, function updateCallback(error, data) {
+			changeState(EndState.instantiate(data));
 		});
 	}
 
 	function moveToLevel(nextLevel) {
 		if (nextLevel === 0) {
 			// We exited the mine
-			_state.getPlayerStats().won = true;
+			_state.playerStats.won = true;
 			gameOver();
 		}
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {
-				changeState(GameState, game);
+				changeState(GameState.instantiate(game));
 			});
 		}
 	}

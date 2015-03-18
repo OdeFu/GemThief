@@ -2,31 +2,31 @@ function createMoveAction(dirKey) {
 	"use strict";
 
 	function checkGem(player) {
-		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
+		var gem = Game.state.map.getGem(player.getX(), player.getY());
 		if (gem) {
-			Game.getState().getMap().setMessage("You picked up a gem.", 1);
-			Game.getState().getPlayerStats().gems += 1;
-			Game.getState().getMap().removeGem(gem);
+			Game.state.map.setMessage("You picked up a gem.", 1);
+			Game.state.playerStats.gems += 1;
+			Game.state.map.removeGem(gem);
 		}
 	}
 
 	function moveAction() {
-		var player = Game.getState().getMap().getPlayer();
+		var player = Game.state.map.getPlayer();
 		var dir = ROT.DIRS[8][dirKey];
 		var newX = player.getX() + dir[0];
 		var newY = player.getY() + dir[1];
 
-		if (Game.getState().getMap().isBlocking(newX, newY)) {
+		if (Game.state.map.isBlocking(newX, newY)) {
 			/* Cannot move in this direction */
 			return;
 		}
 
-		Game.getState().getMap().moveEntity(player, newX, newY);
+		Game.state.map.moveEntity(player, newX, newY);
 
 		checkGem(player);
 
-		var prevMoves = Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()];
-		Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()] = prevMoves ? prevMoves + 1 : 1;
+		var prevMoves = Game.state.playerStats.moves[Game.state.map.getLevel()];
+		Game.state.playerStats.moves[Game.state.map.getLevel()] = prevMoves ? prevMoves + 1 : 1;
 	}
 
 	return moveAction;
@@ -36,20 +36,20 @@ function createClimbStairsAction(down) {
 	"use strict";
 
 	function climbStairsAction() {
-		var player = Game.getState().getMap().getPlayer();
-		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
+		var player = Game.state.map.getPlayer();
+		var tile = Game.state.map.getTile(player.getX(), player.getY());
 		var entity = tile.getEntity(Entity.FLOOR);
 		if (entity.getType() === Stairs.type) {
 			if (entity.isDown() === down) {
-				var nextLevel = Game.getState().getMap().getLevel() + (down ? 1 : -1);
+				var nextLevel = Game.state.map.getLevel() + (down ? 1 : -1);
 				Game.moveToLevel(nextLevel);
 			}
 			else {
-				Game.getState().getMap().setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
+				Game.state.map.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
 			}
 		}
 		else {
-			Game.getState().getMap().setMessage("There are no stairs here.");
+			Game.state.map.setMessage("There are no stairs here.");
 		}
 	}
 
