@@ -1,19 +1,15 @@
-Player = function (params)
-{
+Player = function (params) {
 	return createPlayer(params);
 };
 
-function createPlayer(params)
-{
+function createPlayer(params) {
 	"use strict";
 
 	// Public methods
-	function handleEvent(event)
-	{
+	function handleEvent(event) {
 		// Process user input
 		var action = PlayerActions[event.keyCode];
-		if (action)
-		{
+		if (action) {
 			action();
 
 			window.removeEventListener("keypress", player);
@@ -22,8 +18,7 @@ function createPlayer(params)
 		}
 	}
 
-	function act()
-	{
+	function act() {
 		Game.getState().getEngine().lock();
 
 		// Wait for user input, do stuff when the user hits a key

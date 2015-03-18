@@ -1,51 +1,43 @@
-createHappyIdleAI = function (dwarf, map, params)
-{
+createHappyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 	var path = [];
 
-	function idleAI()
-	{
-		if (path.length === 0)
-		{
+	function idleAI() {
+		if (path.length === 0) {
 			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
 		}
 
 		AI.movePath(path);
 
-		if (AI.catchedPlayer())
-		{
+		if (AI.catchedPlayer()) {
 			return;
 		}
 
-		if (AI.spottedPlayer())
-		{
+		if (AI.spottedPlayer()) {
 			AI.changeToTrackingAI(createHappyTrackingAI);
 		}
 	}
+
 	return idleAI;
 };
 
-function createHappyTrackingAI(dwarf, map, params)
-{
+function createHappyTrackingAI(dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 
-	function tellJoke()
-	{
+	function tellJoke() {
 		var joke = params.jokes.random();
 		map.setMessage("\"" + joke + "\"");
 	}
 
-	function lostCallback()
-	{
+	function lostCallback() {
 		dwarf.setAI(createHappyIdleAI(dwarf, map, params));
 	}
 
-	function stoppedCallback()
-	{
+	function stoppedCallback() {
 		tellJoke();
 	}
 

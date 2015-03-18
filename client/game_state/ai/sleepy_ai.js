@@ -1,27 +1,23 @@
-createSleepyIdleAI = function (dwarf, map, params)
-{
+createSleepyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 
-	function idleAI()
-	{
-		if (AI.spottedPlayer())
-		{
+	function idleAI() {
+		if (AI.spottedPlayer()) {
 			AI.changeToTrackingAI(createSleepyTrackingAI);
 		}
 	}
+
 	return idleAI;
 };
 
-function createSleepyTrackingAI(dwarf, map, params)
-{
+function createSleepyTrackingAI(dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 
-	function lostCallback()
-	{
+	function lostCallback() {
 		dwarf.setAI(createSleepyIdleAI(dwarf, map, params));
 	}
 

@@ -1,5 +1,4 @@
-Stairs = function (params)
-{
+Stairs = function (params) {
 	"use strict";
 
 	return createStairs(params);
@@ -7,15 +6,13 @@ Stairs = function (params)
 
 Stairs.type = "Stairs";
 
-function createStairs(params)
-{
+function createStairs(params) {
 	"use strict";
 
 	check(params.down, Boolean);
 
 	// Public methods
-	function isDown()
-	{
+	function isDown() {
 		return params.down;
 	}
 

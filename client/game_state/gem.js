@@ -2,8 +2,7 @@
  * Create a new gem.
  * @returns {*}
  */
-createGem = function (params)
-{
+createGem = function (params) {
 	"use strict";
 
 	params.char = "*";

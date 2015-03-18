@@ -1,46 +1,39 @@
-createDopeyIdleAI = function (dwarf, map, params)
-{
+createDopeyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 	var path = [];
 
-	function idleAI()
-	{
+	function idleAI() {
 		var pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
-		if (pathChange)
-		{
+		if (pathChange) {
 			path = [];
 		}
 
-		if (path.length === 0)
-		{
+		if (path.length === 0) {
 			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
 		}
 
 		AI.movePath(path);
 
-		if (AI.catchedPlayer())
-		{
+		if (AI.catchedPlayer()) {
 			return;
 		}
 
-		if (AI.spottedPlayer())
-		{
+		if (AI.spottedPlayer()) {
 			AI.changeToTrackingAI(createDopeyTrackingAI);
 		}
 	}
+
 	return idleAI;
 };
 
-function createDopeyTrackingAI(dwarf, map, params)
-{
+function createDopeyTrackingAI(dwarf, map, params) {
 	"use strict";
 
 	var AI = createAI(dwarf, map, params);
 
-	function lostCallback()
-	{
+	function lostCallback() {
 		dwarf.setAI(createDopeyIdleAI(dwarf, map, params));
 	}
 

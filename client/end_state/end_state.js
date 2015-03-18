@@ -1,10 +1,8 @@
-EndState = function (params)
-{
+EndState = function (params) {
 	return createEndState(params);
 };
 
-function createEndState(params)
-{
+function createEndState(params) {
 	"use strict";
 
 	check(params.won, Boolean);
@@ -12,9 +10,8 @@ function createEndState(params)
 	check(params.gems, Number);
 
 	// Private methods
-	function draw()
-	{
-		Game.getDisplay().clear();
+	function draw() {
+		Game.display.clear();
 
 		var text = params.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
 		Game.drawTextCentered(5, text);
@@ -23,24 +20,20 @@ function createEndState(params)
 		Game.drawTextCentered(9, "%b{gray}New Game");
 	}
 
-	function initEngine()
-	{
+	function initEngine() {
 		state.getScheduler().add(state, true);
 
 		state.getEngine().start();
 	}
 
 	// Public methods
-	function handleEvent(event)
-	{
+	function handleEvent(event) {
 		check(event.keyCode, Number);
 
 		// Process user input
-		if (event.keyCode === ROT.VK_RETURN)
-		{
+		if (event.keyCode === ROT.VK_RETURN) {
 			window.removeEventListener("keydown", state);
-			Meteor.call("newGame", function newGameCallback(error, game)
-			{
+			Meteor.call("newGame", function newGameCallback(error, game) {
 				Game.changeState(GameState, game);
 			});
 		}
@@ -49,21 +42,18 @@ function createEndState(params)
 	var options = {};
 	options.name = "EndState";
 
-	options.act = function act()
-	{
+	options.act = function act() {
 		draw();
 
 		state.getEngine().lock();
 		window.addEventListener("keydown", state);
 	};
 
-	options.enter = function enter()
-	{
+	options.enter = function enter() {
 		initEngine();
 	};
 
-	options.exit = function exit()
-	{
+	options.exit = function exit() {
 		state.getEngine().lock();
 		state.getScheduler().clear();
 	};

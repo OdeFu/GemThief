@@ -6,8 +6,7 @@
  * - y: the y-coordinate, defaults to 0
  * @returns {{}} a new tile object
  */
-createTile = function (params)
-{
+createTile = function (params) {
 	"use strict";
 
 	// Private fields
@@ -18,34 +17,28 @@ createTile = function (params)
 	var _color;
 
 	// Public methods
-	function getX()
-	{
+	function getX() {
 		return _x;
 	}
 
-	function getY()
-	{
+	function getY() {
 		return _y;
 	}
 
-	function isEmpty()
-	{
+	function isEmpty() {
 		return _entities.length === 1;
 	}
 
-	function isBlocking()
-	{
+	function isBlocking() {
 		return getHighestEntity().isBlocking();
 	}
 
-	function getForegroundColor()
-	{
+	function getForegroundColor() {
 		var entityColor = ROT.Color.fromString(getHighestEntity().getColor());
 		var ambientLight = [100, 100, 100];
 		var light = ambientLight.slice(0);
 
-		if (_color)
-		{
+		if (_color) {
 			light = ROT.Color.add(light, _color);
 		}
 
@@ -53,66 +46,53 @@ createTile = function (params)
 		return ROT.Color.toRGB(finalColor);
 	}
 
-	function getBackgroundColor()
-	{
+	function getBackgroundColor() {
 		return "black";
 	}
 
-	function isSeen()
-	{
+	function isSeen() {
 		return _seen;
 	}
 
-	function setSeen(seen)
-	{
+	function setSeen(seen) {
 		_seen = seen;
 	}
 
-	function getChar()
-	{
+	function getChar() {
 		return _seen ? getHighestEntity().getChar() : " ";
 	}
 
-	function addEntity(entity)
-	{
+	function addEntity(entity) {
 		_entities[entity.getPriority()] = entity;
 	}
 
-	function removeEntity(entity)
-	{
+	function removeEntity(entity) {
 		_entities[entity.getPriority()] = null;
 	}
 
-	function getHighestEntity()
-	{
-		for (var i = _entities.length - 1; i >= 0; i--)
-		{
-			if (_entities[i])
-			{
+	function getHighestEntity() {
+		for (var i = _entities.length - 1; i >= 0; i--) {
+			if (_entities[i]) {
 				return _entities[i];
 			}
 		}
 		return null;
 	}
 
-	function getEntity(index)
-	{
+	function getEntity(index) {
 		return _entities[index];
 	}
 
-	function setColor(color)
-	{
+	function setColor(color) {
 		_color = color;
 	}
 
-	function getColor()
-	{
+	function getColor() {
 		return _color;
 	}
 
-	function toPoint()
-	{
-		return { x: _x, y: _y };
+	function toPoint() {
+		return {x: _x, y: _y};
 	}
 
 	// Create the actual tile
@@ -140,13 +120,11 @@ createTile = function (params)
 	return tile;
 };
 
-FloorEntity = function (params)
-{
+FloorEntity = function (params) {
 	return createFloorEntity(params);
 };
 
-function createFloorEntity(params)
-{
+function createFloorEntity(params) {
 	"use strict";
 
 	params.char = '.';
@@ -155,13 +133,11 @@ function createFloorEntity(params)
 	return createEntity(params);
 }
 
-Wall = function (params)
-{
+Wall = function (params) {
 	return createWall(params);
 };
 
-function createWall(params)
-{
+function createWall(params) {
 	"use strict";
 
 	params.char = "#";

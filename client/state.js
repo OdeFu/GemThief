@@ -5,8 +5,7 @@ var idCounter = 0;
  * @param options Supported options are the name, scheduler and act, enter and exit methods.
  * @returns {{}}
  */
-createState = function (options)
-{
+createState = function (options) {
 	"use strict";
 
 	// Private fields
@@ -17,37 +16,30 @@ createState = function (options)
 	var _engine = new ROT.Engine(_scheduler);
 
 	// Public methods
-	function getId()
-	{
+	function getId() {
 		return _id;
 	}
 
-	function getName()
-	{
+	function getName() {
 		return _name;
 	}
 
-	function getEngine()
-	{
+	function getEngine() {
 		return _engine;
 	}
 
-	function getScheduler()
-	{
+	function getScheduler() {
 		return _scheduler;
 	}
 
 	// Abstract methods
-	function act()
-	{
+	function act() {
 	}
 
-	function enter()
-	{
+	function enter() {
 	}
 
-	function exit()
-	{
+	function exit() {
 	}
 
 	var state = {};

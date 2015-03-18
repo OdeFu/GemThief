@@ -1,9 +1,5 @@
-Entity =
-{
-	FLOOR: 0,
-	ITEM: 1,
-	ENTITY: 2,
-	WALL: 3
+Entity = {
+	FLOOR: 0, ITEM: 1, ENTITY: 2, WALL: 3
 };
 
 /**
@@ -18,8 +14,7 @@ Entity =
  *  - type: The type string for the entity, defaults to "<unknown>"
  * @returns {{}}
  */
-createEntity = function (params)
-{
+createEntity = function (params) {
 	"use strict";
 
 	// Private fields
@@ -33,64 +28,52 @@ createEntity = function (params)
 	var _type = params.type || "<unknown>";
 
 	// Public methods
-	function getX()
-	{
+	function getX() {
 		return _x;
 	}
 
-	function getY()
-	{
+	function getY() {
 		return _y;
 	}
 
-	function setX(x)
-	{
+	function setX(x) {
 		_x = x;
 	}
 
-	function setY(y)
-	{
+	function setY(y) {
 		_y = y;
 	}
 
-	function getChar()
-	{
+	function getChar() {
 		return _char;
 	}
 
-	function getColor()
-	{
+	function getColor() {
 		return _color;
 	}
 
-	function getPriority()
-	{
+	function getPriority() {
 		return _priority;
 	}
 
-	function draw(display)
-	{
+	function draw(display) {
 		display.draw(_x, _y, _char, _color);
 	}
 
-	function isBlocking()
-	{
+	function isBlocking() {
 		return _blocks;
 	}
 
-	function isDungeonChar()
-	{
+	function isDungeonChar() {
 		return _dungeonChar;
 	}
 
-	function getType()
-	{
+	function getType() {
 		return _type;
 	}
 
-	function toPoint()
-	{
-		return { x: _x, y: _y };
+	function toPoint() {
+		return {x: _x, y: _y};
 	}
 
 	var entity = {};

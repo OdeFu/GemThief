@@ -1,10 +1,8 @@
-GameState = function (params)
-{
+GameState = function (params) {
 	return createGameState(params);
 };
 
-function createGameState(params)
-{
+function createGameState(params) {
 	"use strict";
 
 	check(params.seed, Number);
@@ -18,20 +16,17 @@ function createGameState(params)
 	ROT.RNG.setSeed(params.seed);
 
 	// Private methods
-	function draw()
-	{
-		Game.getDisplay().clear();
+	function draw() {
+		Game.display.clear();
 
-		_map.draw(Game.getDisplay());
+		_map.draw(Game.display);
 	}
 
-	function initEngine ()
-	{
+	function initEngine() {
 		state.getScheduler().add(state, true);
 		state.getScheduler().add(_map.getPlayer(), true);
 
-		for (var i = 0; i < state.getMap().getDwarves().length; i++)
-		{
+		for (var i = 0; i < state.getMap().getDwarves().length; i++) {
 			state.getScheduler().add(state.getMap().getDwarves()[i], true);
 		}
 
@@ -42,13 +37,11 @@ function createGameState(params)
 	options.name = "GameState";
 	options.scheduler = ROT.Scheduler.Simple;
 
-	options.act = function act()
-	{
+	options.act = function act() {
 		draw();
 	};
 
-	options.enter = function enter()
-	{
+	options.enter = function enter() {
 		params.width = 80;
 		params.height = 23;
 		_map = createMap(params);
@@ -56,20 +49,17 @@ function createGameState(params)
 		initEngine();
 	};
 
-	options.exit = function exit()
-	{
+	options.exit = function exit() {
 		state.getEngine().lock();
 		state.getScheduler().clear();
 	};
 
 	// Public methods
-	function getMap()
-	{
+	function getMap() {
 		return _map;
 	}
 
-	function getPlayerStats()
-	{
+	function getPlayerStats() {
 		return _playerStats;
 	}
 

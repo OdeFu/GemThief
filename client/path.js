@@ -1,20 +1,17 @@
-Path =
-{
-	generatePath: function (from, to, topology)
-	{
+Path = {
+	generatePath: function (from, to, topology) {
 		"use strict";
 
 		topology = topology || 4;
 
-		function passableCallback(x, y)
-		{
+		function passableCallback(x, y) {
 			return !Game.getState().getMap().isBlocking(x, y);
 		}
 
-		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
+		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, {topology: topology});
 		var path = [];
-		function pathCallback(x, y)
-		{
+
+		function pathCallback(x, y) {
 			path.push([x, y]);
 		}
 
@@ -25,14 +22,12 @@ Path =
 		return path;
 	},
 
-	getSeenTiles: function (from, radius)
-	{
+	getSeenTiles: function (from, radius) {
 		"use strict";
 
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility)
-		{
+		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
 			var tile = Game.getState().getMap().getTile(x, y);
 			tiles.push(tile);
 		});
@@ -40,19 +35,16 @@ Path =
 		return tiles;
 	},
 
-	runFOV: function (from, radius, callback)
-	{
+	runFOV: function (from, radius, callback) {
 		"use strict";
 
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility)
-		{
+		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
 			callback(x, y, r, visibility);
 		});
 	}
 };
 
-function lightPass(x, y)
-{
+function lightPass(x, y) {
 	return !Game.getState().getMap().isBlocking(x, y);
 }

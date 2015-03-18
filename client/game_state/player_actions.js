@@ -1,27 +1,22 @@
-function createMoveAction(dirKey)
-{
+function createMoveAction(dirKey) {
 	"use strict";
 
-	function checkGem(player)
-	{
+	function checkGem(player) {
 		var gem = Game.getState().getMap().getGem(player.getX(), player.getY());
-		if (gem)
-		{
+		if (gem) {
 			Game.getState().getMap().setMessage("You picked up a gem.", 1);
 			Game.getState().getPlayerStats().gems += 1;
 			Game.getState().getMap().removeGem(gem);
 		}
 	}
 
-	function moveAction()
-	{
+	function moveAction() {
 		var player = Game.getState().getMap().getPlayer();
 		var dir = ROT.DIRS[8][dirKey];
 		var newX = player.getX() + dir[0];
 		var newY = player.getY() + dir[1];
 
-		if (Game.getState().getMap().isBlocking(newX, newY))
-		{
+		if (Game.getState().getMap().isBlocking(newX, newY)) {
 			/* Cannot move in this direction */
 			return;
 		}
@@ -33,35 +28,31 @@ function createMoveAction(dirKey)
 		var prevMoves = Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()];
 		Game.getState().getPlayerStats().moves[Game.getState().getMap().getLevel()] = prevMoves ? prevMoves + 1 : 1;
 	}
+
 	return moveAction;
 }
 
-function createClimbStairsAction(down)
-{
+function createClimbStairsAction(down) {
 	"use strict";
 
-	function climbStairsAction()
-	{
+	function climbStairsAction() {
 		var player = Game.getState().getMap().getPlayer();
 		var tile = Game.getState().getMap().getTile(player.getX(), player.getY());
 		var entity = tile.getEntity(Entity.FLOOR);
-		if (entity.getType() === Stairs.type)
-		{
-			if (entity.isDown() === down)
-			{
+		if (entity.getType() === Stairs.type) {
+			if (entity.isDown() === down) {
 				var nextLevel = Game.getState().getMap().getLevel() + (down ? 1 : -1);
 				Game.moveToLevel(nextLevel);
 			}
-			else
-			{
+			else {
 				Game.getState().getMap().setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
 			}
 		}
-		else
-		{
+		else {
 			Game.getState().getMap().setMessage("There are no stairs here.");
 		}
 	}
+
 	return climbStairsAction;
 }
 

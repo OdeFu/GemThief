@@ -3,13 +3,11 @@
  * @param params
  * - name: The name of the dwarf, must be one from the DWARF_NAMES array, required
  */
-Dwarf = function (params)
-{
+Dwarf = function (params) {
 	return createDwarf(params);
 };
 
-function createDwarf(params)
-{
+function createDwarf(params) {
 	"use strict";
 
 	check(params.name, String);
@@ -18,13 +16,11 @@ function createDwarf(params)
 	// Private fields
 
 	// Public methods
-	function getName()
-	{
+	function getName() {
 		return params.name;
 	}
 
-	function setAI(ai)
-	{
+	function setAI(ai) {
 		dwarf.act = ai;
 	}
 
