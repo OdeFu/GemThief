@@ -33,7 +33,7 @@ createMap = function (params)
 	{
 		var digger = new ROT.Map.Digger(_width, _height, params);
 
-		var digCallback = function (x, y, value)
+		function digCallback(x, y, value)
 		{
 			var tile = createTile({ x: x, y: y });
 			var wall = value === 1;
@@ -43,7 +43,7 @@ createMap = function (params)
 			}
 
 			_tiles.push(tile);
-		};
+		}
 		digger.create(digCallback.bind(this));
 	}
 
@@ -105,7 +105,7 @@ createMap = function (params)
 	function createDwarf()
 	{
 		var dwarves = params.config.dwarves.slice(0);
-		dwarves.sort(function (dwarf1, dwarf2)
+		dwarves.sort(function dwarfSort(dwarf1, dwarf2)
 		{
 			return dwarf1.level - dwarf2.level;
 		});
@@ -253,7 +253,7 @@ createMap = function (params)
 	{
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(_player.getX(), _player.getY(), 2, function (x, y, r, visibility)
+		fov.compute(_player.getX(), _player.getY(), 2, function fovCallback(x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
 			tile.setSeen(true);
@@ -261,7 +261,7 @@ createMap = function (params)
 		});
 
 		// Do another pass for tiles that have light
-		fov.compute(_player.getX(), _player.getY(), 20, function (x, y, r, visibility)
+		fov.compute(_player.getX(), _player.getY(), 20, function fovCallback(x, y, r, visibility)
 		{
 			var tile = getTile(x, y);
 			if (tile.getColor())

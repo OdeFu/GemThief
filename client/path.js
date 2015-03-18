@@ -6,17 +6,17 @@ Path =
 
 		topology = topology || 4;
 
-		var passableCallback = function (x, y)
+		function passableCallback(x, y)
 		{
 			return !Game.getState().getMap().isBlocking(x, y);
-		};
+		}
 
 		var astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
 		var path = [];
-		var pathCallback = function (x, y)
+		function pathCallback(x, y)
 		{
 			path.push([x, y]);
-		};
+		}
 
 		astar.compute(from.x, from.y, pathCallback);
 
@@ -31,7 +31,7 @@ Path =
 
 		var tiles = [];
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
+		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility)
 		{
 			var tile = Game.getState().getMap().getTile(x, y);
 			tiles.push(tile);
@@ -45,7 +45,7 @@ Path =
 		"use strict";
 
 		var fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function (x, y, r, visibility)
+		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility)
 		{
 			callback(x, y, r, visibility);
 		});

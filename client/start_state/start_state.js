@@ -30,7 +30,7 @@ function createStartState()
 		if (event.keyCode === ROT.VK_RETURN)
 		{
 			window.removeEventListener("keydown", state);
-			Meteor.call("newGame", function (error, game)
+			Meteor.call("newGame", function newGameCallback(error, game)
 			{
 				Game.changeState(GameState, game);
 			});

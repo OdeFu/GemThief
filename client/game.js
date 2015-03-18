@@ -36,7 +36,7 @@ createGame = function ()
 
 	function gameOver()
 	{
-		Meteor.call("update", _state.getPlayerStats(), function (error, data)
+		Meteor.call("update", _state.getPlayerStats(), function updateCallback(error, data)
 		{
 			changeState(EndState, data);
 		});
@@ -52,7 +52,7 @@ createGame = function ()
 		}
 		else
 		{
-			Meteor.call("loadLevel", nextLevel, function (error, game)
+			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game)
 			{
 				changeState(GameState, game);
 			});
