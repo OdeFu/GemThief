@@ -1,8 +1,8 @@
-StartState = {
-	instantiate: function () {
-		"use strict";
+"use strict";
 
-		const state = State.instantiate({ name: "StartState" });
+GemThief.StartState = {
+	instantiate: function () {
+		const state = GemThief.State.instantiate({ name: "GemThief.StartState" });
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
@@ -14,14 +14,14 @@ StartState = {
 // Public methods
 
 function act() {
-	draw();
+	_draw();
 
 	this.engine.lock();
 	window.addEventListener("keydown", this);
 }
 
 function enter() {
-	initEngine(this);
+	_initEngine(this);
 }
 
 function exit() {
@@ -30,32 +30,26 @@ function exit() {
 }
 
 function handleEvent(event) {
-	"use strict";
-
 	// Process user input
 	if (event.keyCode === ROT.VK_RETURN) {
 		window.removeEventListener("keydown", this);
 
 		Meteor.call("newGame", function newGameCallback(error, game) {
-			GemThief.Game.changeState(GameState.instantiate(game));
+			GemThief.Game.changeState(GemThief.GameState.instantiate(game));
 		});
 	}
 }
 
 // Private methods
 
-function draw() {
-	"use strict";
-
+function _draw() {
 	GemThief.Game.display.clear();
 	GemThief.Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
 	GemThief.Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
 	GemThief.Game.drawTextCentered(8, "%b{gray}Press Enter");
 }
 
-function initEngine(state) {
-	"use strict";
-
+function _initEngine(state) {
 	state.scheduler.add(state, true);
 	state.engine.start();
 }

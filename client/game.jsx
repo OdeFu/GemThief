@@ -1,13 +1,13 @@
 "use strict";
 
-GemThief.GemThief.Game = {
+GemThief.Game = {
 	init: function () {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
 			this.display = new ROT.Display();
 			container.appendChild(this.display.getContainer());
 
-			this.changeState(StartState.instantiate());
+			this.changeState(GemThief.StartState.instantiate());
 		}
 		else {
 			container.textContent = "Your browser is not supported!";
@@ -25,7 +25,7 @@ GemThief.GemThief.Game = {
 
 	gameOver: function () {
 		Meteor.call("update", this.state.playerStats, function updateCallback(error, data) {
-			this.changeState(EndState.instantiate(data));
+			this.changeState(GemThief.EndState.instantiate(data));
 		});
 	},
 
@@ -37,7 +37,7 @@ GemThief.GemThief.Game = {
 		}
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {
-				this.changeState(GameState.instantiate(game));
+				this.changeState(GemThief.GameState.instantiate(game));
 			});
 		}
 	},
