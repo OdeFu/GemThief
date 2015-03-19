@@ -1,6 +1,6 @@
-Game = createGame();
+"use strict";
 
 Meteor.startup(function startup() {
-	Game.init();
+	GemThief.Game.init();
 });
 

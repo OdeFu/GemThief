@@ -1,81 +1,56 @@
-createGame = function () {
-	"use strict";
+"use strict";
 
-	// Private fields
-	let _display;
-	let _state;
-
-	// Public methods
-	function init() {
+GemThief.Game = {
+	init: function () {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
-			_display = new ROT.Display();
-			container.appendChild(_display.getContainer());
+			this.display = new ROT.Display();
+			container.appendChild(this.display.getContainer());
 
-			changeState(StartState.instantiate());
+			this.changeState(StartState.instantiate());
 		}
 		else {
 			container.textContent = "Your browser is not supported!";
 		}
-	}
+	},
 
-	function changeState(newState) {
-		if (_state) {
-			_state.exit();
+	changeState: function (newState) {
+		if (this.state) {
+			this.state.exit();
 		}
 
-		_state = newState;
-		_state.enter();
-	}
+		this.state = newState;
+		this.state.enter();
+	},
 
-	function gameOver() {
-		Meteor.call("update", _state.playerStats, function updateCallback(error, data) {
-			changeState(EndState.instantiate(data));
+	gameOver: function () {
+		Meteor.call("update", this.state.playerStats, function updateCallback(error, data) {
+			this.changeState(EndState.instantiate(data));
 		});
-	}
+	},
 
-	function moveToLevel(nextLevel) {
+	moveToLevel: function (nextLevel) {
 		if (nextLevel === 0) {
 			// We exited the mine
-			_state.playerStats.won = true;
-			gameOver();
+			this.state.playerStats.won = true;
+			this.gameOver();
 		}
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {
-				changeState(GameState.instantiate(game));
+				this.changeState(GameState.instantiate(game));
 			});
 		}
-	}
+	},
 
-	function drawTextCentered(y, text) {
+	drawTextCentered: function (y, text) {
 		const textSize = ROT.Text.measure(text);
-		const x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
-		_display.drawText(x, y, text);
-	}
+		const x = this.display.getOptions().width * 0.5 - textSize.width * 0.5;
+		this.display.drawText(x, y, text);
+	},
 
-	function drawTextRight(y, text) {
+	drawTextRight: function (y, text) {
 		const textSize = ROT.Text.measure(text);
-		const x = _display.getOptions().width - textSize.width;
-		_display.drawText(x, y, text);
+		const x = this.display.getOptions().width - textSize.width;
+		this.display.drawText(x, y, text);
 	}
-
-	return {
-		get display() {
-			return _display;
-		},
-
-		get state() {
-			return _state;
-		},
-
-		gameOver:         gameOver,
-		init:             init,
-		drawTextCentered: drawTextCentered,
-		drawTextRight:    drawTextRight,
-		changeState:      changeState,
-		moveToLevel:      moveToLevel
-	};
 };
-
-
-
