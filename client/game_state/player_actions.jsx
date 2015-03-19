@@ -38,8 +38,8 @@ function createClimbStairsAction(down) {
 	function climbStairsAction() {
 		const player = GemThief.Game.state.map.player;
 		const tile = GemThief.Game.state.map.getTile(player.x, player.y);
-		const entity = tile.getEntity(Entity.FLOOR);
-		if (entity.type === Stairs.type) {
+		const entity = tile.getEntity(GemThief.Entity.FLOOR);
+		if (entity.type === GemThief.Stairs.type) {
 			if (entity.down === down) {
 				const nextLevel = GemThief.Game.state.map.level + (down ? 1 : -1);
 				GemThief.Game.moveToLevel(nextLevel);
@@ -68,6 +68,6 @@ PlayerActions[ROT.VK_END] = createMoveAction(5);
 PlayerActions[ROT.VK_LEFT] = createMoveAction(6);
 PlayerActions[ROT.VK_HOME] = createMoveAction(7);
 
-// Stairs
+// GemThief.Stairs
 PlayerActions[ROT.VK_LESS_THAN] = createClimbStairsAction(false);
 PlayerActions[ROT.VK_GREATER_THAN] = createClimbStairsAction(true);

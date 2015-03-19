@@ -1,15 +1,15 @@
-/**
- * Create a new gem.
- * @returns {*}
- */
-Gem = {
-	instantiate: function (params) {
-		"use strict";
+"use strict";
 
+GemThief.Gem = {
+	/**
+	 * Create a new gem.
+	 * @returns {GemThief.Gem}
+	 */
+	instantiate: function (params) {
 		params.char = "*";
 		params.color = "orange";
-		params.priority = Entity.ITEM;
+		params.priority = GemThief.Entity.ITEM;
 
-		return Entity.instantiate(params);
+		return GemThief.Entity.instantiate(params);
 	}
 };

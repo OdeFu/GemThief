@@ -1,20 +1,20 @@
-Dwarf = {
+"use strict";
+
+GemThief.Dwarf = {
 	/**
 	 * Creates a new dwarf.
 	 * @param params
 	 * - name: The name of the dwarf, must be one from the DWARF_NAMES array, required
 	 */
 	instantiate: function (params) {
-		"use strict";
-
 		check(params.name, String);
 		check(params.color, String);
 
 		params.char = "P";
-		params.priority = Entity.ENTITY;
+		params.priority = GemThief.Entity.ENTITY;
 
-		const dwarf = Entity.instantiate(params);
-		dwarf.nameame = params.name;
+		const dwarf = GemThief.Entity.instantiate(params);
+		dwarf.name = params.name;
 
 		dwarf.setAI = setAI.bind(dwarf);
 		return dwarf;

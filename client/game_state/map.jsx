@@ -166,7 +166,7 @@ function _createEntities(map) {
 
 function _createPlayer(map) {
 	const tile = map.findEmptyTile();
-	map.player = Player.instantiate(tile.toPoint());
+	map.player = GemThief.Player.instantiate(tile.toPoint());
 	tile.addEntity(map.player);
 }
 
@@ -181,7 +181,7 @@ function _createDwarf(map) {
 	data.x = tile.x;
 	data.y = tile.y;
 
-	const dwarf = Dwarf.instantiate(data);
+	const dwarf = GemThief.Dwarf.instantiate(data);
 	dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
 	tile.addEntity(dwarf);
 	map.dwarves.push(dwarf);
@@ -192,7 +192,7 @@ function _createGems(map) {
 
 	_.times(map.numGems, function createGem() {
 		const tile = map.findEmptyTile();
-		const gem = Gem.instantiate(tile.toPoint());
+		const gem = GemThief.Gem.instantiate(tile.toPoint());
 		tile.addEntity(gem);
 		map.gems.push(gem);
 	});
@@ -201,11 +201,11 @@ function _createGems(map) {
 function _createStairs(map) {
 	// always create stairs going up where the player is
 	const tile = map.getTile(map.player.x, map.player.y);
-	map.stairs[0] = Stairs.instantiate({ x: map.player.x, y: map.player.y, down: false });
+	map.stairs[0] = GemThief.Stairs.instantiate({ x: map.player.x, y: map.player.y, down: false });
 	tile.addEntity(map.stairs[0]);
 
 	const downTile = map.findEmptyTile();
-	map.stairs[1] = Stairs.instantiate({ x: downTile.x, y: downTile.y, down: true });
+	map.stairs[1] = GemThief.Stairs.instantiate({ x: downTile.x, y: downTile.y, down: true });
 	downTile.addEntity(map.stairs[1]);
 }
 
@@ -213,10 +213,10 @@ function _dig(map) {
 	const digger = new ROT.Map.Digger(map.width, map.height, map.params);
 
 	function digCallback(x, y, value) {
-		const tile = Tile.instantiate({ x: x, y: y });
+		const tile = GemThief.Tile.instantiate({ x: x, y: y });
 		const wall = value === 1;
 		if (wall) {
-			tile.addEntity(Wall.instantiate({ x: x, y: y }));
+			tile.addEntity(GemThief.Wall.instantiate({ x: x, y: y }));
 		}
 
 		map.tiles.push(tile);

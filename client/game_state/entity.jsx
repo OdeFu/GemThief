@@ -1,4 +1,6 @@
-Entity = {
+"use strict";
+
+GemThief.Entity = {
 	/**
 	 * Create a new entity.
 	 * @param params object containing the parameters:
@@ -12,8 +14,6 @@ Entity = {
 	 * @returns {{}}
 	 */
 	instantiate: function (params) {
-		"use strict";
-
 		const entity = {};
 		entity.x = params.x || 0;
 		entity.y = params.y || 0;
@@ -31,10 +31,10 @@ Entity = {
 	}
 };
 
-ObjectUtils.addConstantProperty(Entity, "FLOOR", 0);
-ObjectUtils.addConstantProperty(Entity, "ITEM", 1);
-ObjectUtils.addConstantProperty(Entity, "ENTITY", 2);
-ObjectUtils.addConstantProperty(Entity, "WALL", 3);
+ObjectUtils.addConstantProperty(GemThief.Entity, "FLOOR", 0);
+ObjectUtils.addConstantProperty(GemThief.Entity, "ITEM", 1);
+ObjectUtils.addConstantProperty(GemThief.Entity, "ENTITY", 2);
+ObjectUtils.addConstantProperty(GemThief.Entity, "WALL", 3);
 
 // Public methods
 

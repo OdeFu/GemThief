@@ -1,4 +1,6 @@
-Tile = {
+"use strict";
+
+GemThief.Tile = {
 	/**
 	 * Creates a new tile.
 	 *
@@ -8,8 +10,6 @@ Tile = {
 	 * @returns {{}} a new tile object
 	 */
 	instantiate: function (params) {
-		"use strict";
-
 		const tile = {};
 		tile.x = params.x || 0;
 		tile.y = params.y || 0;
@@ -20,7 +20,6 @@ Tile = {
 		tile.getChar = getChar.bind(tile);
 		tile.getForegroundColor = getForegroundColor.bind(tile);
 		tile.getBackgroundColor = getBackgroundColor.bind(tile);
-
 		tile.addEntity = addEntity.bind(tile);
 		tile.removeEntity = removeEntity.bind(tile);
 		tile.isEmpty = isEmpty.bind(tile);
@@ -29,7 +28,7 @@ Tile = {
 		tile.toPoint = toPoint.bind(tile);
 
 		// Initialize the tile
-		tile.addEntity(FloorEntity.instantiate(tile.toPoint()));
+		tile.addEntity(GemThief.FloorEntity.instantiate(tile.toPoint()));
 
 		return tile;
 	}
@@ -84,26 +83,22 @@ function toPoint() {
 	return { x: this.x, y: this.y };
 }
 
-FloorEntity = {
+GemThief.FloorEntity = {
 	instantiate: function (params) {
-		"use strict";
-
 		params.char = '.';
 		params.dungeonChar = true;
-		params.priority = Entity.FLOOR;
-		return Entity.instantiate(params);
+		params.priority = GemThief.Entity.FLOOR;
+		return GemThief.Entity.instantiate(params);
 	}
 };
 
-Wall = {
+GemThief.Wall = {
 	instantiate: function (params) {
-		"use strict";
-
 		params.char = "#";
 		params.color = "#888888";
 		params.blocks = true;
 		params.dungeonChar = true;
-		params.priority = Entity.WALL;
-		return Entity.instantiate(params);
+		params.priority = GemThief.Entity.WALL;
+		return GemThief.Entity.instantiate(params);
 	}
 };

@@ -1,12 +1,12 @@
-Player = {
-	instantiate: function (params) {
-		"use strict";
+"use strict";
 
-		params.priority = Entity.ENTITY;
+GemThief.Player = {
+	instantiate: function (params) {
+		params.priority = GemThief.Entity.ENTITY;
 		params.char = "@";
 		params.color = "white";
 
-		const player = Entity.instantiate(params);
+		const player = GemThief.Entity.instantiate(params);
 		player.act = act.bind(player);
 		return player;
 	}

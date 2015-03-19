@@ -1,18 +1,18 @@
-Stairs = {
-	type: "Stairs",
+"use strict";
+
+GemThief.Stairs = {
+	type: "GemThief.Stairs",
 
 	instantiate: function (params) {
-		"use strict";
-
 		check(params.down, Boolean);
 
 		params.char = params.down ? ">" : "<";
 		params.color = "brown";
 		params.dungeonChar = true;
-		params.priority = Entity.FLOOR;
-		params.type = Stairs.type;
+		params.priority = GemThief.Entity.FLOOR;
+		params.type = GemThief.Stairs.type;
 
-		const stairs = Entity.instantiate(params);
+		const stairs = GemThief.Entity.instantiate(params);
 		stairs.down = params.down;
 		return stairs;
 	}
