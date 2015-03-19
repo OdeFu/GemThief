@@ -5,7 +5,6 @@
 			"level": 6,
 			"color": "orange",
 			"startLocation": "randomStartLocation",
-			"idleAI": "createDocIdleAI",
 			"idleAIConfig": {
 				"radius": 9,
 				"noticeMessage": "Doc hmpfs as he spots you skulking in the tunnels."
@@ -25,7 +24,6 @@
 			"level": 7,
 			"color": "red",
 			"startLocation": "lightStartLocation",
-			"idleAI": "createGrumpyIdleAI",
 			"idleAIConfig": {
 				"radius": 10,
 				"noticeMessage": "Grumpy growls as he notices you and starts to stomp towards you."
@@ -39,7 +37,6 @@
 			"level": 1,
 			"color": "green",
 			"startLocation": "randomStartLocation",
-			"idleAI": "createDopeyIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
 				"noticeMessage": "Dopey looks funny and then starts skipping at you.",
@@ -57,7 +54,6 @@
 			"level": 5,
 			"color": "yellow",
 			"startLocation": "randomStartLocation",
-			"idleAI": "createHappyIdleAI",
 			"idleAIConfig": {
 				"radius": 8,
 				"noticeMessage": "Happy laughs maniacally and starts following you."
@@ -81,7 +77,6 @@
 			"level": 2,
 			"color": "brown",
 			"startLocation": "darkStartLocation",
-			"idleAI": "createSleepyIdleAI",
 			"idleAIConfig": {
 				"radius": 3,
 				"noticeMessage": "Sleepy yawns and stretches before picking up his pick and starting towards you."
@@ -98,7 +93,6 @@
 			"level": 3,
 			"color": "goldenrod",
 			"startLocation": "lightStartLocation",
-			"idleAI": "createSneezyIdleAI",
 			"idleAIConfig": {
 				"radius": 5,
 				"noticeMessage": "Sneezy turns his red eyes towards you."
@@ -117,7 +111,6 @@
 			"level": 4,
 			"color": "purple",
 			"startLocation": "brightLightStartLocation",
-			"idleAI": "createBashfulIdleAI",
 			"idleAIConfig": {
 				"radius": 6,
 				"noticeMessage": "Bashful meeps loudly as he notices you."

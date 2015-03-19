@@ -1,21 +1,21 @@
-createBashfulIdleAI = function (dwarf, map, params) {
-	"use strict";
+"use strict";
 
-	const AI = createAI(dwarf, map, params);
+GemThief.AI.Bashful = {
+	instantiate: function (dwarf, map, params) {
+		const AI = GemThief.AI.instantiate(dwarf, map, params);
 
-	function idleAI() {
-		if (AI.spottedPlayer()) {
-			AI.changeToTrackingAI(createScaredAI);
+		function idleAI() {
+			if (AI.spottedPlayer()) {
+				AI.changeToTrackingAI(createScaredAI);
+			}
 		}
-	}
 
-	return idleAI;
+		return idleAI;
+	}
 };
 
 function createScaredAI(dwarf, map, params) {
-	"use strict";
-
-	const AI = createAI(dwarf, map, params);
+	const AI = GemThief.AI.instantiate(dwarf, map, params);
 	let turnsScared = ROT.RNG.getUniformInt(2, params.scaredAIConfig.maxDuration);
 
 	function scaredAI() {
@@ -46,12 +46,10 @@ function createScaredAI(dwarf, map, params) {
 }
 
 function createBashfulTrackingAI(dwarf, map, params) {
-	"use strict";
-
-	const AI = createAI(dwarf, map, params);
+	const AI = GemThief.AI.instantiate(dwarf, map, params);
 
 	function lostCallback() {
-		dwarf.setAI(createBashfulIdleAI(dwarf, map, params));
+		dwarf.setAI(GemThief.AI.Bashful.instantiate(dwarf, map, params));
 	}
 
 	return AI.getTrackingAI(lostCallback);

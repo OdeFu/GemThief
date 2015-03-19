@@ -1,103 +1,109 @@
-createAI = function (dwarf, map, params) {
-	"use strict";
+"use strict";
 
-	let lastSeenPlayerPosition = map.player.toPoint();
-	let turnsSinceLastSeen = 0;
+GemThief.AI = {
+	instantiate: function (dwarf, map, params) {
+		const AI = {};
+		AI.lastSeenPlayerPosition = map.player.toPoint();
+		AI.turnsSinceLastSeen = 0;
+		AI.dwarf = dwarf;
+		AI.map = map;
+		AI.params = params;
 
-	function catchedPlayer() {
-		const playerPos = map.player.toPoint();
-		if (playerPos.x === dwarf.x && playerPos.y === dwarf.y) {
-			GemThief.Game.state.engine.lock();
-			GemThief.Game.gameOver();
-			return true;
-		}
-		return false;
+		AI.getShortestPathToStairs = getShortestPathToStairs.bind(AI);
+		AI.getVisiblePlayerPosition = getVisiblePlayerPosition.bind(AI);
+		AI.catchedPlayer = catchedPlayer.bind(AI);
+		AI.spottedPlayer = spottedPlayer.bind(AI);
+		AI.changeToTrackingAI = changeToTrackingAI.bind(AI);
+		AI.move = move.bind(AI);
+		AI.movePath = movePath.bind(AI);
+		AI.getTrackingAI = getTrackingAI.bind(AI);
+		return AI;
 	}
+};
 
-	function getVisiblePlayerPosition(radius) {
-		const playerPos = map.player.toPoint();
-		const seenTiles = GemThief.Path.getSeenTiles(dwarf.toPoint(), radius);
-		return _.find(seenTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
+function catchedPlayer() {
+	const playerPos = this.map.player.toPoint();
+	if (playerPos.x === this.dwarf.x && playerPos.y === this.dwarf.y) {
+		GemThief.Game.state.engine.lock();
+		GemThief.Game.gameOver();
+		return true;
 	}
+	return false;
+}
 
-	function getShortestPathToStairs() {
-		const stairs = map.stairs;
-		const paths = _.map(stairs, stair => GemThief.Path.generatePath(dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
-			return p1.length - p2.length;
-		});
-		return paths[0];
+function getVisiblePlayerPosition(radius) {
+	const playerPos = this.map.player.toPoint();
+	const seenTiles = GemThief.Path.getSeenTiles(this.dwarf.toPoint(), radius);
+	return _.find(seenTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
+}
+
+function getShortestPathToStairs() {
+	const stairs = this.map.stairs;
+	const paths = _.map(stairs,
+	stair => GemThief.Path.generatePath(this.dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
+		return p1.length - p2.length;
+	});
+	return paths[0];
+}
+
+function spottedPlayer(radius) {
+	radius = radius || this.params.idleAIConfig.radius;
+	return this.getVisiblePlayerPosition(radius) != null;
+}
+
+function changeToTrackingAI(ai) {
+	this.map.setMessage(this.params.idleAIConfig.noticeMessage);
+	this.dwarf.setAI(ai(this.dwarf, this.map, this.params));
+}
+
+function move(to) {
+	const path = GemThief.Path.generatePath(this.dwarf.toPoint(), to);
+	if (path.length > 0) {
+		this.map.moveEntity(this.dwarf, path[0][0], path[0][1]);
 	}
+	return path.length > 0;
+}
 
-	function spottedPlayer(radius) {
-		radius = radius || params.idleAIConfig.radius;
-		return getVisiblePlayerPosition(radius) != null;
+function movePath(path) {
+	if (path.length > 0) {
+		const step = path.splice(0, 1)[0];
+		this.map.moveEntity(this.dwarf, step[0], step[1]);
 	}
+}
 
-	function changeToTrackingAI(ai) {
-		map.setMessage(params.idleAIConfig.noticeMessage);
-		dwarf.setAI(ai(dwarf, map, params));
-	}
-
-	function move(to) {
-		const path = GemThief.Path.generatePath(dwarf.toPoint(), to);
-		if (path.length > 0) {
-			map.moveEntity(dwarf, path[0][0], path[0][1]);
-		}
-		return path.length > 0;
-	}
-
-	function movePath(path) {
-		if (path.length > 0) {
-			const step = path.splice(0, 1)[0];
-			map.moveEntity(dwarf, step[0], step[1]);
-		}
-	}
-
-	function getTrackingAI(lostCallback, stoppedCallback) {
-		function trackingAI() {
-			if (params.trackingAIConfig.chanceToStop) {
-				const stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
-				if (stop) {
-					if (params.trackingAIConfig.stopMessage) {
-						map.setMessage(params.trackingAIConfig.stopMessage, 1);
-					}
-
-					if (stoppedCallback) {
-						stoppedCallback();
-					}
-					return;
+function getTrackingAI(lostCallback, stoppedCallback) {
+	function trackingAI() {
+		if (this.params.trackingAIConfig.chanceToStop) {
+			const stop = ROT.RNG.getPercentage() < this.params.trackingAIConfig.chanceToStop;
+			if (stop) {
+				if (this.params.trackingAIConfig.stopMessage) {
+					this.map.setMessage(this.params.trackingAIConfig.stopMessage, 1);
 				}
-			}
 
-			move(lastSeenPlayerPosition);
-
-			if (catchedPlayer()) {
+				if (stoppedCallback) {
+					stoppedCallback();
+				}
 				return;
 			}
-
-			const playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
-			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
-
-			if (playerPos === null) {
-				turnsSinceLastSeen++;
-			}
-
-			if (turnsSinceLastSeen > params.trackingAIConfig.turnsUntilLost && lostCallback) {
-				lostCallback();
-			}
 		}
 
-		return trackingAI;
+		this.move(this.lastSeenPlayerPosition);
+
+		if (this.catchedPlayer()) {
+			return;
+		}
+
+		const playerPos = this.getVisiblePlayerPosition(this.params.trackingAIConfig.radius);
+		this.lastSeenPlayerPosition = playerPos || this.lastSeenPlayerPosition;
+
+		if (playerPos === null) {
+			this.turnsSinceLastSeen++;
+		}
+
+		if (this.turnsSinceLastSeen > this.params.trackingAIConfig.turnsUntilLost && lostCallback) {
+			lostCallback();
+		}
 	}
 
-	const AI = {};
-	AI.getShortestPathToStairs = getShortestPathToStairs;
-	AI.getVisiblePlayerPosition = getVisiblePlayerPosition;
-	AI.catchedPlayer = catchedPlayer;
-	AI.spottedPlayer = spottedPlayer;
-	AI.changeToTrackingAI = changeToTrackingAI;
-	AI.move = move;
-	AI.movePath = movePath;
-	AI.getTrackingAI = getTrackingAI;
-	return AI;
-};
+	return trackingAI.bind(this);
+}

@@ -1,13 +1,13 @@
 "use strict";
 
 GemThief.DWARF_AIS = {};
-GemThief.DWARF_AIS["createDocIdleAI"] = createDocIdleAI;
-GemThief.DWARF_AIS["createGrumpyIdleAI"] = createGrumpyIdleAI;
-GemThief.DWARF_AIS["createHappyIdleAI"] = createHappyIdleAI;
-GemThief.DWARF_AIS["createSneezyIdleAI"] = createSneezyIdleAI;
-GemThief.DWARF_AIS["createDopeyIdleAI"] = createDopeyIdleAI;
-GemThief.DWARF_AIS["createBashfulIdleAI"] = createBashfulIdleAI;
-GemThief.DWARF_AIS["createSleepyIdleAI"] = createSleepyIdleAI;
+GemThief.DWARF_AIS["Doc"] = GemThief.AI.Doc.instantiate;
+GemThief.DWARF_AIS["Grumpy"] = GemThief.AI.Grumpy.instantiate;
+GemThief.DWARF_AIS["Happy"] = GemThief.AI.Happy.instantiate;
+GemThief.DWARF_AIS["Sleepy"] = GemThief.AI.Sleepy.instantiate;
+GemThief.DWARF_AIS["Dopey"] = GemThief.AI.Dopey.instantiate;
+GemThief.DWARF_AIS["Bashful"] = GemThief.AI.Bashful.instantiate;
+GemThief.DWARF_AIS["Sneezy"] = GemThief.AI.Sneezy.instantiate;
 
 GemThief.DWARF_START_LOCATIONS = {};
 GemThief.DWARF_START_LOCATIONS["randomStartLocation"] = GemThief.Location.getRandomStartLocation;

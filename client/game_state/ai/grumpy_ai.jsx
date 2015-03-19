@@ -1,21 +1,21 @@
-createGrumpyIdleAI = function (dwarf, map, params) {
-	"use strict";
+"use strict";
 
-	const AI = createAI(dwarf, map, params);
+GemThief.AI.Grumpy = {
+	instantiate: function (dwarf, map, params) {
+		const AI = GemThief.AI.instantiate(dwarf, map, params);
 
-	function idleAI() {
-		if (AI.spottedPlayer()) {
-			AI.changeToTrackingAI(createGrumpyTrackingAI);
+		function idleAI() {
+			if (AI.spottedPlayer()) {
+				AI.changeToTrackingAI(createGrumpyTrackingAI);
+			}
 		}
-	}
 
-	return idleAI;
+		return idleAI;
+	}
 };
 
 function createGrumpyTrackingAI(dwarf, map, params) {
-	"use strict";
-
-	const AI = createAI(dwarf, map, params);
+	const AI = GemThief.AI.instantiate(dwarf, map, params);
 
 	function trackingAI() {
 		AI.move(map.player.toPoint());

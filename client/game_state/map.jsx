@@ -184,7 +184,7 @@ function _createDwarf(map) {
 	data.y = tile.y;
 
 	const dwarf = GemThief.Dwarf.instantiate(data);
-	dwarf.setAI(GemThief.DWARF_AIS[data.idleAI](dwarf, map, data));
+	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, map, data));
 	tile.addEntity(dwarf);
 	map.dwarves.push(dwarf);
 }

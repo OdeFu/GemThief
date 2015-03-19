@@ -8,7 +8,7 @@ GemThief.Path = {
 			return !GemThief.Game.state.map.isBlocking(x, y);
 		}
 
-		const astar = new ROT.GemThief.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
+		const astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
 		const path = [];
 
 		function pathCallback(x, y) {

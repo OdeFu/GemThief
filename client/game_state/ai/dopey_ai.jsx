@@ -1,40 +1,40 @@
-createDopeyIdleAI = function (dwarf, map, params) {
-	"use strict";
+"use strict";
 
-	const AI = createAI(dwarf, map, params);
-	const path = [];
+GemThief.AI.Dopey = {
+	instantiate: function (dwarf, map, params) {
+		const AI = GemThief.AI.instantiate(dwarf, map, params);
+		const path = [];
 
-	function idleAI() {
-		const pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
-		if (pathChange) {
-			path.splice(0, path.length);
+		function idleAI() {
+			const pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
+			if (pathChange) {
+				path.splice(0, path.length);
+			}
+
+			if (path.length === 0) {
+				path.push(...GemThief.Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
+			}
+
+			AI.movePath(path);
+
+			if (AI.catchedPlayer()) {
+				return;
+			}
+
+			if (AI.spottedPlayer()) {
+				AI.changeToTrackingAI(createDopeyTrackingAI);
+			}
 		}
 
-		if (path.length === 0) {
-			path.push(...GemThief.Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
-		}
-
-		AI.movePath(path);
-
-		if (AI.catchedPlayer()) {
-			return;
-		}
-
-		if (AI.spottedPlayer()) {
-			AI.changeToTrackingAI(createDopeyTrackingAI);
-		}
+		return idleAI;
 	}
-
-	return idleAI;
 };
 
 function createDopeyTrackingAI(dwarf, map, params) {
-	"use strict";
-
-	const AI = createAI(dwarf, map, params);
+	const AI = GemThief.AI.instantiate(dwarf, map, params);
 
 	function lostCallback() {
-		dwarf.setAI(createDopeyIdleAI(dwarf, map, params));
+		dwarf.setAI(GemThief.AI.Dopey.instantiate(dwarf, map, params));
 	}
 
 	return AI.getTrackingAI(lostCallback);
