@@ -6,12 +6,13 @@ EndState = {
 		check(params.score, Number);
 		check(params.gems, Number);
 
-		const state = Object.create(State.instantiate({ name: "EndState" }));
+		params.name = "EndState";
+
+		const state = State.instantiate(params);
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);
-		state.won = params.won;
 		return state;
 	}
 };

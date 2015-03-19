@@ -8,11 +8,13 @@ GameState = {
 
 		ROT.RNG.setSeed(params.seed);
 
-		const state = State.instantiate({ name: "GameState", scheduler: ROT.Scheduler.Simple });
+		params.name = "GameState";
+		params.scheduler = ROT.Scheduler.Simple;
+
+		const state = State.instantiate(params);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);
-		state.params = params;
 		state.playerStats = new PlayerStats();
 		return state;
 	}
