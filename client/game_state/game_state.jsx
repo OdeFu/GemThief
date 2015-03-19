@@ -29,7 +29,7 @@ function act() {
 function enter() {
 	this.params.width = 80;
 	this.params.height = 23;
-	this.map = createMap(this.params);
+	this.map = GemThief.Map.instantiate(this.params);
 
 	_initEngine(this);
 }

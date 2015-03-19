@@ -1,53 +1,55 @@
+"use strict";
+
 const NUM_LIGHT_LOCATIONS = 5;
 
-/**
- * Create a map level.
- *
- * @param params
- *  - width: the width of the map, required
- *  - height: the height of the map, required
- *  - level: the level depth of the map, defaults to 1
- *  - numGems: the number of gems to be generated, defaults to 10
- */
-createMap = function (params) {
-	"use strict";
+GemThief.Map = {
+	/**
+	 * Create a map level.
+	 *
+	 * @param params
+	 *  - width: the width of the map, required
+	 *  - height: the height of the map, required
+	 *  - level: the level depth of the map, defaults to 1
+	 *  - numGems: the number of gems to be generated, defaults to 10
+	 */
+	instantiate: function (params) {
+		check(params.width, Number);
+		check(params.height, Number);
 
-	check(params.width, Number);
-	check(params.height, Number);
+		const map = {};
+		map.tiles = [];
+		map.player = null;
+		map.gems = [];
+		map.dwarves = [];
+		map.level = params.level || 1;
+		map.stairs = [];
+		map.lightLocations = [];
+		map.width = params.width;
+		map.height = params.height;
+		map.message = "";
+		map.messageLife = 0;
+		map.numGems = params.numGems || 10;
+		map.params = params;
 
-	const map = {};
-	map.tiles = [];
-	map.player = null;
-	map.gems = [];
-	map.dwarves = [];
-	map.level = params.level || 1;
-	map.stairs = [];
-	map.lightLocations = [];
-	map.width = params.width;
-	map.height = params.height;
-	map.message = "";
-	map.messageLife = 0;
-	map.numGems = params.numGems || 10;
-	map.params = params;
+		map.getSomeTiles = getSomeTiles.bind(map);
+		map.getTile = getTile.bind(map);
+		map.draw = draw.bind(map);
+		map.isEmpty = isEmpty.bind(map);
+		map.isBlocking = isBlocking.bind(map);
+		map.findEmptyTile = findEmptyTile.bind(map);
+		map.calculateVisibleTiles = calculateVisibleTiles.bind(map);
+		map.getGem = getGem.bind(map);
+		map.removeGem = removeGem.bind(map);
+		map.moveEntity = moveEntity.bind(map);
+		map.setMessage = setMessage.bind(map);
 
-	map.getSomeTiles = getSomeTiles.bind(map);
-	map.getTile = getTile.bind(map);
-	map.draw = draw.bind(map);
-	map.isEmpty = isEmpty.bind(map);
-	map.isBlocking = isBlocking.bind(map);
-	map.findEmptyTile = findEmptyTile.bind(map);
-	map.calculateVisibleTiles = calculateVisibleTiles.bind(map);
-	map.getGem = getGem.bind(map);
-	map.removeGem = removeGem.bind(map);
-	map.moveEntity = moveEntity.bind(map);
-	map.setMessage = setMessage.bind(map);
+		// Dig the level
+		_dig(map);
+		_generateLightingData(map);
+		_createEntities(map);
 
-	// Dig the level
-	_dig(map);
-	_generateLightingData(map);
-	_createEntities(map);
-
-	return map;
+		return map;
+	}
 };
 
 // Public methods
@@ -188,8 +190,6 @@ function _createDwarf(map) {
 }
 
 function _createGems(map) {
-	"use strict";
-
 	_.times(map.numGems, function createGem() {
 		const tile = map.findEmptyTile();
 		const gem = GemThief.Gem.instantiate(tile.toPoint());
@@ -256,8 +256,6 @@ function _generateLightingData(map) {
 }
 
 function _initializeLightLocations(map) {
-	"use strict";
-
 	_.times(NUM_LIGHT_LOCATIONS, function createLightLocation() {
 		map.lightLocations.push(map.findEmptyTile());
 	});
