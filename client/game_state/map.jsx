@@ -179,12 +179,12 @@ function _createDwarf(map) {
 	});
 	const data = dwarves[map.level - 1];
 
-	const tile = DWARF_START_LOCATIONS[data.startLocation](map);
+	const tile = GemThief.DWARF_START_LOCATIONS[data.startLocation](map);
 	data.x = tile.x;
 	data.y = tile.y;
 
 	const dwarf = GemThief.Dwarf.instantiate(data);
-	dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
+	dwarf.setAI(GemThief.DWARF_AIS[data.idleAI](dwarf, map, data));
 	tile.addEntity(dwarf);
 	map.dwarves.push(dwarf);
 }

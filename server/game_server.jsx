@@ -1,11 +1,11 @@
-Games = new Meteor.Collection("games");
+"use strict";
+
+const Games = new Meteor.Collection("games");
 
 const DWARF_CONFIG = EJSON.parse(Assets.getText("dwarf_config.json"));
 
 Meteor.methods({
 	newGame: function () {
-		"use strict";
-
 		const game = createNewGame();
 
 		if (this.userId) {
@@ -28,8 +28,6 @@ Meteor.methods({
 	},
 
 	loadLevel: function (nextLevel) {
-		"use strict";
-
 		const game = createNewGame();
 		game.level = nextLevel;
 
@@ -50,8 +48,6 @@ Meteor.methods({
 });
 
 function createNewGame() {
-	"use strict";
-
 	const game = {
 		seed: new Date().getTime(), level: 1, config: DWARF_CONFIG
 	};
@@ -59,8 +55,6 @@ function createNewGame() {
 }
 
 function checkNextLevel(nextLevel, curGame) {
-	"use strict";
-
 	const ok = Math.abs(nextLevel - curGame.level) === 1;
 	return ok ? nextLevel : curGame.level;
 }

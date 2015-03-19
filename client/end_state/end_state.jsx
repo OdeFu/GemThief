@@ -2,8 +2,6 @@
 
 GemThief.EndState = {
 	instantiate: function (params) {
-		"use strict";
-
 		check(params.won, Boolean);
 		check(params.score, Number);
 		check(params.gems, Number);

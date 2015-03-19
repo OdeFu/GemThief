@@ -1,10 +1,12 @@
-getRandomStartLocation = function (map) {
+"use strict";
+
+GemThief.Location = {};
+
+GemThief.Location.getRandomStartLocation = function (map) {
 	return map.findEmptyTile();
 };
 
-getDarkStartLocation = function (map) {
-	"use strict";
-
+GemThief.Location.getDarkStartLocation = function (map) {
 	function darkTiles(tile) {
 		return !tile.color;
 	}
@@ -12,9 +14,7 @@ getDarkStartLocation = function (map) {
 	return map.getSomeTiles(darkTiles).random();
 };
 
-getLightStartLocation = function (map) {
-	"use strict";
-
+GemThief.Location.getLightStartLocation = function (map) {
 	function lightTiles(tile) {
 		return tile.color;
 	}
@@ -22,6 +22,6 @@ getLightStartLocation = function (map) {
 	return map.getSomeTiles(lightTiles).random();
 };
 
-getBrightLightStartLocation = function (map) {
+GemThief.Location.getBrightLightStartLocation = function (map) {
 	return map.lightLocations.random();
 };

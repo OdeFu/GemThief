@@ -11,7 +11,7 @@ createDopeyIdleAI = function (dwarf, map, params) {
 		}
 
 		if (path.length === 0) {
-			path.push(...Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
+			path.push(...GemThief.Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
 		}
 
 		AI.movePath(path);

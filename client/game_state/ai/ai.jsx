@@ -16,13 +16,13 @@ createAI = function (dwarf, map, params) {
 
 	function getVisiblePlayerPosition(radius) {
 		const playerPos = map.player.toPoint();
-		const fovTiles = Path.getFOV(dwarf.toPoint(), radius);
-		return _.find(fovTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
+		const seenTiles = GemThief.Path.getSeenTiles(dwarf.toPoint(), radius);
+		return _.find(seenTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
 	}
 
 	function getShortestPathToStairs() {
 		const stairs = map.stairs;
-		const paths = _.map(stairs, stair => Path.generatePath(dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
+		const paths = _.map(stairs, stair => GemThief.Path.generatePath(dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
 			return p1.length - p2.length;
 		});
 		return paths[0];
@@ -39,7 +39,7 @@ createAI = function (dwarf, map, params) {
 	}
 
 	function move(to) {
-		const path = Path.generatePath(dwarf.toPoint(), to);
+		const path = GemThief.Path.generatePath(dwarf.toPoint(), to);
 		if (path.length > 0) {
 			map.moveEntity(dwarf, path[0][0], path[0][1]);
 		}

@@ -1,14 +1,14 @@
-Path = {
-	generatePath: function (from, to, topology) {
-		"use strict";
+"use strict";
 
+GemThief.Path = {
+	generatePath: function (from, to, topology) {
 		topology = topology || 4;
 
 		function passableCallback(x, y) {
 			return !GemThief.Game.state.map.isBlocking(x, y);
 		}
 
-		const astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
+		const astar = new ROT.GemThief.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
 		const path = [];
 
 		function pathCallback(x, y) {
@@ -23,11 +23,9 @@ Path = {
 	},
 
 	getSeenTiles: function (from, radius) {
-		"use strict";
-
 		const tiles = [];
 		const fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
+		fov.compute(from.x, from.y, radius, function fovCallback(x, y) {
 			const tile = GemThief.Game.state.map.getTile(x, y);
 			tiles.push(tile);
 		});
@@ -36,23 +34,10 @@ Path = {
 	},
 
 	runFOV: function (from, radius, callback) {
-		"use strict";
-
 		const fov = new ROT.FOV.PreciseShadowcasting(lightPass);
 		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
 			callback(x, y, r, visibility);
 		});
-	},
-
-	getFOV: function (from, radius) {
-		"use strict";
-
-		const tiles = [];
-		const fov = new ROT.FOV.PreciseShadowcasting(lightPass);
-		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
-			tiles.push({ x, y });
-		});
-		return tiles;
 	}
 };
 

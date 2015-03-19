@@ -15,7 +15,7 @@ GemThief.GameState = {
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);
-		state.playerStats = new PlayerStats();
+		state.playerStats = new GemThief.PlayerStats();
 		return state;
 	}
 };

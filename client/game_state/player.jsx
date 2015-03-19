@@ -26,7 +26,7 @@ function act() {
 
 function _handleEvent(event) {
 	// Process user input
-	const action = PlayerActions[event.keyCode];
+	const action = GemThief.PlayerActions[event.keyCode];
 	if (action) {
 		action();
 

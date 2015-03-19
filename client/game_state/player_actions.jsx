@@ -1,6 +1,6 @@
-function createMoveAction(dirKey) {
-	"use strict";
+"use strict";
 
+function createMoveAction(dirKey) {
 	function checkGem(player) {
 		const gem = GemThief.Game.state.map.getGem(player.x, player.y);
 		if (gem) {
@@ -33,8 +33,6 @@ function createMoveAction(dirKey) {
 }
 
 function createClimbStairsAction(down) {
-	"use strict";
-
 	function climbStairsAction() {
 		const player = GemThief.Game.state.map.player;
 		const tile = GemThief.Game.state.map.getTile(player.x, player.y);
@@ -56,18 +54,18 @@ function createClimbStairsAction(down) {
 	return climbStairsAction;
 }
 
-PlayerActions = [];
+GemThief.PlayerActions = [];
 
 // Movement
-PlayerActions[ROT.VK_UP] = createMoveAction(0);
-PlayerActions[ROT.VK_PAGE_UP] = createMoveAction(1);
-PlayerActions[ROT.VK_RIGHT] = createMoveAction(2);
-PlayerActions[ROT.VK_PAGE_DOWN] = createMoveAction(3);
-PlayerActions[ROT.VK_DOWN] = createMoveAction(4);
-PlayerActions[ROT.VK_END] = createMoveAction(5);
-PlayerActions[ROT.VK_LEFT] = createMoveAction(6);
-PlayerActions[ROT.VK_HOME] = createMoveAction(7);
+GemThief.PlayerActions[ROT.VK_UP] = createMoveAction(0);
+GemThief.PlayerActions[ROT.VK_PAGE_UP] = createMoveAction(1);
+GemThief.PlayerActions[ROT.VK_RIGHT] = createMoveAction(2);
+GemThief.PlayerActions[ROT.VK_PAGE_DOWN] = createMoveAction(3);
+GemThief.PlayerActions[ROT.VK_DOWN] = createMoveAction(4);
+GemThief.PlayerActions[ROT.VK_END] = createMoveAction(5);
+GemThief.PlayerActions[ROT.VK_LEFT] = createMoveAction(6);
+GemThief.PlayerActions[ROT.VK_HOME] = createMoveAction(7);
 
 // GemThief.Stairs
-PlayerActions[ROT.VK_LESS_THAN] = createClimbStairsAction(false);
-PlayerActions[ROT.VK_GREATER_THAN] = createClimbStairsAction(true);
+GemThief.PlayerActions[ROT.VK_LESS_THAN] = createClimbStairsAction(false);
+GemThief.PlayerActions[ROT.VK_GREATER_THAN] = createClimbStairsAction(true);

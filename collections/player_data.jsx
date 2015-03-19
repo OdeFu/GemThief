@@ -1,11 +1,11 @@
-PlayerData = new Meteor.Collection("player_data");
+"use strict";
+
+const PlayerData = new Meteor.Collection("player_data");
 
 Meteor.methods(
 {
 	update: function (data)
 	{
-		"use strict";
-
 		check(data.gems, Number);
 		check(data.moves, [Number]);
 		check(data.won, Boolean);
@@ -48,8 +48,6 @@ Meteor.methods(
 
 function calculateScore(data)
 {
-	"use strict";
-
 	const gemsScore = data.gems * 100;
 	const moveScore = _.map(data.moves, (moves, level) => moves * level);
 
