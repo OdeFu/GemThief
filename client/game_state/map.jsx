@@ -92,7 +92,7 @@ function draw(display) {
 	});
 
 	display.drawText(0, this.height + 1, "Mine Level: " + this.level);
-	Game.drawTextRight(this.height + 1, "Gems Found: " + Game.state.playerStats.gems);
+	GemThief.Game.drawTextRight(this.height + 1, "Gems Found: " + GemThief.Game.state.playerStats.gems);
 }
 
 function findEmptyTile() {

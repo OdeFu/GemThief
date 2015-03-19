@@ -37,7 +37,7 @@ function handleEvent(event) {
 		window.removeEventListener("keydown", this);
 
 		Meteor.call("newGame", function newGameCallback(error, game) {
-			Game.changeState(GameState.instantiate(game));
+			GemThief.Game.changeState(GameState.instantiate(game));
 		});
 	}
 }
@@ -47,10 +47,10 @@ function handleEvent(event) {
 function draw() {
 	"use strict";
 
-	Game.display.clear();
-	Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
-	Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-	Game.drawTextCentered(8, "%b{gray}Press Enter");
+	GemThief.Game.display.clear();
+	GemThief.Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
+	GemThief.Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
+	GemThief.Game.drawTextCentered(8, "%b{gray}Press Enter");
 }
 
 function initEngine(state) {

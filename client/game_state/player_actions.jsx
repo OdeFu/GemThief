@@ -2,31 +2,31 @@ function createMoveAction(dirKey) {
 	"use strict";
 
 	function checkGem(player) {
-		const gem = Game.state.map.getGem(player.x, player.y);
+		const gem = GemThief.Game.state.map.getGem(player.x, player.y);
 		if (gem) {
-			Game.state.map.setMessage("You picked up a gem.", 1);
-			Game.state.playerStats.gems += 1;
-			Game.state.map.removeGem(gem);
+			GemThief.Game.state.map.setMessage("You picked up a gem.", 1);
+			GemThief.Game.state.playerStats.gems += 1;
+			GemThief.Game.state.map.removeGem(gem);
 		}
 	}
 
 	function moveAction() {
-		const player = Game.state.map.player;
+		const player = GemThief.Game.state.map.player;
 		const dir = ROT.DIRS[8][dirKey];
 		const newX = player.x + dir[0];
 		const newY = player.y + dir[1];
 
-		if (Game.state.map.isBlocking(newX, newY)) {
+		if (GemThief.Game.state.map.isBlocking(newX, newY)) {
 			/* Cannot move in this direction */
 			return;
 		}
 
-		Game.state.map.moveEntity(player, newX, newY);
+		GemThief.Game.state.map.moveEntity(player, newX, newY);
 
 		checkGem(player);
 
-		const prevMoves = Game.state.playerStats.moves[Game.state.map.level];
-		Game.state.playerStats.moves[Game.state.map.level] = prevMoves ? prevMoves + 1 : 1;
+		const prevMoves = GemThief.Game.state.playerStats.moves[GemThief.Game.state.map.level];
+		GemThief.Game.state.playerStats.moves[GemThief.Game.state.map.level] = prevMoves ? prevMoves + 1 : 1;
 	}
 
 	return moveAction;
@@ -36,20 +36,20 @@ function createClimbStairsAction(down) {
 	"use strict";
 
 	function climbStairsAction() {
-		const player = Game.state.map.player;
-		const tile = Game.state.map.getTile(player.x, player.y);
+		const player = GemThief.Game.state.map.player;
+		const tile = GemThief.Game.state.map.getTile(player.x, player.y);
 		const entity = tile.getEntity(Entity.FLOOR);
 		if (entity.type === Stairs.type) {
 			if (entity.down === down) {
-				const nextLevel = Game.state.map.level + (down ? 1 : -1);
-				Game.moveToLevel(nextLevel);
+				const nextLevel = GemThief.Game.state.map.level + (down ? 1 : -1);
+				GemThief.Game.moveToLevel(nextLevel);
 			}
 			else {
-				Game.state.map.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
+				GemThief.Game.state.map.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
 			}
 		}
 		else {
-			Game.state.map.setMessage("There are no stairs here.");
+			GemThief.Game.state.map.setMessage("There are no stairs here.");
 		}
 	}
 

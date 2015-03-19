@@ -5,7 +5,7 @@ Path = {
 		topology = topology || 4;
 
 		function passableCallback(x, y) {
-			return !Game.state.map.isBlocking(x, y);
+			return !GemThief.Game.state.map.isBlocking(x, y);
 		}
 
 		const astar = new ROT.Path.AStar(to.x, to.y, passableCallback, { topology: topology });
@@ -28,7 +28,7 @@ Path = {
 		const tiles = [];
 		const fov = new ROT.FOV.PreciseShadowcasting(lightPass);
 		fov.compute(from.x, from.y, radius, function fovCallback(x, y, r, visibility) {
-			const tile = Game.state.map.getTile(x, y);
+			const tile = GemThief.Game.state.map.getTile(x, y);
 			tiles.push(tile);
 		});
 
@@ -57,5 +57,5 @@ Path = {
 };
 
 function lightPass(x, y) {
-	return !Game.state.map.isBlocking(x, y);
+	return !GemThief.Game.state.map.isBlocking(x, y);
 }

@@ -28,7 +28,7 @@ function handleEvent(event) {
 	if (event.keyCode === ROT.VK_RETURN) {
 		window.removeEventListener("keydown", this);
 		Meteor.call("newGame", function newGameCallback(error, game) {
-			Game.changeState(GameState.instantiate(game));
+			GemThief.Game.changeState(GameState.instantiate(game));
 		});
 	}
 }
@@ -56,13 +56,13 @@ function exit() {
 function _draw(state) {
 	"use strict";
 
-	Game.display.clear();
+	GemThief.Game.display.clear();
 
 	const text = state.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
-	Game.drawTextCentered(5, text);
-	Game.drawTextCentered(6, "Gems Looted: " + state.params.gems);
-	Game.drawTextCentered(7, "Score: " + state.params.score);
-	Game.drawTextCentered(9, "%b{gray}New Game");
+	GemThief.Game.drawTextCentered(5, text);
+	GemThief.Game.drawTextCentered(6, "Gems Looted: " + state.params.gems);
+	GemThief.Game.drawTextCentered(7, "Score: " + state.params.score);
+	GemThief.Game.drawTextCentered(9, "%b{gray}New GemThief.Game");
 }
 
 function _initEngine(state) {

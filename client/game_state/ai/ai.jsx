@@ -7,8 +7,8 @@ createAI = function (dwarf, map, params) {
 	function catchedPlayer() {
 		const playerPos = map.player.toPoint();
 		if (playerPos.x === dwarf.x && playerPos.y === dwarf.y) {
-			Game.state.engine.lock();
-			Game.gameOver();
+			GemThief.Game.state.engine.lock();
+			GemThief.Game.gameOver();
 			return true;
 		}
 		return false;

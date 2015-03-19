@@ -15,7 +15,7 @@ Player = {
 // Public methods
 
 function act() {
-	Game.state.engine.lock();
+	GemThief.Game.state.engine.lock();
 
 	// Wait for user input, do stuff when the user hits a key
 	window.addEventListener("keypress", _handleEvent);
@@ -32,7 +32,7 @@ function _handleEvent(event) {
 
 		window.removeEventListener("keypress", _handleEvent);
 		window.removeEventListener("keydown", _handleEvent);
-		Game.state.engine.unlock();
+		GemThief.Game.state.engine.unlock();
 	}
 }
 

@@ -24,9 +24,9 @@ GameState = {
 function draw(state) {
 	"use strict";
 
-	Game.display.clear();
+	GemThief.Game.display.clear();
 
-	state.map.draw(Game.display);
+	state.map.draw(GemThief.Game.display);
 }
 
 function initEngine(state) {

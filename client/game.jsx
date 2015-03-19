@@ -1,6 +1,6 @@
 "use strict";
 
-GemThief.Game = {
+GemThief.GemThief.Game = {
 	init: function () {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
