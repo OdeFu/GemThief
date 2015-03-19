@@ -18,6 +18,7 @@ ejson@1.0.6-rc.0
 email@1.0.6-rc.0
 fastclick@1.0.3-rc.0
 geojson-utils@1.0.3-rc.0
+globals@0.0.1
 grigio:babel@0.0.10
 html-tools@1.0.4-rc.0
 htmljs@1.0.4-rc.0
