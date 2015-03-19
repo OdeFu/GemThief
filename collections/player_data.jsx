@@ -11,12 +11,12 @@ Meteor.methods(
 		check(data.won, Boolean);
 		//check(data.gold, Number);
 
-		var score = calculateScore(data);
+		const score = calculateScore(data);
 		data.score = score;
 
 		if (this.userId)
 		{
-			var userData = PlayerData.findOne({ userId: this.userId });
+			const userData = PlayerData.findOne({ userId: this.userId });
 			if (userData)
 			{
 				userData.gold += data.gold;
@@ -30,7 +30,7 @@ Meteor.methods(
 			}
 			else
 			{
-				var newUserData =
+				const newUserData =
 				{
 					userId: this.userId,
 					gold: data.gold,
@@ -50,12 +50,8 @@ function calculateScore(data)
 {
 	"use strict";
 
-	var gemsScore = data.gems * 100;
-	var moveScore = 0;
-	data.moves.forEach(function (moves, level)
-	{
-		moveScore += moves * level;
-	});
+	const gemsScore = data.gems * 100;
+	const moveScore = _.map(data.moves, (moves, level) => moves * level);
 
 	// You get nothing if you lost
 	return Math.round(gemsScore + moveScore) * data.won;

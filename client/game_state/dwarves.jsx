@@ -13,7 +13,7 @@ Dwarf = {
 		params.char = "P";
 		params.priority = Entity.ENTITY;
 
-		var dwarf = Entity.instantiate(params);
+		const dwarf = Entity.instantiate(params);
 		dwarf.nameame = params.name;
 
 		dwarf.setAI = setAI.bind(dwarf);

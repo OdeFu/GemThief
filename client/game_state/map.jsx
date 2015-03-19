@@ -1,3 +1,5 @@
+const NUM_LIGHT_LOCATIONS = 5;
+
 /**
  * Create a map level.
  *
@@ -13,7 +15,7 @@ createMap = function (params) {
 	check(params.width, Number);
 	check(params.height, Number);
 
-	var map = {};
+	const map = {};
 	map.tiles = [];
 	map.player = null;
 	map.gems = [];
@@ -61,12 +63,12 @@ function getTile(x, y) {
 }
 
 function isEmpty(x, y) {
-	var tile = this.getTile(x, y);
+	const tile = this.getTile(x, y);
 	return tile && tile.isEmpty();
 }
 
 function isBlocking(x, y) {
-	var tile = this.getTile(x, y);
+	const tile = this.getTile(x, y);
 	return tile && tile.isBlocking();
 }
 
@@ -84,7 +86,7 @@ function draw(display) {
 		}
 	}
 
-	var visibleTiles = this.calculateVisibleTiles();
+	const visibleTiles = this.calculateVisibleTiles();
 	visibleTiles.forEach(function drawTiles(tile) {
 		display.draw(tile.x, tile.y + 1, tile.getChar(), tile.getForegroundColor(), tile.getBackgroundColor());
 	});
@@ -94,27 +96,27 @@ function draw(display) {
 }
 
 function findEmptyTile() {
-	var empties = _getAllEmptyTiles(this);
+	const empties = _getAllEmptyTiles(this);
 	return empties.random();
 }
 
 function calculateVisibleTiles() {
-	var tiles = [];
+	const tiles = [];
 
 	function lightPass(x, y) {
 		return !this.isBlocking(x, y);
 	}
 
-	var fov = new ROT.FOV.PreciseShadowcasting(lightPass.bind(this));
+	const fov = new ROT.FOV.PreciseShadowcasting(lightPass.bind(this));
 	fov.compute(this.player.x, this.player.y, 2, function fovCallback(x, y) {
-		var tile = this.getTile(x, y);
+		const tile = this.getTile(x, y);
 		tile.seen = true;
 		tiles.push(tile);
 	}.bind(this));
 
 	// Do another pass for tiles that have light
 	fov.compute(this.player.x, this.player.y, 20, function fovCallback(x, y) {
-		var tile = this.getTile(x, y);
+		const tile = this.getTile(x, y);
 		if (tile.color) {
 			tile.seen = true;
 			tiles.push(tile);
@@ -131,19 +133,19 @@ function getGem(x, y) {
 }
 
 function removeGem(gem) {
-	var index = this.gems.indexOf(gem);
+	const index = this.gems.indexOf(gem);
 	if (index >= 0) {
 		this.gems.splice(index, 1);
-		var tile = this.getTile(gem.x, gem.y);
+		const tile = this.getTile(gem.x, gem.y);
 		tile.removeEntity(gem);
 	}
 }
 
 function moveEntity(entity, newX, newY) {
-	var oldTile = this.getTile(entity.x, entity.y);
+	const oldTile = this.getTile(entity.x, entity.y);
 	oldTile.removeEntity(entity);
 
-	var newTile = this.getTile(newX, newY);
+	const newTile = this.getTile(newX, newY);
 	newTile.addEntity(entity);
 
 	entity.x = newX;
@@ -163,54 +165,56 @@ function _createEntities(map) {
 }
 
 function _createPlayer(map) {
-	var tile = map.findEmptyTile();
+	const tile = map.findEmptyTile();
 	map.player = Player.instantiate(tile.toPoint());
 	tile.addEntity(map.player);
 }
 
 function _createDwarf(map) {
-	var dwarves = map.params.config.dwarves.slice(0);
+	const dwarves = map.params.config.dwarves.slice(0);
 	dwarves.sort(function dwarfSort(dwarf1, dwarf2) {
 		return dwarf1.level - dwarf2.level;
 	});
-	var data = dwarves[map.level - 1];
+	const data = dwarves[map.level - 1];
 
-	var tile = DWARF_START_LOCATIONS[data.startLocation](map);
+	const tile = DWARF_START_LOCATIONS[data.startLocation](map);
 	data.x = tile.x;
 	data.y = tile.y;
 
-	var dwarf = Dwarf.instantiate(data);
+	const dwarf = Dwarf.instantiate(data);
 	dwarf.setAI(DWARF_AIS[data.idleAI](dwarf, map, data));
 	tile.addEntity(dwarf);
 	map.dwarves.push(dwarf);
 }
 
 function _createGems(map) {
-	for (var i = 0; i < map.numGems; i++) {
-		var tile = map.findEmptyTile();
-		var gem = Gem.instantiate(tile.toPoint());
+	"use strict";
+
+	_.times(map.numGems, function createGem() {
+		const tile = map.findEmptyTile();
+		const gem = Gem.instantiate(tile.toPoint());
 		tile.addEntity(gem);
 		map.gems.push(gem);
-	}
+	});
 }
 
 function _createStairs(map) {
 	// always create stairs going up where the player is
-	var tile = map.getTile(map.player.x, map.player.y);
+	const tile = map.getTile(map.player.x, map.player.y);
 	map.stairs[0] = Stairs.instantiate({ x: map.player.x, y: map.player.y, down: false });
 	tile.addEntity(map.stairs[0]);
 
-	var downTile = map.findEmptyTile();
+	const downTile = map.findEmptyTile();
 	map.stairs[1] = Stairs.instantiate({ x: downTile.x, y: downTile.y, down: true });
 	downTile.addEntity(map.stairs[1]);
 }
 
 function _dig(map) {
-	var digger = new ROT.Map.Digger(map.width, map.height, map.params);
+	const digger = new ROT.Map.Digger(map.width, map.height, map.params);
 
 	function digCallback(x, y, value) {
-		var tile = Tile.instantiate({ x: x, y: y });
-		var wall = value === 1;
+		const tile = Tile.instantiate({ x: x, y: y });
+		const wall = value === 1;
 		if (wall) {
 			tile.addEntity(Wall.instantiate({ x: x, y: y }));
 		}
@@ -226,17 +230,17 @@ function _generateLightingData(map) {
 		return !map.isBlocking(x, y);
 	}
 
-	var fov = new ROT.FOV.PreciseShadowcasting(lightPass, { topology: 4 });
+	const fov = new ROT.FOV.PreciseShadowcasting(lightPass, { topology: 4 });
 
 	function reflectivityCallback(x, y) {
-		var tile = map.getTile(x, y);
+		const tile = map.getTile(x, y);
 		return tile.isEmpty() ? 0.3 : 0;
 	}
 
-	var lighting = new ROT.Lighting(reflectivityCallback, { range: 12, passes: 2 });
+	const lighting = new ROT.Lighting(reflectivityCallback, { range: 12, passes: 2 });
 	lighting.setFOV(fov);
 
-	var lightColor = [200, 200, 0];
+	const lightColor = [200, 200, 0];
 
 	_initializeLightLocations(map);
 	map.lightLocations.forEach(function setLight(light){
@@ -244,7 +248,7 @@ function _generateLightingData(map) {
 	});
 
 	function lightingCallback(x, y, color) {
-		var tile = map.getTile(x, y);
+		const tile = map.getTile(x, y);
 		tile.color = color;
 	}
 
@@ -252,9 +256,11 @@ function _generateLightingData(map) {
 }
 
 function _initializeLightLocations(map) {
-	for (var i = 0; i < 5; i++) {
+	"use strict";
+
+	_.times(NUM_LIGHT_LOCATIONS, function createLightLocation() {
 		map.lightLocations.push(map.findEmptyTile());
-	}
+	});
 }
 
 function _getAllEmptyTiles(map) {

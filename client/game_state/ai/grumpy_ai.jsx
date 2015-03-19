@@ -1,7 +1,7 @@
 createGrumpyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function idleAI() {
 		if (AI.spottedPlayer()) {
@@ -15,7 +15,7 @@ createGrumpyIdleAI = function (dwarf, map, params) {
 function createGrumpyTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function trackingAI() {
 		AI.move(map.player.toPoint());

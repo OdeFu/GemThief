@@ -2,12 +2,12 @@ createGame = function () {
 	"use strict";
 
 	// Private fields
-	var _display;
-	var _state;
+	let _display;
+	let _state;
 
 	// Public methods
 	function init() {
-		var container = document.getElementById("main");
+		const container = document.getElementById("main");
 		if (ROT.isSupported) {
 			_display = new ROT.Display();
 			container.appendChild(_display.getContainer());
@@ -48,14 +48,14 @@ createGame = function () {
 	}
 
 	function drawTextCentered(y, text) {
-		var textSize = ROT.Text.measure(text);
-		var x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
+		const textSize = ROT.Text.measure(text);
+		const x = _display.getOptions().width * 0.5 - textSize.width * 0.5;
 		_display.drawText(x, y, text);
 	}
 
 	function drawTextRight(y, text) {
-		var textSize = ROT.Text.measure(text);
-		var x = _display.getOptions().width - textSize.width;
+		const textSize = ROT.Text.measure(text);
+		const x = _display.getOptions().width - textSize.width;
 		_display.drawText(x, y, text);
 	}
 

@@ -2,7 +2,7 @@ function createMoveAction(dirKey) {
 	"use strict";
 
 	function checkGem(player) {
-		var gem = Game.state.map.getGem(player.x, player.y);
+		const gem = Game.state.map.getGem(player.x, player.y);
 		if (gem) {
 			Game.state.map.setMessage("You picked up a gem.", 1);
 			Game.state.playerStats.gems += 1;
@@ -11,10 +11,10 @@ function createMoveAction(dirKey) {
 	}
 
 	function moveAction() {
-		var player = Game.state.map.player;
-		var dir = ROT.DIRS[8][dirKey];
-		var newX = player.x + dir[0];
-		var newY = player.y + dir[1];
+		const player = Game.state.map.player;
+		const dir = ROT.DIRS[8][dirKey];
+		const newX = player.x + dir[0];
+		const newY = player.y + dir[1];
 
 		if (Game.state.map.isBlocking(newX, newY)) {
 			/* Cannot move in this direction */
@@ -25,7 +25,7 @@ function createMoveAction(dirKey) {
 
 		checkGem(player);
 
-		var prevMoves = Game.state.playerStats.moves[Game.state.map.level];
+		const prevMoves = Game.state.playerStats.moves[Game.state.map.level];
 		Game.state.playerStats.moves[Game.state.map.level] = prevMoves ? prevMoves + 1 : 1;
 	}
 
@@ -36,12 +36,12 @@ function createClimbStairsAction(down) {
 	"use strict";
 
 	function climbStairsAction() {
-		var player = Game.state.map.player;
-		var tile = Game.state.map.getTile(player.x, player.y);
-		var entity = tile.getEntity(Entity.FLOOR);
+		const player = Game.state.map.player;
+		const tile = Game.state.map.getTile(player.x, player.y);
+		const entity = tile.getEntity(Entity.FLOOR);
 		if (entity.type === Stairs.type) {
 			if (entity.down === down) {
-				var nextLevel = Game.state.map.level + (down ? 1 : -1);
+				const nextLevel = Game.state.map.level + (down ? 1 : -1);
 				Game.moveToLevel(nextLevel);
 			}
 			else {

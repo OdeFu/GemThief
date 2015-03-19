@@ -1,7 +1,7 @@
 createBashfulIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function idleAI() {
 		if (AI.spottedPlayer()) {
@@ -15,15 +15,15 @@ createBashfulIdleAI = function (dwarf, map, params) {
 function createScaredAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var turnsScared = ROT.RNG.getUniformInt(2, params.scaredAIConfig.maxDuration);
+	const AI = createAI(dwarf, map, params);
+	let turnsScared = ROT.RNG.getUniformInt(2, params.scaredAIConfig.maxDuration);
 
 	function scaredAI() {
 		if (turnsScared > 0) {
-			var pos = dwarf.toPoint();
-			var playerPos = map.player.toPoint();
-			var dirX = pos.x - playerPos.x >= 0 ? 1 : -1;
-			var dirY = pos.y - playerPos.y >= 0 ? 1 : -1;
+			const pos = dwarf.toPoint();
+			const playerPos = map.player.toPoint();
+			const dirX = pos.x - playerPos.x >= 0 ? 1 : -1;
+			const dirY = pos.y - playerPos.y >= 0 ? 1 : -1;
 
 			if (AI.move({ x: pos.x + dirX, y: pos.y + dirY })) {
 				map.setMessage("Bashful screams in terror as he runs away from you.", 1);
@@ -48,7 +48,7 @@ function createScaredAI(dwarf, map, params) {
 function createBashfulTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function lostCallback() {
 		dwarf.setAI(createBashfulIdleAI(dwarf, map, params));

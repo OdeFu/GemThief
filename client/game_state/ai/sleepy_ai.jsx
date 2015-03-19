@@ -1,7 +1,7 @@
 createSleepyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function idleAI() {
 		if (AI.spottedPlayer()) {
@@ -15,7 +15,7 @@ createSleepyIdleAI = function (dwarf, map, params) {
 function createSleepyTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function lostCallback() {
 		dwarf.setAI(createSleepyIdleAI(dwarf, map, params));

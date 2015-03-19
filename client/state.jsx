@@ -1,4 +1,4 @@
-var idCounter = 0;
+let idCounter = 0;
 
 State = {
 	/**
@@ -9,7 +9,7 @@ State = {
 	instantiate: function (options) {
 		"use strict";
 
-		var state = {};
+		const state = {};
 		state.id = idCounter++;
 		state.name = options.name || "State_" + state.id;
 		state.schedulerClass = options.scheduler || ROT.Scheduler.Simple;

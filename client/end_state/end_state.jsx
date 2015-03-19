@@ -6,7 +6,7 @@ EndState = {
 		check(params.score, Number);
 		check(params.gems, Number);
 
-		var state = Object.create(State.instantiate({ name: "EndState" }));
+		const state = Object.create(State.instantiate({ name: "EndState" }));
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
@@ -57,7 +57,7 @@ function _draw(state) {
 
 	Game.display.clear();
 
-	var text = state.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
+	const text = state.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
 	Game.drawTextCentered(5, text);
 	Game.drawTextCentered(6, "Gems Looted: " + state.params.gems);
 	Game.drawTextCentered(7, "Score: " + state.params.score);

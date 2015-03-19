@@ -8,7 +8,7 @@ GameState = {
 
 		ROT.RNG.setSeed(params.seed);
 
-		var state = State.instantiate({ name: "GameState", scheduler: ROT.Scheduler.Simple });
+		const state = State.instantiate({ name: "GameState", scheduler: ROT.Scheduler.Simple });
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);

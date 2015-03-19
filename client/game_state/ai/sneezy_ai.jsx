@@ -1,7 +1,7 @@
 createSneezyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function idleAI() {
 		if (AI.spottedPlayer()) {
@@ -15,7 +15,7 @@ createSneezyIdleAI = function (dwarf, map, params) {
 function createSneezyTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function lostCallback() {
 		dwarf.setAI(createSleepyIdleAI(dwarf, map, params));
@@ -31,15 +31,15 @@ function createSneezyTrackingAI(dwarf, map, params) {
 function createSneezingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var sneezeDuration = ROT.RNG.getUniformInt(1, params.sneezingAIConfig.maxDuration);
+	const AI = createAI(dwarf, map, params);
+	let sneezeDuration = ROT.RNG.getUniformInt(1, params.sneezingAIConfig.maxDuration);
 
 	function sneezingAI() {
 		sneezeDuration--;
 
 		if (sneezeDuration === 0) {
 			map.setMessage("Sneezy recovers from the sneeze.");
-			var playerPos = AI.getVisiblePlayerPosition();
+			const playerPos = AI.getVisiblePlayerPosition();
 			dwarf.setAI(playerPos === null ? createSneezyIdleAI(dwarf, map, params) :
 			createSneezyTrackingAI(dwarf, map, params));
 		}

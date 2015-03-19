@@ -6,7 +6,7 @@ Player = {
 		params.char = "@";
 		params.color = "white";
 
-		var player = Entity.instantiate(params);
+		const player = Entity.instantiate(params);
 		player.act = act.bind(player);
 		return player;
 	}
@@ -26,7 +26,7 @@ function act() {
 
 function _handleEvent(event) {
 	// Process user input
-	var action = PlayerActions[event.keyCode];
+	const action = PlayerActions[event.keyCode];
 	if (action) {
 		action();
 

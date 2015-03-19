@@ -1,11 +1,11 @@
 createAI = function (dwarf, map, params) {
 	"use strict";
 
-	var lastSeenPlayerPosition = map.player.toPoint();
-	var turnsSinceLastSeen = 0;
+	let lastSeenPlayerPosition = map.player.toPoint();
+	let turnsSinceLastSeen = 0;
 
 	function catchedPlayer() {
-		var playerPos = map.player.toPoint();
+		const playerPos = map.player.toPoint();
 		if (playerPos.x === dwarf.x && playerPos.y === dwarf.y) {
 			Game.state.engine.lock();
 			Game.gameOver();
@@ -15,28 +15,17 @@ createAI = function (dwarf, map, params) {
 	}
 
 	function getVisiblePlayerPosition(radius) {
-		var spottedPlayer = false;
-		var playerPos = map.player.toPoint();
-		Path.runFOV(dwarf.toPoint(), radius, function fovCallback(x, y) {
-			if (playerPos.x === x && playerPos.y === y) {
-				spottedPlayer = true;
-			}
-		});
-		return spottedPlayer ? playerPos : null;
+		const playerPos = map.player.toPoint();
+		const fovTiles = Path.getFOV(dwarf.toPoint(), radius);
+		return _.find(fovTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
 	}
 
 	function getShortestPathToStairs() {
-		var shortestPath = [dwarf.x, dwarf.y];
-		var closestDistance = Number.MAX_VALUE;
-		var stairs = map.stairs;
-		for (var i = 0; i < stairs.length; i++) {
-			var path = Path.generatePath(dwarf.toPoint(), stairs[i].toPoint());
-			if (path.length < closestDistance) {
-				shortestPath = path;
-				closestDistance = path.length;
-			}
-		}
-		return shortestPath;
+		const stairs = map.stairs;
+		const paths = _.map(stairs, stair => Path.generatePath(dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
+			return p1.length - p2.length;
+		});
+		return paths[0];
 	}
 
 	function spottedPlayer(radius) {
@@ -50,7 +39,7 @@ createAI = function (dwarf, map, params) {
 	}
 
 	function move(to) {
-		var path = Path.generatePath(dwarf.toPoint(), to);
+		const path = Path.generatePath(dwarf.toPoint(), to);
 		if (path.length > 0) {
 			map.moveEntity(dwarf, path[0][0], path[0][1]);
 		}
@@ -59,7 +48,7 @@ createAI = function (dwarf, map, params) {
 
 	function movePath(path) {
 		if (path.length > 0) {
-			var step = path.splice(0, 1)[0];
+			const step = path.splice(0, 1)[0];
 			map.moveEntity(dwarf, step[0], step[1]);
 		}
 	}
@@ -67,7 +56,7 @@ createAI = function (dwarf, map, params) {
 	function getTrackingAI(lostCallback, stoppedCallback) {
 		function trackingAI() {
 			if (params.trackingAIConfig.chanceToStop) {
-				var stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
+				const stop = ROT.RNG.getPercentage() < params.trackingAIConfig.chanceToStop;
 				if (stop) {
 					if (params.trackingAIConfig.stopMessage) {
 						map.setMessage(params.trackingAIConfig.stopMessage, 1);
@@ -86,7 +75,7 @@ createAI = function (dwarf, map, params) {
 				return;
 			}
 
-			var playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
+			const playerPos = getVisiblePlayerPosition(params.trackingAIConfig.radius);
 			lastSeenPlayerPosition = playerPos || lastSeenPlayerPosition;
 
 			if (playerPos === null) {
@@ -101,7 +90,7 @@ createAI = function (dwarf, map, params) {
 		return trackingAI;
 	}
 
-	var AI = {};
+	const AI = {};
 	AI.getShortestPathToStairs = getShortestPathToStairs;
 	AI.getVisiblePlayerPosition = getVisiblePlayerPosition;
 	AI.catchedPlayer = catchedPlayer;

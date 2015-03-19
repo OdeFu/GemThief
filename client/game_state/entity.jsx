@@ -14,7 +14,7 @@ Entity = {
 	instantiate: function (params) {
 		"use strict";
 
-		var entity = {};
+		const entity = {};
 		entity.x = params.x || 0;
 		entity.y = params.y || 0;
 		entity.char = params.char || ' ';

@@ -2,7 +2,7 @@ StartState = {
 	instantiate: function () {
 		"use strict";
 
-		var state = Object.create(State.instantiate({ name: "StartState" }));
+		const state = Object.create(State.instantiate({ name: "StartState" }));
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);

@@ -10,7 +10,7 @@ Tile = {
 	instantiate: function (params) {
 		"use strict";
 
-		var tile = {};
+		const tile = {};
 		tile.x = params.x || 0;
 		tile.y = params.y || 0;
 		tile.seen = false; // Initially unseen
@@ -42,24 +42,15 @@ function isEmpty() {
 }
 
 function isBlocking() {
-	var e = this.getHighestEntity();
-	if (!e) {
-		console.log("sdlkfj");
-	}
-
 	return this.getHighestEntity().blocks;
 }
 
 function getForegroundColor() {
-	var entityColor = ROT.Color.fromString(this.getHighestEntity().color);
-	var ambientLight = [100, 100, 100];
-	var light = ambientLight.slice(0);
-
-	if (this.color) {
-		light = ROT.Color.add(light, this.color);
-	}
-
-	var finalColor = ROT.Color.multiply(entityColor, light);
+	const entityColor = ROT.Color.fromString(this.getHighestEntity().color);
+	const ambientLight = [100, 100, 100];
+	const defaultLight = ambientLight.slice(0);
+	const light = this.color ? ROT.Color.add(defaultLight, this.color) : defaultLight;
+	const finalColor = ROT.Color.multiply(entityColor, light);
 	return ROT.Color.toRGB(finalColor);
 }
 

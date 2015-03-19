@@ -1,12 +1,12 @@
 createDocIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var path = [];
+	const AI = createAI(dwarf, map, params);
+	const path = [];
 
 	function idleAI() {
 		if (path.length === 0) {
-			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
+			path.push(...Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
 		}
 
 		AI.movePath(path);
@@ -26,7 +26,7 @@ createDocIdleAI = function (dwarf, map, params) {
 function createDocTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function lostCallback() {
 		dwarf.setAI(createDocGuardAI(dwarf, map, params));
@@ -38,8 +38,8 @@ function createDocTrackingAI(dwarf, map, params) {
 function createDocGuardAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var path = AI.getShortestPathToStairs();
+	const AI = createAI(dwarf, map, params);
+	const path = AI.getShortestPathToStairs();
 
 	function guardAI() {
 		AI.movePath(path);

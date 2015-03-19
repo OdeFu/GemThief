@@ -1,12 +1,12 @@
 createHappyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var path = [];
+	const AI = createAI(dwarf, map, params);
+	const path = [];
 
 	function idleAI() {
 		if (path.length === 0) {
-			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
+			path.push(...Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
 		}
 
 		AI.movePath(path);
@@ -26,10 +26,10 @@ createHappyIdleAI = function (dwarf, map, params) {
 function createHappyTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function tellJoke() {
-		var joke = params.jokes.random();
+		const joke = params.jokes.random();
 		map.setMessage("\"" + joke + "\"");
 	}
 

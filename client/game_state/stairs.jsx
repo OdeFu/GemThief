@@ -12,7 +12,7 @@ Stairs = {
 		params.priority = Entity.FLOOR;
 		params.type = Stairs.type;
 
-		var stairs = Entity.instantiate(params);
+		const stairs = Entity.instantiate(params);
 		stairs.down = params.down;
 		return stairs;
 	}

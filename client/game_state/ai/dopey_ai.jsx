@@ -1,17 +1,17 @@
 createDopeyIdleAI = function (dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
-	var path = [];
+	const AI = createAI(dwarf, map, params);
+	const path = [];
 
 	function idleAI() {
-		var pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
+		const pathChange = ROT.RNG.getPercentage() < params.idleAIConfig.pathChangeChance;
 		if (pathChange) {
-			path = [];
+			path.splice(0, path.length);
 		}
 
 		if (path.length === 0) {
-			path = Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint());
+			path.push(...Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
 		}
 
 		AI.movePath(path);
@@ -31,7 +31,7 @@ createDopeyIdleAI = function (dwarf, map, params) {
 function createDopeyTrackingAI(dwarf, map, params) {
 	"use strict";
 
-	var AI = createAI(dwarf, map, params);
+	const AI = createAI(dwarf, map, params);
 
 	function lostCallback() {
 		dwarf.setAI(createDopeyIdleAI(dwarf, map, params));
