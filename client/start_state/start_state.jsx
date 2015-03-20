@@ -43,10 +43,10 @@ function handleEvent(event) {
 // Private methods
 
 function _draw() {
-	GemThief.Game.display.clear();
-	GemThief.Game.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
-	GemThief.Game.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-	GemThief.Game.drawTextCentered(8, "%b{gray}Press Enter");
+	GemThief.Display.clear();
+	GemThief.Display.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
+	GemThief.Display.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
+	GemThief.Display.drawTextCentered(8, "%b{gray}Press Enter");
 }
 
 function _initEngine(state) {

@@ -30,6 +30,8 @@ function enter() {
 	this.params.width = 80;
 	this.params.height = 23;
 	this.map = GemThief.Map.instantiate(this.params);
+	this.mapDisplay = GemThief.Map.Display.instantiate(this.map, GemThief.Game.display);
+	this.dungeon = GemThief.Dungeon.instantiate(this.map, this.params);
 
 	_initEngine(this);
 }
@@ -42,16 +44,16 @@ function exit() {
 // Private methods
 
 function _draw(state) {
-	GemThief.Game.display.clear();
+	GemThief.Display.clear();
 
-	state.map.draw(GemThief.Game.display);
+	state.mapDisplay.draw({ location: state.dungeon.player.toPoint(), gems: state.playerStats.gems });
 }
 
 function _initEngine(state) {
 	state.scheduler.add(state, true);
-	state.scheduler.add(state.map.player, true);
+	state.scheduler.add(state.dungeon.player, true);
 
-	state.map.dwarves.forEach(function dwarfLoop(dwarf) {
+	state.dungeon.dwarves.forEach(function dwarfLoop(dwarf) {
 		state.scheduler.add(dwarf, true)
 	});
 

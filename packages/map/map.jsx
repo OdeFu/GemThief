@@ -10,43 +10,32 @@ GemThief.Map = {
 	 *  - width: the width of the map, required
 	 *  - height: the height of the map, required
 	 *  - level: the level depth of the map, defaults to 1
-	 *  - numGems: the number of gems to be generated, defaults to 10
 	 */
 	instantiate: function (params) {
 		check(params.width, Number);
 		check(params.height, Number);
 
-		const map = {};
+		const map = Object.create(GemThief.Map);
 		map.tiles = [];
-		map.player = null;
-		map.gems = [];
-		map.dwarves = [];
 		map.level = params.level || 1;
 		map.stairs = [];
 		map.lightLocations = [];
 		map.width = params.width;
 		map.height = params.height;
-		map.message = "";
-		map.messageLife = 0;
-		map.numGems = params.numGems || 10;
-		map.params = params;
 
 		map.getSomeTiles = getSomeTiles.bind(map);
 		map.getTile = getTile.bind(map);
-		map.draw = draw.bind(map);
 		map.isEmpty = isEmpty.bind(map);
 		map.isBlocking = isBlocking.bind(map);
 		map.findEmptyTile = findEmptyTile.bind(map);
 		map.calculateVisibleTiles = calculateVisibleTiles.bind(map);
-		map.getGem = getGem.bind(map);
-		map.removeGem = removeGem.bind(map);
 		map.moveEntity = moveEntity.bind(map);
-		map.setMessage = setMessage.bind(map);
+		map.getStairsUp = getStairsUp.bind(map);
 
 		// Dig the level
 		_dig(map);
 		_generateLightingData(map);
-		_createEntities(map);
+		_createStairs(map);
 
 		return map;
 	}
@@ -74,35 +63,12 @@ function isBlocking(x, y) {
 	return tile && tile.isBlocking();
 }
 
-function setMessage(msg, messageLife) {
-	this.message = msg;
-	this.messageLife = messageLife || 3;
-}
-
-function draw(display) {
-	if (this.message) {
-		display.drawText(0, 0, this.message);
-		this.messageLife--;
-		if (this.messageLife === 0) {
-			this.message = null;
-		}
-	}
-
-	const visibleTiles = this.calculateVisibleTiles();
-	visibleTiles.forEach(function drawTiles(tile) {
-		display.draw(tile.x, tile.y + 1, tile.getChar(), tile.getForegroundColor(), tile.getBackgroundColor());
-	});
-
-	display.drawText(0, this.height + 1, "Mine Level: " + this.level);
-	GemThief.Game.drawTextRight(this.height + 1, "Gems Found: " + GemThief.Game.state.playerStats.gems);
-}
-
 function findEmptyTile() {
 	const empties = _getAllEmptyTiles(this);
 	return empties.random();
 }
 
-function calculateVisibleTiles() {
+function calculateVisibleTiles(location) {
 	const tiles = [];
 
 	function lightPass(x, y) {
@@ -110,14 +76,14 @@ function calculateVisibleTiles() {
 	}
 
 	const fov = new ROT.FOV.PreciseShadowcasting(lightPass.bind(this));
-	fov.compute(this.player.x, this.player.y, 2, function fovCallback(x, y) {
+	fov.compute(location.x, location.y, 2, function fovCallback(x, y) {
 		const tile = this.getTile(x, y);
 		tile.seen = true;
 		tiles.push(tile);
 	}.bind(this));
 
 	// Do another pass for tiles that have light
-	fov.compute(this.player.x, this.player.y, 20, function fovCallback(x, y) {
+	fov.compute(location.x, location.y, 20, function fovCallback(x, y) {
 		const tile = this.getTile(x, y);
 		if (tile.color) {
 			tile.seen = true;
@@ -126,21 +92,6 @@ function calculateVisibleTiles() {
 	}.bind(this));
 
 	return tiles;
-}
-
-function getGem(x, y) {
-	return _.find(this.gems, function findGem(gem) {
-		return gem.x === x && gem.y === y;
-	});
-}
-
-function removeGem(gem) {
-	const index = this.gems.indexOf(gem);
-	if (index >= 0) {
-		this.gems.splice(index, 1);
-		const tile = this.getTile(gem.x, gem.y);
-		tile.removeEntity(gem);
-	}
 }
 
 function moveEntity(entity, newX, newY) {
@@ -154,55 +105,19 @@ function moveEntity(entity, newX, newY) {
 	entity.y = newY;
 }
 
+function getStairsUp() {
+	return _.find(this.stairs, function findUpStairs(stair) {
+		return !stair.down;
+	});
+}
+
 // Private methods
 
-function _createEntities(map) {
-	_createGems(map);
-
-	_createPlayer(map);
-
-	_createDwarf(map);
-
-	_createStairs(map);
-}
-
-function _createPlayer(map) {
-	const tile = map.findEmptyTile();
-	map.player = GemThief.Player.instantiate(tile.toPoint());
-	tile.addEntity(map.player);
-}
-
-function _createDwarf(map) {
-	const dwarves = map.params.config.dwarves.slice(0);
-	dwarves.sort(function dwarfSort(dwarf1, dwarf2) {
-		return dwarf1.level - dwarf2.level;
-	});
-	const data = dwarves[map.level - 1];
-
-	const tile = GemThief.DWARF_START_LOCATIONS[data.startLocation](map);
-	data.x = tile.x;
-	data.y = tile.y;
-
-	const dwarf = GemThief.Dwarf.instantiate(data);
-	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, map, data));
-	tile.addEntity(dwarf);
-	map.dwarves.push(dwarf);
-}
-
-function _createGems(map) {
-	_.times(map.numGems, function createGem() {
-		const tile = map.findEmptyTile();
-		const gem = GemThief.Gem.instantiate(tile.toPoint());
-		tile.addEntity(gem);
-		map.gems.push(gem);
-	});
-}
 
 function _createStairs(map) {
-	// always create stairs going up where the player is
-	const tile = map.getTile(map.player.x, map.player.y);
-	map.stairs[0] = GemThief.Stairs.instantiate({ x: map.player.x, y: map.player.y, down: false });
-	tile.addEntity(map.stairs[0]);
+	const upTile = map.findEmptyTile();
+	map.stairs[0] = GemThief.Stairs.instantiate({ x: upTile.x, y: upTile.y, down: false });
+	upTile.addEntity(map.stairs[0]);
 
 	const downTile = map.findEmptyTile();
 	map.stairs[1] = GemThief.Stairs.instantiate({ x: downTile.x, y: downTile.y, down: true });

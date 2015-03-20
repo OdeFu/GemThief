@@ -1,8 +1,8 @@
 "use strict";
 
 GemThief.AI.Sleepy = {
-	instantiate: function (dwarf, map, params) {
-		const AI = GemThief.AI.instantiate(dwarf, map, params);
+	instantiate: function (dwarf, dungeon, params) {
+		const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 
 		function idleAI() {
 			if (AI.spottedPlayer()) {
@@ -14,11 +14,11 @@ GemThief.AI.Sleepy = {
 	}
 };
 
-function createSleepyTrackingAI(dwarf, map, params) {
-	const AI = GemThief.AI.instantiate(dwarf, map, params);
+function createSleepyTrackingAI(dwarf, dungeon, params) {
+	const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 
 	function lostCallback() {
-		dwarf.setAI(GemThief.AI.Sleepy.instantiate(dwarf, map, params));
+		dwarf.setAI(GemThief.AI.Sleepy.instantiate(dwarf, dungeon, params));
 	}
 
 	return AI.getTrackingAI(lostCallback);

@@ -25,7 +25,6 @@ GemThief.Entity = {
 		entity.type = params.type || "<unknown>";
 		entity.params = params;
 
-		entity.draw = draw.bind(entity);
 		entity.toPoint = toPoint.bind(entity);
 		return entity;
 	}
@@ -37,10 +36,6 @@ ObjectUtils.addConstantProperty(GemThief.Entity, "ENTITY", 2);
 ObjectUtils.addConstantProperty(GemThief.Entity, "WALL", 3);
 
 // Public methods
-
-function draw(display) {
-	display.draw(this.x, this.y, this.char, this.color);
-}
 
 function toPoint() {
 	return { x: this.x, y: this.y };

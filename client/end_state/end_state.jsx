@@ -9,6 +9,10 @@ GemThief.EndState = {
 		params.name = "GemThief.EndState";
 
 		const state = GemThief.State.instantiate(params);
+		state.won = params.won;
+		state.gems = params.gems;
+		state.score = params.score;
+
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
@@ -50,13 +54,13 @@ function exit() {
 // Private methods
 
 function _draw(state) {
-	GemThief.Game.display.clear();
+	GemThief.Display.clear();
 
 	const text = state.won ? "You managed to escape with the loot!" : "You got caught by the dwarves!";
-	GemThief.Game.drawTextCentered(5, text);
-	GemThief.Game.drawTextCentered(6, "Gems Looted: " + state.params.gems);
-	GemThief.Game.drawTextCentered(7, "Score: " + state.params.score);
-	GemThief.Game.drawTextCentered(9, "%b{gray}New GemThief.Game");
+	GemThief.Display.drawTextCentered(5, text);
+	GemThief.Display.drawTextCentered(6, "Gems Looted: " + state.gems);
+	GemThief.Display.drawTextCentered(7, "Score: " + state.score);
+	GemThief.Display.drawTextCentered(9, "%b{gray}New Game");
 }
 
 function _initEngine(state) {

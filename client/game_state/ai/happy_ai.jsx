@@ -1,13 +1,13 @@
 "use strict";
 
 GemThief.AI.Happy = {
-	instantiate: function (dwarf, map, params) {
-		const AI = GemThief.AI.instantiate(dwarf, map, params);
+	instantiate: function (dwarf, dungeon, params) {
+		const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 		const path = [];
 
 		function idleAI() {
 			if (path.length === 0) {
-				path.push(...GemThief.Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
+				path.push(...GemThief.Path.generatePath(dungeon.map, dwarf.toPoint(), dungeon.map.findEmptyTile().toPoint()));
 			}
 
 			AI.movePath(path);
@@ -25,16 +25,16 @@ GemThief.AI.Happy = {
 	}
 };
 
-function createHappyTrackingAI(dwarf, map, params) {
-	const AI = GemThief.AI.instantiate(dwarf, map, params);
+function createHappyTrackingAI(dwarf, dungeon, params) {
+	const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 
 	function tellJoke() {
 		const joke = params.jokes.random();
-		map.setMessage("\"" + joke + "\"");
+		GemThief.Game.state.mapDisplay.setMessage("\"" + joke + "\"");
 	}
 
 	function lostCallback() {
-		dwarf.setAI(createHappyIdleAI(dwarf, map, params));
+		dwarf.setAI(GemThief.AI.Happy.instantiate(dwarf, dungeon, params));
 	}
 
 	function stoppedCallback() {

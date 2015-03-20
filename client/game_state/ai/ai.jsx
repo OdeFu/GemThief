@@ -1,12 +1,12 @@
 "use strict";
 
 GemThief.AI = {
-	instantiate: function (dwarf, map, params) {
+	instantiate: function (dwarf, dungeon, params) {
 		const AI = {};
-		AI.lastSeenPlayerPosition = map.player.toPoint();
+		AI.lastSeenPlayerPosition = dungeon.player.toPoint();
 		AI.turnsSinceLastSeen = 0;
 		AI.dwarf = dwarf;
-		AI.map = map;
+		AI.dungeon = dungeon;
 		AI.params = params;
 
 		AI.getShortestPathToStairs = getShortestPathToStairs.bind(AI);
@@ -22,7 +22,7 @@ GemThief.AI = {
 };
 
 function catchedPlayer() {
-	const playerPos = this.map.player.toPoint();
+	const playerPos = this.dungeon.player.toPoint();
 	if (playerPos.x === this.dwarf.x && playerPos.y === this.dwarf.y) {
 		GemThief.Game.state.engine.lock();
 		GemThief.Game.gameOver();
@@ -32,17 +32,18 @@ function catchedPlayer() {
 }
 
 function getVisiblePlayerPosition(radius) {
-	const playerPos = this.map.player.toPoint();
-	const seenTiles = GemThief.Path.getSeenTiles(this.dwarf.toPoint(), radius);
+	const playerPos = this.dungeon.player.toPoint();
+	const seenTiles = GemThief.Path.getSeenTiles(this.dungeon.map, this.dwarf.toPoint(), radius);
 	return _.find(seenTiles, tile => tile.x === playerPos.x && tile.y === playerPos.y);
 }
 
 function getShortestPathToStairs() {
-	const stairs = this.map.stairs;
-	const paths = _.map(stairs,
-	stair => GemThief.Path.generatePath(this.dwarf.toPoint(), stair.toPoint())).sort(function sortPaths(p1, p2) {
-		return p1.length - p2.length;
-	});
+	const stairs = this.dungeon.map.stairs;
+	const paths = _.map(stairs, function pathToStairs(stair) {
+		                    GemThief.Path.generatePath(this.dungeon.map, this.dwarf.toPoint(), stair.toPoint())
+	                    }).sort(function sortPaths(p1, p2) {
+		                            return p1.length - p2.length;
+	                            });
 	return paths[0];
 }
 
@@ -52,14 +53,14 @@ function spottedPlayer(radius) {
 }
 
 function changeToTrackingAI(ai) {
-	this.map.setMessage(this.params.idleAIConfig.noticeMessage);
-	this.dwarf.setAI(ai(this.dwarf, this.map, this.params));
+	GemThief.Game.state.mapDisplay.setMessage(this.params.idleAIConfig.noticeMessage);
+	this.dwarf.setAI(ai(this.dwarf, this.dungeon, this.params));
 }
 
 function move(to) {
-	const path = GemThief.Path.generatePath(this.dwarf.toPoint(), to);
+	const path = GemThief.Path.generatePath(this.dungeon.map, this.dwarf.toPoint(), to);
 	if (path.length > 0) {
-		this.map.moveEntity(this.dwarf, path[0][0], path[0][1]);
+		this.dungeon.map.moveEntity(this.dwarf, path[0][0], path[0][1]);
 	}
 	return path.length > 0;
 }
@@ -67,7 +68,7 @@ function move(to) {
 function movePath(path) {
 	if (path.length > 0) {
 		const step = path.splice(0, 1)[0];
-		this.map.moveEntity(this.dwarf, step[0], step[1]);
+		this.dungeon.map.moveEntity(this.dwarf, step[0], step[1]);
 	}
 }
 
@@ -77,7 +78,7 @@ function getTrackingAI(lostCallback, stoppedCallback) {
 			const stop = ROT.RNG.getPercentage() < this.params.trackingAIConfig.chanceToStop;
 			if (stop) {
 				if (this.params.trackingAIConfig.stopMessage) {
-					this.map.setMessage(this.params.trackingAIConfig.stopMessage, 1);
+					GemThief.Game.state.mapDisplay.setMessage(this.params.trackingAIConfig.stopMessage, 1);
 				}
 
 				if (stoppedCallback) {

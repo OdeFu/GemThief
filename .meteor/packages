@@ -6,10 +6,13 @@
 standard-app-packages
 autopublish
 insecure
-rotjs
 accounts-ui
 accounts-password
 bootstrap
 grigio:babel
 stevezhu:lodash
 globals
+oaalto:rot
+entities
+map
+display

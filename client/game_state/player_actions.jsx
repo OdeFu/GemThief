@@ -2,31 +2,31 @@
 
 function createMoveAction(dirKey) {
 	function checkGem(player) {
-		const gem = GemThief.Game.state.map.getGem(player.x, player.y);
+		const gem = GemThief.Game.state.dungeon.getGem(player.x, player.y);
 		if (gem) {
-			GemThief.Game.state.map.setMessage("You picked up a gem.", 1);
+			GemThief.Game.state.mapDisplay.setMessage("You picked up a gem.", 1);
 			GemThief.Game.state.playerStats.gems += 1;
-			GemThief.Game.state.map.removeGem(gem);
+			GemThief.Game.state.dungeon.removeGem(gem);
 		}
 	}
 
 	function moveAction() {
-		const player = GemThief.Game.state.map.player;
+		const player = GemThief.Game.state.dungeon.player;
 		const dir = ROT.DIRS[8][dirKey];
 		const newX = player.x + dir[0];
 		const newY = player.y + dir[1];
 
-		if (GemThief.Game.state.map.isBlocking(newX, newY)) {
+		if (GemThief.Game.state.dungeon.map.isBlocking(newX, newY)) {
 			/* Cannot move in this direction */
 			return;
 		}
 
-		GemThief.Game.state.map.moveEntity(player, newX, newY);
+		GemThief.Game.state.dungeon.map.moveEntity(player, newX, newY);
 
 		checkGem(player);
 
-		const prevMoves = GemThief.Game.state.playerStats.moves[GemThief.Game.state.map.level];
-		GemThief.Game.state.playerStats.moves[GemThief.Game.state.map.level] = prevMoves ? prevMoves + 1 : 1;
+		const prevMoves = GemThief.Game.state.playerStats.moves[GemThief.Game.state.dungeon.map.level];
+		GemThief.Game.state.playerStats.moves[GemThief.Game.state.dungeon.map.level] = prevMoves ? prevMoves + 1 : 1;
 	}
 
 	return moveAction;
@@ -34,20 +34,20 @@ function createMoveAction(dirKey) {
 
 function createClimbStairsAction(down) {
 	function climbStairsAction() {
-		const player = GemThief.Game.state.map.player;
-		const tile = GemThief.Game.state.map.getTile(player.x, player.y);
+		const player = GemThief.Game.state.dungeon.player;
+		const tile = GemThief.Game.state.dungeon.map.getTile(player.x, player.y);
 		const entity = tile.getEntity(GemThief.Entity.FLOOR);
 		if (entity.type === GemThief.Stairs.type) {
 			if (entity.down === down) {
-				const nextLevel = GemThief.Game.state.map.level + (down ? 1 : -1);
+				const nextLevel = GemThief.Game.state.dungeon.map.level + (down ? 1 : -1);
 				GemThief.Game.moveToLevel(nextLevel);
 			}
 			else {
-				GemThief.Game.state.map.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
+				GemThief.Game.state.mapDisplay.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
 			}
 		}
 		else {
-			GemThief.Game.state.map.setMessage("There are no stairs here.");
+			GemThief.Game.state.mapDisplay.setMessage("There are no stairs here.");
 		}
 	}
 

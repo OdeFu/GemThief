@@ -4,8 +4,7 @@ GemThief.Game = {
 	init: function () {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
-			this.display = new ROT.Display();
-			container.appendChild(this.display.getContainer());
+			GemThief.Display.init(container);
 
 			this.changeState(GemThief.StartState.instantiate());
 		}
@@ -26,7 +25,7 @@ GemThief.Game = {
 	gameOver: function () {
 		Meteor.call("update", this.state.playerStats, function updateCallback(error, data) {
 			this.changeState(GemThief.EndState.instantiate(data));
-		});
+		}.bind(this));
 	},
 
 	moveToLevel: function (nextLevel) {
@@ -38,19 +37,7 @@ GemThief.Game = {
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {
 				this.changeState(GemThief.GameState.instantiate(game));
-			});
+			}.bind(this));
 		}
-	},
-
-	drawTextCentered: function (y, text) {
-		const textSize = ROT.Text.measure(text);
-		const x = this.display.getOptions().width * 0.5 - textSize.width * 0.5;
-		this.display.drawText(x, y, text);
-	},
-
-	drawTextRight: function (y, text) {
-		const textSize = ROT.Text.measure(text);
-		const x = this.display.getOptions().width - textSize.width;
-		this.display.drawText(x, y, text);
 	}
 };

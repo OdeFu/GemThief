@@ -1,13 +1,13 @@
 "use strict";
 
 GemThief.AI.Doc = {
-	instantiate: function (dwarf, map, params) {
-		const AI = GemThief.AI.instantiate(dwarf, map, params);
+	instantiate: function (dwarf, dungeon, params) {
+		const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 		const path = [];
 
 		function idleAI() {
 			if (path.length === 0) {
-				path.push(...GemThief.Path.generatePath(dwarf.toPoint(), map.findEmptyTile().toPoint()));
+				path.push(...GemThief.Path.generatePath(dungeon.map, dwarf.toPoint(), dungeon.map.findEmptyTile().toPoint()));
 			}
 
 			AI.movePath(path);
@@ -25,18 +25,18 @@ GemThief.AI.Doc = {
 	}
 };
 
-function createDocTrackingAI(dwarf, map, params) {
-	const AI = GemThief.AI.instantiate(dwarf, map, params);
+function createDocTrackingAI(dwarf, dungeon, params) {
+	const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 
 	function lostCallback() {
-		dwarf.setAI(createDocGuardAI(dwarf, map, params));
+		dwarf.setAI(createDocGuardAI(dwarf, dungeon, params));
 	}
 
 	return AI.getTrackingAI(lostCallback);
 }
 
-function createDocGuardAI(dwarf, map, params) {
-	const AI = GemThief.AI.instantiate(dwarf, map, params);
+function createDocGuardAI(dwarf, dungeon, params) {
+	const AI = GemThief.AI.instantiate(dwarf, dungeon, params);
 	const path = AI.getShortestPathToStairs();
 
 	function guardAI() {

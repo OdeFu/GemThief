@@ -49,7 +49,9 @@ Meteor.methods(
 function calculateScore(data)
 {
 	const gemsScore = data.gems * 100;
-	const moveScore = _.map(data.moves, (moves, level) => moves * level);
+	const moveScore = _.reduce(data.moves, function calcMoveScore(value, moves, level) {
+		return value + moves * level;
+	});
 
 	// You get nothing if you lost
 	return Math.round(gemsScore + moveScore) * data.won;
