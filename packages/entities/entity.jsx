@@ -30,10 +30,10 @@ GemThief.Entity = {
 	}
 };
 
-ObjectUtils.addConstantProperty(GemThief.Entity, "FLOOR", 0);
-ObjectUtils.addConstantProperty(GemThief.Entity, "ITEM", 1);
-ObjectUtils.addConstantProperty(GemThief.Entity, "ENTITY", 2);
-ObjectUtils.addConstantProperty(GemThief.Entity, "WALL", 3);
+GemThief.addConstantProperty(GemThief.Entity, "FLOOR", 0);
+GemThief.addConstantProperty(GemThief.Entity, "ITEM", 1);
+GemThief.addConstantProperty(GemThief.Entity, "ENTITY", 2);
+GemThief.addConstantProperty(GemThief.Entity, "WALL", 3);
 
 // Public methods
 
