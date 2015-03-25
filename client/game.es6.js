@@ -4,6 +4,9 @@ GemThief.Game = {
 	init: function (newPlayer) {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
+			if (container.hasChildNodes()) {
+				container.removeAll();
+			}
 			GemThief.Display.init(container);
 
 			this.changeState(GemThief.StartState.instantiate(newPlayer));
