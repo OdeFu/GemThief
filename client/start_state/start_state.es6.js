@@ -35,7 +35,8 @@ function handleEvent(event) {
 	if (event.keyCode === ROT.VK_RETURN) {
 		window.removeEventListener("keydown", this);
 
-		Meteor.call("newGame", function newGameCallback(error, game) {
+		const method = this.newPlayer ? "newGame" : "continueGame";
+		Meteor.call(method, function newGameCallback(error, game) {
 			GemThief.Game.changeState(GemThief.GameState.instantiate(game));
 		});
 	}

@@ -22,8 +22,8 @@ GemThief.Game = {
 		this.state.enter();
 	},
 
-	gameOver: function () {
-		Meteor.call("update", this.state.playerStats, function updateCallback(error, data) {
+	gameOver: function (won) {
+		Meteor.call("update", won, function updateCallback(error, data) {
 			this.changeState(GemThief.EndState.instantiate(data));
 		}.bind(this));
 	},
@@ -31,8 +31,7 @@ GemThief.Game = {
 	moveToLevel: function (nextLevel) {
 		if (nextLevel === 0) {
 			// We exited the mine
-			this.state.playerStats.won = true;
-			this.gameOver();
+			this.gameOver(true);
 		}
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {

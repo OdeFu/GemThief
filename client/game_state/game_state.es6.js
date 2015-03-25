@@ -47,7 +47,7 @@ function _draw(state) {
 
 	state.mapDisplay.draw({
 		location: state.dungeon.player.toPoint(),
-		gems: state.playerStats.gems
+		gems: GemThief.PlayerData.currentData().gems
 	});
 }
 

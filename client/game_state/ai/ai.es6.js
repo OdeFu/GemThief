@@ -25,7 +25,7 @@ function catchedPlayer() {
 	const playerPos = this.dungeon.player.toPoint();
 	if (playerPos.x === this.dwarf.x && playerPos.y === this.dwarf.y) {
 		GemThief.Game.state.engine.lock();
-		GemThief.Game.gameOver();
+		GemThief.Game.gameOver(false);
 		return true;
 	}
 	return false;

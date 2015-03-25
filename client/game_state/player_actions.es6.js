@@ -5,7 +5,7 @@ function createMoveAction(dirKey) {
 		const gem = GemThief.Game.state.dungeon.getGem(player.x, player.y);
 		if (gem) {
 			GemThief.Game.state.mapDisplay.setMessage("You picked up a gem.", 1);
-			GemThief.Game.state.playerStats.gems += 1;
+			GemThief.PlayerData.addGem();
 			GemThief.Game.state.dungeon.removeGem(gem);
 		}
 	}
@@ -25,8 +25,7 @@ function createMoveAction(dirKey) {
 
 		checkGem(player);
 
-		const prevMoves = GemThief.Game.state.playerStats.moves[GemThief.Game.state.dungeon.map.level];
-		GemThief.Game.state.playerStats.moves[GemThief.Game.state.dungeon.map.level] = prevMoves ? prevMoves + 1 : 1;
+		GemThief.PlayerData.addMove(GemThief.Game.state.dungeon.map.level);
 	}
 
 	return moveAction;
