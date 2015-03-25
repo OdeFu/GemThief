@@ -3,20 +3,15 @@
 GemThief.Game = {
 	init: function (newPlayer) {
 		const container = document.getElementById("main");
-		if (ROT.isSupported) {
-			if (container.hasChildNodes()) {
-				container.removeAll();
-			}
-			GemThief.Display.init(container);
+		if (container.hasChildNodes()) {
+			container.removeAll();
+		}
+		GemThief.Display.init(container);
 
-			const method = newPlayer ? "newGame" : "continueGame";
-			Meteor.call(method, function newGameCallback(error, game) {
-				GemThief.Game.changeState(GemThief.GameState.instantiate(game));
-			});
-		}
-		else {
-			container.textContent = "Your browser is not supported!";
-		}
+		const method = newPlayer ? "newGame" : "continueGame";
+		Meteor.call(method, function newGameCallback(error, game) {
+			GemThief.Game.changeState(GemThief.GameState.instantiate(game));
+		});
 	},
 
 	changeState: function (newState) {
