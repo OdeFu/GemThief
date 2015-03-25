@@ -9,7 +9,10 @@ GemThief.Game = {
 			}
 			GemThief.Display.init(container);
 
-			this.changeState(GemThief.StartState.instantiate(newPlayer));
+			const method = newPlayer ? "newGame" : "continueGame";
+			Meteor.call(method, function newGameCallback(error, game) {
+				GemThief.Game.changeState(GemThief.GameState.instantiate(game));
+			});
 		}
 		else {
 			container.textContent = "Your browser is not supported!";
