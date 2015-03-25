@@ -10,8 +10,14 @@ GemThief.Game = {
 
 		const method = newPlayer ? "newGame" : "continueGame";
 		Meteor.call(method, function newGameCallback(error, game) {
-			GemThief.Game.changeState(GemThief.GameState.instantiate(game));
-		});
+			if (error) {
+				console.log(error.reason);
+			}
+
+			Meteor.call("createDungeon", game, function (error, dungeon) {
+				this.changeState(GemThief.GameState.instantiate(dungeon));
+			}.bind(this));
+		}.bind(this));
 	},
 
 	changeState: function (newState) {

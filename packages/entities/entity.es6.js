@@ -25,8 +25,13 @@ GemThief.Entity = {
 		entity.type = params.type || "<unknown>";
 		entity.params = params;
 
-		entity.toPoint = toPoint.bind(entity);
+		this.bind(entity);
+
 		return entity;
+	},
+
+	bind: function (entity) {
+		entity.toPoint = toPoint.bind(entity);
 	}
 };
 

@@ -1,17 +1,11 @@
 "use strict";
 
 GemThief.GameState = {
-	instantiate: function (params) {
-		check(params.seed, Number);
-		check(params.config, Object);
-		check(params.level, Number);
+	instantiate: function (dungeon) {
+		_rebindDungeonFunctions(dungeon);
 
-		ROT.RNG.setSeed(params.seed);
-
-		params.name = "GemThief.GameState";
-		params.scheduler = ROT.Scheduler.Simple;
-
-		const state = GemThief.State.instantiate(params);
+		const state = GemThief.State.instantiate({ name: "GemThief.GameState", scheduler: ROT.Scheduler.Simple });
+		state.dungeon = dungeon;
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);
@@ -26,11 +20,9 @@ function act() {
 }
 
 function enter() {
-	this.params.width = 80;
-	this.params.height = 23;
-	this.map = GemThief.Map.instantiate(this.params);
-	this.mapDisplay = GemThief.Map.Display.instantiate(this.map, GemThief.Game.display);
-	this.dungeon = GemThief.Dungeon.instantiate(this.map, this.params);
+	// 	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, dungeon, data));
+
+	this.mapDisplay = GemThief.Map.Display.instantiate(this.dungeon.map, GemThief.Game.display);
 
 	_initEngine(this);
 }
@@ -60,4 +52,14 @@ function _initEngine(state) {
 	});
 
 	state.engine.start();
+}
+
+function _rebindDungeonFunctions(dungeon) {
+	GemThief.Dungeon.bind(dungeon);
+	GemThief.Map.bind(dungeon.map);
+	GemThief.Player.bind(dungeon.player);
+
+	_.each(dungeon.dwarves, function bindDwarves (dwarf) {
+		GemThief.Dwarf.bind(dwarf);
+	});
 }

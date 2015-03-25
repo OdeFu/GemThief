@@ -23,6 +23,17 @@ GemThief.Map = {
 		map.width = params.width;
 		map.height = params.height;
 
+		this.bind(map);
+
+		// Dig the level
+		_dig(map);
+		_generateLightingData(map);
+		_createStairs(map);
+
+		return map;
+	},
+
+	bind: function (map) {
 		map.getSomeTiles = getSomeTiles.bind(map);
 		map.getTile = getTile.bind(map);
 		map.isEmpty = isEmpty.bind(map);
@@ -31,13 +42,6 @@ GemThief.Map = {
 		map.calculateVisibleTiles = calculateVisibleTiles.bind(map);
 		map.moveEntity = moveEntity.bind(map);
 		map.getStairsUp = getStairsUp.bind(map);
-
-		// Dig the level
-		_dig(map);
-		_generateLightingData(map);
-		_createStairs(map);
-
-		return map;
 	}
 };
 

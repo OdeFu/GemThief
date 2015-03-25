@@ -56,7 +56,9 @@ function createNewGame() {
 	const game = {
 		seed: new Date().getTime(),
 		level: 1,
-		config: DWARF_CONFIG
+		config: DWARF_CONFIG,
+		width: 80,
+		height: 23
 	};
 	return game;
 }
