@@ -25,11 +25,15 @@ function createScaredAI(dwarf, dungeon, params) {
 			const dirX = pos.x - playerPos.x >= 0 ? 1 : -1;
 			const dirY = pos.y - playerPos.y >= 0 ? 1 : -1;
 
-			if (AI.move({ x: pos.x + dirX, y: pos.y + dirY })) {
+			if (AI.move({
+				x: pos.x + dirX,
+				y: pos.y + dirY
+			})) {
 				GemThief.Game.state.mapDisplay.setMessage("Bashful screams in terror as he runs away from you.", 1);
 			}
 			else {
-				GemThief.Game.state.mapDisplay.setMessage("Bashful screams in terror as he tries runs away from you and collides with a wall.", 1);
+				GemThief.Game.state.mapDisplay.setMessage("Bashful screams in terror as he tries runs away from you and collides with a wall.",
+				1);
 			}
 
 			turnsScared--;

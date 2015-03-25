@@ -12,7 +12,8 @@ GemThief.AI.Dopey = {
 			}
 
 			if (path.length === 0) {
-				path.push(...GemThief.Path.generatePath(dungeon.map, dwarf.toPoint(), dungeon.map.findEmptyTile().toPoint()));
+				path.push(...GemThief.Path.generatePath(dungeon.map, dwarf.toPoint(),
+				dungeon.map.findEmptyTile().toPoint()));
 			}
 
 			AI.movePath(path);

@@ -43,7 +43,8 @@ function createClimbStairsAction(down) {
 				GemThief.Game.moveToLevel(nextLevel);
 			}
 			else {
-				GemThief.Game.state.mapDisplay.setMessage("You cannot climb " + (down ? "down" : "up") + " these stairs.");
+				GemThief.Game.state.mapDisplay.setMessage("You cannot climb " + (down ? "down" : "up") +
+				" these stairs.");
 			}
 		}
 		else {

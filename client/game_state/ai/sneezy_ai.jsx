@@ -38,8 +38,9 @@ function createSneezingAI(dwarf, dungeon, params) {
 		if (sneezeDuration === 0) {
 			GemThief.Game.state.mapDisplay.setMessage("Sneezy recovers from the sneeze.");
 			const playerPos = AI.getVisiblePlayerPosition();
-			dwarf.setAI(playerPos === null ? GemThief.AI.Sneezy.instantiate(dwarf, dungeon, params) :
-				createSneezyTrackingAI(dwarf, dungeon, params));
+			dwarf.setAI(playerPos === null ?
+			GemThief.AI.Sneezy.instantiate(dwarf, dungeon, params) :
+			createSneezyTrackingAI(dwarf, dungeon, params));
 		}
 	}
 

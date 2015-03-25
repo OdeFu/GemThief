@@ -2,6 +2,6 @@
 
 GemThief.GameSession = {
 	startSession: function (data) {
-		
+
 	}
 };

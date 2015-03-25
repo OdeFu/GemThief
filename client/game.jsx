@@ -1,12 +1,12 @@
 "use strict";
 
 GemThief.Game = {
-	init: function () {
+	init: function (newPlayer) {
 		const container = document.getElementById("main");
 		if (ROT.isSupported) {
 			GemThief.Display.init(container);
 
-			this.changeState(GemThief.StartState.instantiate());
+			this.changeState(GemThief.StartState.instantiate(newPlayer));
 		}
 		else {
 			container.textContent = "Your browser is not supported!";

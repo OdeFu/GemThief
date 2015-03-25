@@ -15,7 +15,6 @@ GemThief.GameState = {
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
 		state.exit = exit.bind(state);
-		state.playerStats = new GemThief.PlayerStats();
 		return state;
 	}
 };
@@ -46,7 +45,10 @@ function exit() {
 function _draw(state) {
 	GemThief.Display.clear();
 
-	state.mapDisplay.draw({ location: state.dungeon.player.toPoint(), gems: state.playerStats.gems });
+	state.mapDisplay.draw({
+		location: state.dungeon.player.toPoint(),
+		gems: state.playerStats.gems
+	});
 }
 
 function _initEngine(state) {

@@ -1,0 +1,11 @@
+<template name="mainBody">
+  {{#unless currentUser}}
+	  {{#if loggingIn}}
+		{{> spinner}}
+	  {{else}}
+	    <h1 class="text-center">Please log in to play. =></h1>
+	  {{/if}}
+  {{else}}
+	<div id="main"></div>
+  {{/unless}}
+</template>

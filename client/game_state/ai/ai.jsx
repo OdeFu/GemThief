@@ -40,10 +40,10 @@ function getVisiblePlayerPosition(radius) {
 function getShortestPathToStairs() {
 	const stairs = this.dungeon.map.stairs;
 	const paths = _.map(stairs, function pathToStairs(stair) {
-		                    GemThief.Path.generatePath(this.dungeon.map, this.dwarf.toPoint(), stair.toPoint())
-	                    }).sort(function sortPaths(p1, p2) {
-		                            return p1.length - p2.length;
-	                            });
+		GemThief.Path.generatePath(this.dungeon.map, this.dwarf.toPoint(), stair.toPoint())
+	}).sort(function sortPaths(p1, p2) {
+		return p1.length - p2.length;
+	});
 	return paths[0];
 }
 

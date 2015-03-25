@@ -1,8 +1,9 @@
 "use strict";
 
 GemThief.StartState = {
-	instantiate: function () {
+	instantiate: function (newPlayer) {
 		const state = GemThief.State.instantiate({ name: "GemThief.StartState" });
+		state.newPlayer = newPlayer;
 		state.handleEvent = handleEvent.bind(state);
 		state.act = act.bind(state);
 		state.enter = enter.bind(state);
@@ -14,7 +15,7 @@ GemThief.StartState = {
 // Public methods
 
 function act() {
-	_draw();
+	_draw(this);
 
 	this.engine.lock();
 	window.addEventListener("keydown", this);
@@ -42,11 +43,13 @@ function handleEvent(event) {
 
 // Private methods
 
-function _draw() {
+function _draw(state) {
 	GemThief.Display.clear();
 	GemThief.Display.drawTextCentered(5, "%c{red}G %c{green}E %c{blue}M");
 	GemThief.Display.drawTextCentered(6, "%c{magenta}T %c{aqua}H %c{coral}I %c{fuchsia}E %c{indigo}F");
-	GemThief.Display.drawTextCentered(8, "%b{gray}Press Enter");
+
+	const text = state.newPlayer ? "%b{gray}New Game" : "%b{gray}Continue Game";
+	GemThief.Display.drawTextCentered(8, text);
 }
 
 function _initEngine(state) {
