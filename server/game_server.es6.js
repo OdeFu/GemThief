@@ -9,7 +9,7 @@ Meteor.methods({
 		const game = createNewGame();
 
 		if (this.userId) {
-			Games.upsert({ userId: this.userId }, { $set: _.extend(_.omit(game, "config"), { created: new Date().getTime() }) });
+			Games.upsert({ userId: this.userId }, { $set: _.extend(_.omit(game, "config"), { created: new Date() })});
 		}
 
 		return game;
@@ -41,7 +41,7 @@ Meteor.methods({
 
 			const data = {
 				level: game.level,
-				updated: new Date().getTime()
+				updated: new Date()
 			};
 			Games.upsert({ userId: this.userId }, { $set: data }, function (error) {
 				console.log(error.reason);
