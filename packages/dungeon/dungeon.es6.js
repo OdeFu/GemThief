@@ -1,13 +1,13 @@
 "use strict";
 
 GemThief.Dungeon = {
-	instantiate: function (mapData, params) {
+	instantiate: function (entityData, params) {
 		const dungeon = Object.create(GemThief.Dungeon);
 		dungeon.config = params.config;
-		dungeon.map = GemThief.Map.instantiate(mapData, params);
-		dungeon.player = _createPlayer(mapData, dungeon.map);
-		dungeon.gems = _createGems(mapData, dungeon.map);
-		dungeon.dwarves = _createDwarves(mapData, dungeon);
+		dungeon.map = GemThief.Map.instantiate(entityData, params);
+		dungeon.player = _createPlayer(entityData.player, dungeon.map);
+		dungeon.gems = _createGems(entityData.gems, dungeon.map);
+		dungeon.dwarf = _createDwarf(entityData.dwarf, dungeon);
 
 		dungeon.getGem = getGem.bind(dungeon);
 		dungeon.removeGem = removeGem.bind(dungeon);
@@ -33,55 +33,35 @@ function removeGem(gem) {
 
 // Private methods
 
-function _createPlayer(mapData, map) {
-	const playerLoc = _findLocationsFor(GemThief.Digger.PLAYER, mapData)[0];
-	const player = GemThief.Player.instantiate({ x: playerLoc.x, y: playerLoc.y });
-	const tile = map.getTile(playerLoc.x, playerLoc.y);
+function _createPlayer(playerData, map) {
+	const player = GemThief.Player.instantiate({ x: playerData.x, y: playerData.y });
+	const tile = map.getTile(playerData.x, playerData.y);
 	tile.addEntity(player);
 	return player;
 }
 
-function _createGems(mapData, map) {
-	const gems = [];
-	const gemLocations = _findLocationsFor(GemThief.Digger.GEM, mapData);
-	_.each(gemLocations, function (gemTile) {
-		const gem = GemThief.Gem.instantiate({ x: gemTile.x, y: gemTile.y });
-		const tile = map.getTile(gemTile.x, gemTile.y);
+function _createGems(gemsData, map) {
+	return _.map(gemsData, function (gemData) {
+		const gem = GemThief.Gem.instantiate(gemData);
+		const tile = map.getTile(gemData.x, gemData.y);
 		tile.addEntity(gem);
-		gems.push(gem);
+		return gem;
 	});
-	return gems;
 }
 
-function _createDwarves(mapData, dungeon) {
-	const dwarves = [];
-	const dwarfLocations = _findLocationsFor(GemThief.Digger.DWARF, mapData);
-	_.each(dwarfLocations, function (dwarfLoc) {
-		const dwarf = _createDwarf(dwarfLoc, dungeon);
-		dwarves.push(dwarf);
-	});
-	return dwarves;
-}
-
-function _createDwarf(dwarfLoc, dungeon) {
+function _createDwarf(dwarfData, dungeon) {
 	const dwarfConfigs = dungeon.config.dwarves.slice(0);
 	dwarfConfigs.sort(function dwarfSort(dwarf1, dwarf2) {
 		return dwarf1.level - dwarf2.level;
 	});
 	const data = dwarfConfigs[dungeon.map.level - 1];
-	data.x = dwarfLoc.x;
-	data.y = dwarfLoc.y;
+	data.x = dwarfData.x;
+	data.y = dwarfData.y;
 
 	const dwarf = GemThief.Dwarf.instantiate(data);
 	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, dungeon, data));
-	const tile = dungeon.map.getTile(dwarfLoc.x, dwarfLoc.y);
+	const tile = dungeon.map.getTile(dwarfData.x, dwarfData.y);
 	tile.addEntity(dwarf);
 
 	return dwarf;
-}
-
-function _findLocationsFor(type, mapData) {
-	return _.filter(mapData, function (tile) {
-		return tile.value === type;
-	});
 }

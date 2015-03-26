@@ -14,30 +14,33 @@ Meteor.methods({
 			numLightLocations: Number
 		});
 
+		const entities = {};
+
 		if (this.userId) {
 			ROT.RNG.setSeed(params.seed);
 
 			const mapData = GemThief.Digger.dig(params);
 
-			_createPlayer(mapData);
-			_createDwarf(mapData, params);
-			_createGems(mapData, params.numGems);
+			entities.stairs = _createStairs(mapData);
+			entities.player = _createPlayer(mapData);
+			entities.dwarf = _createDwarf(mapData, params);
+			entities.gems = _createGems(mapData, params.numGems);
+			entities.lights = _generateLightingData(mapData, params.numLightLocations);
 
-			GemThief.DungeonData.upsert({ userId: this.userId }, { data: mapData, userId: this.userId });
+			GemThief.DungeonData.upsert({ userId: this.userId }, { data: entities, userId: this.userId });
 		}
+
+		return entities;
 	}
 });
 
-
 function _createPlayer(mapData) {
-	const stairs = _findStairsUp(mapData);
-	stairs.value = GemThief.Digger.PLAYER;
+	return _findStairsUp(mapData);
 }
 
 function _createGems(mapData, numGems) {
-	_.times(numGems, function createGem() {
-		const tile = GemThief.Digger.findEmptyTile(mapData);
-		tile.value = GemThief.Digger.GEM;
+	return _.times(numGems, function createGem() {
+		return GemThief.Digger.findEmptyTile(mapData);
 	});
 }
 
@@ -48,8 +51,65 @@ function _createDwarf(mapData, params) {
 	});
 	const data = dwarves[params.level - 1];
 
-	const tile = GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
-	tile.value = GemThief.Digger.DWARF;
+	return GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
+}
+
+function _createStairs(mapData) {
+	return _.times(2, function createStairs(n) {
+		const tile = GemThief.Digger.findEmptyTile(mapData);
+		tile.value = n === 0 ? GemThief.Digger.UP : GemThief.Digger.DOWN;
+		return tile;
+	});
+}
+
+function _generateLightingData(mapData, numLightLocations) {
+	function isEmpty(x, y) {
+		const tile = GemThief.Digger.getTile(x, y, mapData);
+		if (tile) {
+			return tile.value !== GemThief.Digger.WALL;
+		}
+		// TODO: Fix this
+		console.log("No tile found at", x, ",", y);
+		return true;
+	}
+
+	const fov = new ROT.FOV.PreciseShadowcasting(isEmpty, { topology: 4 });
+
+	function reflectivityCallback(x, y) {
+		return isEmpty(x, y) ? 0.3 : 0;
+	}
+
+	const lighting = new ROT.Lighting(reflectivityCallback, {
+		range: 12, passes: 2
+	});
+	lighting.setFOV(fov);
+
+	const lightColor = [200, 200, 0];
+
+	const lightLocations = _createLightLocations(mapData, numLightLocations);
+	lightLocations.forEach(function setLight(light) {
+		lighting.setLight(light.x, light.y, lightColor);
+	});
+
+	const lightedTiles = [];
+
+	function lightingCallback(x, y, color) {
+		const tile = GemThief.Digger.getTile(x, y, mapData);
+		tile.color = color;
+		lightedTiles.push(tile);
+	}
+
+	lighting.compute(lightingCallback);
+
+	return lightedTiles;
+}
+
+function _createLightLocations(mapData, numLightLocations) {
+	return _.times(numLightLocations, function createLightLocation() {
+		const tile = GemThief.Digger.findEmptyTile(mapData);
+		tile.value = GemThief.Digger.LIGHT;
+		return tile;
+	});
 }
 
 function _findStairsUp(mapData) {
