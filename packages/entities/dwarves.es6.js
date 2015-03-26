@@ -15,11 +15,10 @@ GemThief.Dwarf = {
 
 		const dwarf = GemThief.Entity.instantiate(params);
 		dwarf.name = params.name;
-		return dwarf;
-	},
 
-	bind: function (dwarf) {
 		dwarf.setAI = setAI.bind(dwarf);
+
+		return dwarf;
 	}
 };
 

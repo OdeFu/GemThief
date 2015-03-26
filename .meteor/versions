@@ -13,6 +13,8 @@ check@1.0.5-rc.0
 ddp@1.1.0-rc.1
 deps@1.0.7-rc.0
 display@0.0.2
+dungeon@0.0.1
+dwarf-ai@0.0.1
 ejson@1.0.6-rc.0
 email@1.0.6-rc.0
 entities@0.0.2

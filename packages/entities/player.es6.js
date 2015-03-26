@@ -6,11 +6,9 @@ GemThief.Player = {
 		params.char = "@";
 		params.color = "white";
 
-		return GemThief.Entity.instantiate(params);
-	},
-
-	bind: function (player) {
+		const player = GemThief.Entity.instantiate(params);
 		player.act = act.bind(player);
+		return player;
 	}
 };
 

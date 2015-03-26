@@ -2,7 +2,7 @@
 
 GemThief.AI = {
 	instantiate: function (dwarf, dungeon, params) {
-		const AI = {};
+		const AI = Object.create(GemThief.AI);
 		AI.lastSeenPlayerPosition = dungeon.player.toPoint();
 		AI.turnsSinceLastSeen = 0;
 		AI.dwarf = dwarf;

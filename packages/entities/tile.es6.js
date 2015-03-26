@@ -7,10 +7,11 @@ GemThief.Tile = {
 	 * @param params
 	 * - x: the x-coordinate, defaults to 0
 	 * - y: the y-coordinate, defaults to 0
+	 * - value: is there a wall(1), or no(0)
 	 * @returns {{}} a new tile object
 	 */
 	instantiate: function (params) {
-		const tile = {};
+		const tile = Object.create(GemThief.Tile);
 		tile.x = params.x || 0;
 		tile.y = params.y || 0;
 		tile.seen = false; // Initially unseen
@@ -29,6 +30,9 @@ GemThief.Tile = {
 
 		// Initialize the tile
 		tile.addEntity(GemThief.FloorEntity.instantiate(tile.toPoint()));
+		if (params.value === GemThief.Digger.WALL) {
+			tile.addEntity(GemThief.Wall.instantiate(tile.toPoint()));
+		}
 
 		return tile;
 	}

@@ -58,7 +58,9 @@ function createNewGame() {
 		level: 1,
 		config: DWARF_CONFIG,
 		width: 80,
-		height: 23
+		height: 23,
+		numGems: 10,
+		numLightLocations: 5
 	};
 	return game;
 }
