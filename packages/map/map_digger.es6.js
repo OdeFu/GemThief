@@ -34,6 +34,7 @@ GemThief.Digger = {
 	},
 
 	getTile: function (x, y, tiles) {
+		check(tiles.params.height, Number);
 		return tiles[tiles.params.height * x + y];
 	},
 

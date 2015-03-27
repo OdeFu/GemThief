@@ -9,13 +9,16 @@ Meteor.methods({
 		if (this.userId) {
 			const player = GemThief.DungeonData.getPlayerData(this.userId);
 			const game = GemThief.Games.getGame(this.userId);
-			const map = GemThief.Digger.dig(game)
+
+			ROT.RNG.setSeed(game.seed);
+			const tiles = GemThief.Digger.dig(game);
 
 			const dir = ROT.DIRS[8][dirKey];
 			const newX = player.x + dir[0];
 			const newY = player.y + dir[1];
 
-			if (map.isBlocking(newX, newY)) {
+			const tile = GemThief.Digger.getTile(newX, newY, tiles);
+			if (tile.value === GemThief.Digger.WALL) {
 				ret.blocked = true;
 			}
 			else {
@@ -29,7 +32,8 @@ Meteor.methods({
 				GemThief.PlayerData.addMove(game.level);
 
 				const gems = GemThief.DungeonData.getGemData(this.userId);
-				if (_foundGem(gems, player)) {
+				if (_foundGem(gems, player).length > 0) {
+					GemThief.DungeonData.saveGemData(this.userId, gems);
 					GemThief.PlayerData.addGem();
 					ret.gem = true;
 				}

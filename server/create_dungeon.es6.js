@@ -1,7 +1,7 @@
 "use strict";
 
 Meteor.methods({
-	createDungeon: function (params) {
+	loadDungeon: function (params) {
 		check(params, {
 			seed: Number,
 			config: Object,
@@ -12,26 +12,32 @@ Meteor.methods({
 			numLightLocations: Number
 		});
 
-		const entities = {};
-
 		if (this.userId) {
+			const entities = GemThief.DungeonData.getData(this.userId);
+			if (entities) {
+				return entities;
+			}
+
 			ROT.RNG.setSeed(params.seed);
 
 			const mapData = GemThief.Digger.dig(params);
 
-			entities.stairs = _createStairs(mapData);
-			entities.player = _createPlayer(mapData);
-			entities.dwarf = _createDwarf(mapData, params);
-			entities.gems = _createGems(mapData, params.numGems);
-			entities.lights = _generateLightingData(mapData, params.numLightLocations);
+			const newMap = {};
+			newMap.stairs = _createStairs(mapData);
+			newMap.player = _createPlayer(mapData);
+			newMap.dwarf = _createDwarf(mapData, params);
+			newMap.gems = _createGems(mapData, params.numGems);
+			newMap.lights = _generateLightingData(mapData, params.numLightLocations);
 
 			GemThief.DungeonData.upsert({ userId: this.userId }, {
-				data: entities,
+				data: newMap,
 				userId: this.userId
 			});
+
+			return newMap;
 		}
 
-		return entities;
+		return null;
 	}
 });
 

@@ -2,6 +2,8 @@
 
 GemThief.Dungeon = {
 	instantiate: function (entityData, params) {
+		ROT.RNG.setSeed(params.seed);
+
 		const dungeon = Object.create(GemThief.Dungeon);
 		dungeon.config = params.config;
 		dungeon.map = GemThief.Map.instantiate(entityData, params);
