@@ -1,7 +1,5 @@
 "use strict";
 
-GemThief.DungeonData = new Mongo.Collection("dungeon");
-
 Meteor.methods({
 	createDungeon: function (params) {
 		check(params, {
@@ -27,7 +25,10 @@ Meteor.methods({
 			entities.gems = _createGems(mapData, params.numGems);
 			entities.lights = _generateLightingData(mapData, params.numLightLocations);
 
-			GemThief.DungeonData.upsert({ userId: this.userId }, { data: entities, userId: this.userId });
+			GemThief.DungeonData.upsert({ userId: this.userId }, {
+				data: entities,
+				userId: this.userId
+			});
 		}
 
 		return entities;
@@ -65,12 +66,7 @@ function _createStairs(mapData) {
 function _generateLightingData(mapData, numLightLocations) {
 	function isEmpty(x, y) {
 		const tile = GemThief.Digger.getTile(x, y, mapData);
-		if (tile) {
-			return tile.value !== GemThief.Digger.WALL;
-		}
-		// TODO: Fix this
-		console.log("No tile found at", x, ",", y);
-		return true;
+		return tile && tile.value !== GemThief.Digger.WALL;
 	}
 
 	const fov = new ROT.FOV.PreciseShadowcasting(isEmpty, { topology: 4 });
@@ -80,7 +76,8 @@ function _generateLightingData(mapData, numLightLocations) {
 	}
 
 	const lighting = new ROT.Lighting(reflectivityCallback, {
-		range: 12, passes: 2
+		range: 12,
+		passes: 2
 	});
 	lighting.setFOV(fov);
 

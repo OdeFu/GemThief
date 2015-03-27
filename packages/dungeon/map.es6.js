@@ -3,12 +3,6 @@
 GemThief.Map = {
 	instantiate: function (mapData, params) {
 		const map = Object.create(GemThief.Map);
-		map.stairs = [];
-		map.level = params.level || 1;
-		map.width = params.width;
-		map.height = params.height;
-		map.tiles = _createTiles(mapData, map);
-
 		map.getSomeTiles = getSomeTiles.bind(map);
 		map.getTile = getTile.bind(map);
 		map.isEmpty = isEmpty.bind(map);
@@ -16,7 +10,14 @@ GemThief.Map = {
 		map.findEmptyTile = findEmptyTile.bind(map);
 		map.calculateVisibleTiles = calculateVisibleTiles.bind(map);
 		map.moveEntity = moveEntity.bind(map);
-		map.getStairsUp = getStairsUp.bind(map);
+
+		map.level = params.level || 1;
+		map.width = params.width;
+		map.height = params.height;
+		map.tiles = _createTiles(GemThief.Digger.dig(params));
+		map.stairs = _createStairs(mapData.stairs, map);
+
+		_setupLights(mapData.lights, map);
 
 		return map;
 	}
@@ -86,12 +87,6 @@ function moveEntity(entity, newX, newY) {
 	entity.y = newY;
 }
 
-function getStairsUp() {
-	return _.find(this.stairs, function findUpStairs(stair) {
-		return !stair.down;
-	});
-}
-
 // Private methods
 
 function _getAllEmptyTiles(map) {
@@ -100,16 +95,24 @@ function _getAllEmptyTiles(map) {
 	});
 }
 
-function _createTiles(data, map) {
-	const tiles = [];
-	_.each(data, function createTile (tileData) {
-		const tile = GemThief.Tile.instantiate(tileData);
-		if (tileData.value === GemThief.Digger.UP || tileData.value === GemThief.Digger.DOWN) {
-			const stair = GemThief.Stairs.instantiate(tileData);
-			tile.addEntity(stair);
-			map.stairs.push(stair);
-		}
-		tiles.push(tile);
+function _createStairs(data, map) {
+	return _.map(data, function createTile (stairData) {
+		const stair = GemThief.Stairs.instantiate(stairData);
+		const tile = map.getTile(stairData.x, stairData.y);
+		tile.addEntity(stair);
+		return stair;
 	});
-	return tiles;
+}
+
+function _setupLights(lights, map) {
+	_.each(lights, function (light) {
+		const tile = map.getTile(light.x, light.y);
+		tile.color = light.color;
+	});
+}
+
+function _createTiles(mapData) {
+	return _.map(mapData, function createTile(tileData) {
+		return GemThief.Tile.instantiate(tileData);
+	})
 }

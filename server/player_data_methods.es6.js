@@ -1,31 +1,5 @@
 "use strict";
 
-GemThief.PlayerData = new Mongo.Collection("player_data");
-
-GemThief.PlayerData.currentData = function () {
-	const userData = GemThief.PlayerData.findOne({ userId: Meteor.user()._id });
-	return {
-		gems: userData.gems,
-		moves: userData.moves
-	};
-};
-
-GemThief.PlayerData.addGem = function () {
-	Meteor.call("addGem", function addGemCallback(error) {
-		if (error) {
-			console.log(error.reason);
-		}
-	});
-};
-
-GemThief.PlayerData.addMove = function (level) {
-	Meteor.call("addMove", level, function addMoveCallback (error) {
-		if (error) {
-			console.log(error.reason);
-		}
-	});
-};
-
 Meteor.methods({
 	addGem: function () {
 		increaseValue({ gems: 1 }, this.userId);
