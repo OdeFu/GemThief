@@ -56,7 +56,7 @@ function _createDwarf(dwarfData, dungeon) {
 	data.y = dwarfData.y;
 
 	const dwarf = GemThief.Dwarf.instantiate(data);
-	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, dungeon, data));
+	dwarf.setAI(GemThief.DWARF_AIS[data.ai ? data.ai : data.name](dwarf, dungeon, data));
 	const tile = dungeon.map.getTile(dwarfData.x, dwarfData.y);
 	tile.addEntity(dwarf);
 

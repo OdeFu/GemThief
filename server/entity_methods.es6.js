@@ -43,14 +43,16 @@ Meteor.methods({
 		return ret;
 	},
 
-	dwarfMove: function (dir) {
-		check(dir, Number);
-
+	dwarfMove: function () {
 		if (this.userId) {
-			const entityData = GemThief.DungeonData.getEntityData(this.userId);
+			const entityData = GemThief.DungeonData.getData(this.userId);
 			const game = GemThief.Games.getGame(this.userId);
-			const map = GemThief.Map.instantiate(entityData, game);
+			const dungeon = GemThief.Dungeon.instantiate(entityData, game);
+			dungeon.dwarf.act();
 
+			const ret = dungeon.dwarf.toPoint();
+
+			return ret;
 		}
 	}
 });

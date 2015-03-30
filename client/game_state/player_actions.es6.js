@@ -19,7 +19,7 @@ function createMoveAction(dirKey) {
 					});
 				}
 
-				GemThief.Game.state.dungeon.player.turnOver();
+				GemThief.Game.state.playerActor.turnOver();
 			}
 		});
 	}

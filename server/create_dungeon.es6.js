@@ -58,7 +58,9 @@ function _createDwarf(mapData, params) {
 	});
 	const data = dwarves[params.level - 1];
 
-	return GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
+	const dwarf = GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
+	dwarf.ai = dwarf.name;
+	return dwarf;
 }
 
 function _createStairs(mapData) {
