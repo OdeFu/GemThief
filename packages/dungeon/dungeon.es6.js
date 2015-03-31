@@ -2,6 +2,8 @@
 
 GemThief.Dungeon = {
 	instantiate: function (entityData, params) {
+		ROT.RNG.setSeed(params.seed);
+
 		const dungeon = Object.create(GemThief.Dungeon);
 		dungeon.config = params.config;
 		dungeon.map = GemThief.Map.instantiate(entityData, params);
@@ -9,26 +11,21 @@ GemThief.Dungeon = {
 		dungeon.gems = _createGems(entityData.gems, dungeon.map);
 		dungeon.dwarf = _createDwarf(entityData.dwarf, dungeon);
 
-		dungeon.getGem = getGem.bind(dungeon);
 		dungeon.removeGem = removeGem.bind(dungeon);
 
 		return dungeon;
 	}
 };
 
-function getGem(x, y) {
-	return _.find(this.gems, function findGem(gem) {
-		return gem.x === x && gem.y === y;
-	});
-}
-
 function removeGem(gem) {
-	const index = this.gems.indexOf(gem);
-	if (index >= 0) {
-		this.gems.splice(index, 1);
-		const tile = this.map.getTile(gem.x, gem.y);
-		tile.removeEntity(gem);
-	}
+	const removedGems = _.remove(this.gems, function (g) {
+		return g.x === gem.x && g.y === gem.y;
+	});
+
+	_.each(removedGems, function (g) {
+		const tile = this.map.getTile(g.x, g.y);
+		tile.removeEntity(g);
+	}.bind(this));
 }
 
 // Private methods
@@ -59,7 +56,7 @@ function _createDwarf(dwarfData, dungeon) {
 	data.y = dwarfData.y;
 
 	const dwarf = GemThief.Dwarf.instantiate(data);
-	dwarf.setAI(GemThief.DWARF_AIS[data.name](dwarf, dungeon, data));
+	dwarf.setAI(GemThief.DWARF_AIS[data.ai ? data.ai : data.name](dwarf, dungeon, data));
 	const tile = dungeon.map.getTile(dwarfData.x, dwarfData.y);
 	tile.addEntity(dwarf);
 

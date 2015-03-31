@@ -10,7 +10,7 @@ GemThief.Dwarf = {
 		check(params.name, String);
 		check(params.color, String);
 
-		params.char = "P";
+		params.char = "D";
 		params.priority = GemThief.Entity.ENTITY;
 
 		const dwarf = GemThief.Entity.instantiate(params);

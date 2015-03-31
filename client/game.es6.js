@@ -12,11 +12,17 @@ GemThief.Game = {
 		Meteor.call(method, function newGameCallback(error, game) {
 			if (error) {
 				console.log(error.reason);
+				return;
 			}
 
-			Meteor.call("createDungeon", game);
-
-			this.changeState(GemThief.GameState.instantiate(game));
+			Meteor.call("loadDungeon", game, function dungeonCallback(error, result) {
+				if (error) {
+					console.log(error.reason);
+				}
+				if (result) {
+					this.changeState(GemThief.GameState.instantiate(result, game));
+				}
+			}.bind(this));
 		}.bind(this));
 	},
 

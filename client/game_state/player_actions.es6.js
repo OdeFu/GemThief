@@ -1,31 +1,27 @@
 "use strict";
 
 function createMoveAction(dirKey) {
-	function checkGem(player) {
-		const gem = GemThief.Game.state.dungeon.getGem(player.x, player.y);
-		if (gem) {
-			GemThief.Game.state.mapDisplay.setMessage("You picked up a gem.", 1);
-			GemThief.PlayerData.addGem();
-			GemThief.Game.state.dungeon.removeGem(gem);
-		}
-	}
-
 	function moveAction() {
-		const player = GemThief.Game.state.dungeon.player;
-		const dir = ROT.DIRS[8][dirKey];
-		const newX = player.x + dir[0];
-		const newY = player.y + dir[1];
+		Meteor.call("playerMove", dirKey, function (error, result) {
+			if (error) {
+				console.log(error.reason);
+				return;
+			}
 
-		if (GemThief.Game.state.dungeon.map.isBlocking(newX, newY)) {
-			/* Cannot move in this direction */
-			return;
-		}
+			if (!result.blocked) {
+				GemThief.Game.state.dungeon.map.moveEntity(GemThief.Game.state.dungeon.player, result.x, result.y);
 
-		GemThief.Game.state.dungeon.map.moveEntity(player, newX, newY);
+				if (result.gem) {
+					GemThief.Game.state.mapDisplay.setMessage("You picked up a gem.", 1);
+					GemThief.Game.state.dungeon.removeGem({
+						x: result.x,
+						y: result.y
+					});
+				}
 
-		checkGem(player);
-
-		GemThief.PlayerData.addMove(GemThief.Game.state.dungeon.map.level);
+				GemThief.Game.state.playerActor.turnOver();
+			}
+		});
 	}
 
 	return moveAction;

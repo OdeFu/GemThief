@@ -1,9 +1,7 @@
 "use strict";
 
-GemThief.DungeonData = new Mongo.Collection("dungeon");
-
 Meteor.methods({
-	createDungeon: function (params) {
+	loadDungeon: function (params) {
 		check(params, {
 			seed: Number,
 			config: Object,
@@ -14,23 +12,32 @@ Meteor.methods({
 			numLightLocations: Number
 		});
 
-		const entities = {};
-
 		if (this.userId) {
+			const entities = GemThief.DungeonData.getData(this.userId);
+			if (entities) {
+				return entities;
+			}
+
 			ROT.RNG.setSeed(params.seed);
 
 			const mapData = GemThief.Digger.dig(params);
 
-			entities.stairs = _createStairs(mapData);
-			entities.player = _createPlayer(mapData);
-			entities.dwarf = _createDwarf(mapData, params);
-			entities.gems = _createGems(mapData, params.numGems);
-			entities.lights = _generateLightingData(mapData, params.numLightLocations);
+			const newMap = {};
+			newMap.stairs = _createStairs(mapData);
+			newMap.player = _createPlayer(mapData);
+			newMap.dwarf = _createDwarf(mapData, params);
+			newMap.gems = _createGems(mapData, params.numGems);
+			newMap.lights = _generateLightingData(mapData, params.numLightLocations);
 
-			GemThief.DungeonData.upsert({ userId: this.userId }, { data: entities, userId: this.userId });
+			GemThief.DungeonData.upsert({ userId: this.userId }, {
+				data: newMap,
+				userId: this.userId
+			});
+
+			return newMap;
 		}
 
-		return entities;
+		return null;
 	}
 });
 
@@ -51,7 +58,9 @@ function _createDwarf(mapData, params) {
 	});
 	const data = dwarves[params.level - 1];
 
-	return GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
+	const dwarf = GemThief.DWARF_START_LOCATIONS[data.startLocation](mapData);
+	dwarf.ai = dwarf.name;
+	return dwarf;
 }
 
 function _createStairs(mapData) {
@@ -65,12 +74,7 @@ function _createStairs(mapData) {
 function _generateLightingData(mapData, numLightLocations) {
 	function isEmpty(x, y) {
 		const tile = GemThief.Digger.getTile(x, y, mapData);
-		if (tile) {
-			return tile.value !== GemThief.Digger.WALL;
-		}
-		// TODO: Fix this
-		console.log("No tile found at", x, ",", y);
-		return true;
+		return tile && tile.value !== GemThief.Digger.WALL;
 	}
 
 	const fov = new ROT.FOV.PreciseShadowcasting(isEmpty, { topology: 4 });
@@ -80,7 +84,8 @@ function _generateLightingData(mapData, numLightLocations) {
 	}
 
 	const lighting = new ROT.Lighting(reflectivityCallback, {
-		range: 12, passes: 2
+		range: 12,
+		passes: 2
 	});
 	lighting.setFOV(fov);
 
