@@ -6,6 +6,5 @@ Package.describe({
 Package.onUse(function (api) {
 	api.versionsFrom("WINDOWS-PREVIEW@0.3.0");
 	api.use(["grigio:babel", "globals"]);
-	api.addFiles(["entity.es6.js", "stairs.es6.js", "tile.es6.js", "map_features.es6.js", "player.es6.js", "gem.es6.js",
-		"dwarves.es6.js"]);
+	
 });

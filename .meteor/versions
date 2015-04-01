@@ -16,7 +16,6 @@ deps@1.0.7
 dwarf-ai@0.0.1
 ejson@1.0.6
 email@1.0.6
-entities@0.0.2
 fastclick@1.0.3
 geojson-utils@1.0.3
 globals@0.0.2
