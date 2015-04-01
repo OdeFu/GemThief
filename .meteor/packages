@@ -9,7 +9,14 @@ insecure
 accounts-password
 grigio:babel
 stevezhu:lodash
+globals
 oaalto:rot
+entities
+map
+display
 ian:accounts-ui-bootstrap-3
 twbs:bootstrap
 sacha:spin
+dungeon
+dwarf-ai
+collections

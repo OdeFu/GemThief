@@ -10,12 +10,18 @@ blaze-tools@1.0.3-rc.0
 boilerplate-generator@1.0.3-rc.0
 callback-hook@1.0.3-rc.0
 check@1.0.5-rc.0
+collections@0.0.1
 ddp@1.1.0-rc.1
 deps@1.0.7-rc.0
+display@0.0.2
+dungeon@0.0.1
+dwarf-ai@0.0.1
 ejson@1.0.6-rc.0
 email@1.0.6-rc.0
+entities@0.0.2
 fastclick@1.0.3-rc.0
 geojson-utils@1.0.3-rc.0
+globals@0.0.2
 grigio:babel@0.0.12
 html-tools@1.0.4-rc.0
 htmljs@1.0.4-rc.0
@@ -29,6 +35,7 @@ launch-screen@1.0.2-rc.0
 livedata@1.0.13-rc.0
 localstorage@1.0.3-rc.0
 logging@1.0.7-rc.0
+map@0.0.2
 meteor@1.1.5-rc.0
 meteor-platform@1.2.2-rc.0
 minifiers@1.1.4-win.0
