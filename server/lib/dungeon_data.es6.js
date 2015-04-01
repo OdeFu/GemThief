@@ -1,19 +1,23 @@
 "use strict";
 
 GemThief.DungeonData.getData = function (userId) {
-	return this.findOne({ userId: userId }).data;
+	const data = this.findOne({ userId: userId });
+	return data ? data.data : null;
 };
 
 GemThief.DungeonData.getPlayerData = function (userId) {
-	return this.findOne({ userId: userId }, { fields: { "data.player": 1 }}).data.player;
+	const data = this.findOne({ userId: userId }, { fields: { "data.player": 1 }});
+	return data ? data.data.player : null;
 };
 
 GemThief.DungeonData.getDwarfData = function (userId) {
-	return this.findOne({ userId: userId }, { fields: { "data.dwarf": 1 }}).data.dwarf;
+	const data = this.findOne({ userId: userId }, { fields: { "data.dwarf": 1 }});
+	return data ? data.data.dwarf : null;
 };
 
 GemThief.DungeonData.getGemData = function (userId) {
-	return this.findOne({ userId: userId }, { fields: { "data.gems": 1 }}).data.gems;
+	const data = this.findOne({ userId: userId }, { fields: { "data.gems": 1 }});
+	return data ? data.data.gems : null;
 };
 
 GemThief.DungeonData.savePlayerData = function (userId, playerData) {
