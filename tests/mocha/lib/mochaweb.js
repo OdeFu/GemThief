@@ -1,0 +1,1 @@
+HasMochaWeb = !(typeof MochaWeb === 'undefined');
