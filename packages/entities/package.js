@@ -6,5 +6,5 @@ Package.describe({
 Package.onUse(function (api) {
 	api.versionsFrom("WINDOWS-PREVIEW@0.3.0");
 	api.use(["grigio:babel", "globals"]);
-	
+
 });
