@@ -20,6 +20,7 @@ GemThief.Game = {
 					console.log(error.reason);
 				}
 				if (result) {
+					Messenger.addListener(GemThief.Messages.GAME_OVER, this.gameOver);
 					this.changeState(GemThief.GameState.instantiate(result, game));
 				}
 			}.bind(this));
@@ -36,6 +37,8 @@ GemThief.Game = {
 	},
 
 	gameOver: function (won) {
+		this.state.engine.lock();
+
 		Meteor.call("update", won, function updateCallback(error, data) {
 			this.changeState(GemThief.EndState.instantiate(data));
 		}.bind(this));
