@@ -8,9 +8,10 @@ autopublish
 insecure
 accounts-password
 grigio:babel
-stevezhu:lodash
 globals
 oaalto:rot
 ian:accounts-ui-bootstrap-3
 twbs:bootstrap
 sacha:spin
+oaalto:messenger
+erasaur:meteor-lodash
