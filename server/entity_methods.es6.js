@@ -18,7 +18,7 @@ Meteor.methods({
 			const newY = player.y + dir[1];
 
 			const tile = GemThief.Digger.getTile(newX, newY, tiles);
-			if (tile.value === GemThief.Digger.WALL) {
+			if (tile.value === GemThief.MapFeatures.WALL) {
 				ret.blocked = true;
 			}
 			else {

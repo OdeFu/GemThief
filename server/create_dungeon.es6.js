@@ -66,7 +66,7 @@ function _createDwarf(mapData, params) {
 function _createStairs(mapData) {
 	return _.times(2, function createStairs(n) {
 		const tile = GemThief.Digger.findEmptyTile(mapData);
-		tile.value = n === 0 ? GemThief.Digger.UP : GemThief.Digger.DOWN;
+		tile.value = n === 0 ? GemThief.MapFeatures.UP : GemThief.MapFeatures.DOWN;
 		return tile;
 	});
 }
@@ -74,7 +74,7 @@ function _createStairs(mapData) {
 function _generateLightingData(mapData, numLightLocations) {
 	function isEmpty(x, y) {
 		const tile = GemThief.Digger.getTile(x, y, mapData);
-		return tile && tile.value !== GemThief.Digger.WALL;
+		return tile && tile.value !== GemThief.MapFeatures.WALL;
 	}
 
 	const fov = new ROT.FOV.PreciseShadowcasting(isEmpty, { topology: 4 });
@@ -112,13 +112,13 @@ function _generateLightingData(mapData, numLightLocations) {
 function _createLightLocations(mapData, numLightLocations) {
 	return _.times(numLightLocations, function createLightLocation() {
 		const tile = GemThief.Digger.findEmptyTile(mapData);
-		tile.value = GemThief.Digger.LIGHT;
+		tile.value = GemThief.MapFeatures.LIGHT;
 		return tile;
 	});
 }
 
 function _findStairsUp(mapData) {
 	return _.find(mapData, function findStairs(tile) {
-		return tile.value === GemThief.Digger.UP;
+		return tile.value === GemThief.MapFeatures.UP;
 	});
 }
