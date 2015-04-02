@@ -47,6 +47,7 @@ Meteor.methods({
 		if (this.userId) {
 			const entityData = GemThief.DungeonData.getData(this.userId);
 			const game = GemThief.Games.getGame(this.userId);
+			game.config = DWARF_CONFIG;
 			const dungeon = GemThief.Dungeon.instantiate(entityData, game);
 			dungeon.dwarf.act();
 

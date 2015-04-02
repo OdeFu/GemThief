@@ -1,7 +1,5 @@
 "use strict";
 
-const DWARF_CONFIG = EJSON.parse(Assets.getText("dwarf_config.json"));
-
 Meteor.methods({
 	newGame: function () {
 		const game = createNewGame();
