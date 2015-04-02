@@ -9,18 +9,17 @@ GemThief.Map.Display = {
 
 		mapDisplay.draw = draw.bind(mapDisplay);
 		return mapDisplay;
+	},
+
+	setMessage: function(msg, messageLife) {
+		this.message = msg;
+		this.messageLife = messageLife || DEFAULT_MESSAGE_LIFE;
 	}
 };
 
 function draw(params) {
-	if (this.message) {
-		GemThief.Display.drawText(0, 0, this.message);
-		this.messageLife--;
-		if (this.messageLife === 0) {
-			this.message = null;
-		}
-	}
-
+	_drawMessage();
+	
 	const visibleTiles = this.map.calculateVisibleTiles(params.location);
 	visibleTiles.forEach(function drawTiles(tile) {
 		GemThief.Display.draw(tile.x, tile.y + 1, tile.getChar(), tile.getForegroundColor(), tile.getBackgroundColor());
@@ -31,10 +30,15 @@ function draw(params) {
 }
 
 Meteor.startup(function meteorStartup() {
-	Messenger.addListener(GemThief.Messages.DISPLAY_MESSAGE, _setMessage);
+	Messenger.addListener(GemThief.Messages.DISPLAY_MESSAGE, GemThief.Map.Display.setMessage.bind(GemThief.Map.Display));
 });
 
-function _setMessage(msg, messageLife) {
-	this.message = msg;
-	this.messageLife = messageLife || DEFAULT_MESSAGE_LIFE;
+function _drawMessage() {
+	if (GemThief.Map.Display.message) {
+		GemThief.Display.drawText(0, 0, GemThief.Map.Display.message);
+		GemThief.Map.Display.messageLife--;
+		if (GemThief.Map.Display.messageLife === 0) {
+			GemThief.Map.Display.message = null;
+		}
+	}
 }

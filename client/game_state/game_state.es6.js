@@ -27,7 +27,6 @@ function enter() {
 	this.mapDisplay = GemThief.Map.Display.instantiate(this.dungeon.map, GemThief.Game.display);
 
 	this.playerActor = GemThief.PlayerActor.instantiate(this.dungeon.player);
-	this.dwarfActor = GemThief.DwarfActor.instantiate();
 
 	_initEngine(this);
 }
@@ -51,6 +50,5 @@ function _draw(state) {
 function _initEngine(state) {
 	state.scheduler.add(state, true);
 	state.scheduler.add(state.playerActor, true);
-	state.scheduler.add(state.dwarfActor, true);
 	state.engine.start();
 }

@@ -8,18 +8,28 @@ function createMoveAction(dirKey) {
 				return;
 			}
 
-			if (!result.blocked) {
-				GemThief.Game.state.dungeon.map.moveEntity(GemThief.Game.state.dungeon.player, result.x, result.y);
-
-				if (result.gem) {
-					Messenger.broadcast(GemThief.Messages.DISPLAY_MESSAGE, "You picked up a gem.", 1);
-					GemThief.Game.state.dungeon.removeGem({
-						x: result.x,
-						y: result.y
-					});
+			if (result) {
+				if (result.gameOver) {
+					Messenger.broadcast(GemThief.Messages.GAME_OVER, false);
+					return;
 				}
 
-				GemThief.Game.state.playerActor.turnOver();
+				if (!result.blocked) {
+					GemThief.Game.state.dungeon.map.moveEntity(GemThief.Game.state.dungeon.player, result.player_x,
+						result.player_y);
+					GemThief.Game.state.dungeon.map.moveEntity(GemThief.Game.state.dungeon.dwarf, result.dwarf_x,
+						result.dwarf_y);
+
+					if (result.gem) {
+						Messenger.broadcast(GemThief.Messages.DISPLAY_MESSAGE, "You picked up a gem.", 1);
+						GemThief.Game.state.dungeon.removeGem({
+							x: result.player_x,
+							y: result.player_y
+						});
+					}
+
+					GemThief.Game.state.playerActor.turnOver();
+				}
 			}
 		});
 	}
