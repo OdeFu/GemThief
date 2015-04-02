@@ -8,7 +8,6 @@ GemThief.Map.Display = {
 		mapDisplay.map = map;
 
 		mapDisplay.draw = draw.bind(mapDisplay);
-		mapDisplay.setMessage = setMessage.bind(mapDisplay);
 		return mapDisplay;
 	}
 };
@@ -31,7 +30,11 @@ function draw(params) {
 	GemThief.Display.drawTextRight(this.map.height + 1, "Gems Found: " + params.gems);
 }
 
-function setMessage(msg, messageLife) {
+Meteor.startup(function meteorStartup() {
+	Messenger.addListener(GemThief.Messages.DISPLAY_MESSAGE, _setMessage);
+});
+
+function _setMessage(msg, messageLife) {
 	this.message = msg;
 	this.messageLife = messageLife || DEFAULT_MESSAGE_LIFE;
 }

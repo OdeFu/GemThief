@@ -12,7 +12,7 @@ function createMoveAction(dirKey) {
 				GemThief.Game.state.dungeon.map.moveEntity(GemThief.Game.state.dungeon.player, result.x, result.y);
 
 				if (result.gem) {
-					GemThief.Game.state.mapDisplay.setMessage("You picked up a gem.", 1);
+					Messenger.broadcast(GemThief.Messages.DISPLAY_MESSAGE, "You picked up a gem.", 1);
 					GemThief.Game.state.dungeon.removeGem({
 						x: result.x,
 						y: result.y
@@ -38,12 +38,12 @@ function createClimbStairsAction(down) {
 				GemThief.Game.moveToLevel(nextLevel);
 			}
 			else {
-				GemThief.Game.state.mapDisplay.setMessage("You cannot climb " + (down ? "down" : "up") +
-				" these stairs.");
+				Messenger.broadcast(GemThief.Messages.DISPLAY_MESSAGE, "You cannot climb " + (down ? "down" : "up") +
+					" these stairs.");
 			}
 		}
 		else {
-			GemThief.Game.state.mapDisplay.setMessage("There are no stairs here.");
+			Messenger.broadcast(GemThief.Messages.DISPLAY_MESSAGE, "There are no stairs here.");
 		}
 	}
 
