@@ -25,7 +25,6 @@ function act() {
 function enter() {
 	this.dungeon = GemThief.Dungeon.instantiate(this.entityData, this.params);
 	this.mapDisplay = GemThief.Map.Display.instantiate(this.dungeon.map, GemThief.Game.display);
-
 	this.playerActor = GemThief.PlayerActor.instantiate(this.dungeon.player);
 
 	_initEngine(this);
