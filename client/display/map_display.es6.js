@@ -19,7 +19,7 @@ GemThief.Map.Display = {
 
 function draw(params) {
 	_drawMessage();
-	
+
 	const visibleTiles = this.map.calculateVisibleTiles(params.location);
 	visibleTiles.forEach(function drawTiles(tile) {
 		GemThief.Display.draw(tile.x, tile.y + 1, tile.getChar(), tile.getForegroundColor(), tile.getBackgroundColor());
