@@ -1,7 +1,9 @@
 "use strict";
 
-GemThief.Game = {
-	init: function (newPlayer) {
+class Game {
+	constructor(newPlayer) {
+		check(newPlayer, Boolean);
+
 		const container = document.getElementById("main");
 		if (container.hasChildNodes()) {
 			container.removeAll();
@@ -25,26 +27,26 @@ GemThief.Game = {
 				}
 			}.bind(this));
 		}.bind(this));
-	},
+	}
 
-	changeState: function (newState) {
+	changeState(newState) {
 		if (this.state) {
 			this.state.exit();
 		}
 
 		this.state = newState;
 		this.state.enter();
-	},
+	}
 
-	gameOver: function (won) {
+	gameOver(won) {
 		this.state.engine.lock();
 
 		Meteor.call("update", won, function updateCallback(error, data) {
 			this.changeState(new GemThief.EndState(data));
 		}.bind(this));
-	},
+	}
 
-	moveToLevel: function (nextLevel) {
+	moveToLevel(nextLevel) {
 		if (nextLevel === 0) {
 			// We exited the mine
 			this.gameOver(true);
@@ -55,4 +57,6 @@ GemThief.Game = {
 			}.bind(this));
 		}
 	}
-};
+}
+
+GemThief.GameClass = Game;

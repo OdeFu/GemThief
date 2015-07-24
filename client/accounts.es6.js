@@ -10,7 +10,7 @@ Accounts.onLogin(function onLogin() {
 			alert(error.reason);
 		}
 		else {
-			GemThief.Game.init(result);
+			GemThief.Game = new GemThief.GameClass(result);
 		}
 	});
 });
