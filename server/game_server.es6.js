@@ -1,5 +1,9 @@
 "use strict";
 
+Meteor.publish("games", function publishGames() {
+	return this.userId ? GemThief.Games.find({ userId: this.userId }) : null;
+});
+
 Meteor.methods({
 	newGame: function () {
 		const game = createNewGame();

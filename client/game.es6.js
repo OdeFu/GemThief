@@ -4,6 +4,9 @@ class Game {
 	constructor(newPlayer) {
 		check(newPlayer, Boolean);
 
+		Meteor.subscribe("player_data");
+		Meteor.subscribe("dungeon");
+
 		const container = document.getElementById("main");
 		if (container.hasChildNodes()) {
 			container.removeAll();
