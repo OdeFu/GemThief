@@ -1,15 +1,16 @@
 "use strict";
 
-GemThief.Gem = {
+class Gem extends GemThief.Entity {
 	/**
 	 * Create a new gem.
-	 * @returns {GemThief.Gem}
 	 */
-	instantiate: function (params) {
+	constructor(params) {
 		params.char = "*";
 		params.color = "orange";
 		params.priority = GemThief.Entity.ITEM;
 
-		return GemThief.Entity.instantiate(params);
+		super(params);
 	}
-};
+}
+
+GemThief.Gem = Gem;

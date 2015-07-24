@@ -97,7 +97,7 @@ function _getAllEmptyTiles(map) {
 
 function _createStairs(data, map) {
 	return _.map(data, function createTile (stairData) {
-		const stair = GemThief.Stairs.instantiate(stairData);
+		const stair = new GemThief.Stairs(stairData);
 		const tile = map.getTile(stairData.x, stairData.y);
 		tile.addEntity(stair);
 		return stair;
@@ -113,6 +113,6 @@ function _setupLights(lights, map) {
 
 function _createTiles(mapData) {
 	return _.map(mapData, function createTile(tileData) {
-		return GemThief.Tile.instantiate(tileData);
+		return new GemThief.Tile(tileData);
 	})
 }

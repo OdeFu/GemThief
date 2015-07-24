@@ -1,29 +1,26 @@
 "use strict";
 
-GemThief.Dwarf = {
+class Dwarf extends GemThief.Entity {
 	/**
 	 * Creates a new dwarf.
 	 * @param params
 	 * - name: The name of the dwarf, must be one from the DWARF_NAMES array, required
 	 */
-	instantiate: function (params) {
+	constructor(params) {
 		check(params.name, String);
 		check(params.color, String);
 
 		params.char = "D";
 		params.priority = GemThief.Entity.ENTITY;
 
-		const dwarf = GemThief.Entity.instantiate(params);
-		dwarf.name = params.name;
+		super(params);
 
-		dwarf.setAI = setAI.bind(dwarf);
-
-		return dwarf;
+		this.name = params.name;
 	}
-};
 
-// Public methods
-
-function setAI(ai) {
-	this.act = ai;
+	setAI(ai) {
+		this.act = ai;
+	}
 }
+
+GemThief.Dwarf = Dwarf;

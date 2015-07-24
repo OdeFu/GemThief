@@ -9,15 +9,14 @@ Package.describe({
 
 Package.onUse(function (api) {
 	api.versionsFrom("METEOR@1.1");
-	api.use(["globals", "grigio:babel"]);
+	api.use(["globals", "grigio:babel@0.1.6"]);
 	api.addFiles([
-		"lib/dwarves.es6.js",
 		"lib/entity.es6.js",
+		"lib/dwarves.es6.js",
 		"lib/gem.es6.js",
 		"lib/map_features.es6.js",
 		"lib/player.es6.js",
-		"lib/stairs.es6.js",
-		"lib/tile.es6.js"
+		"lib/stairs.es6.js"
 	]);
 });
 

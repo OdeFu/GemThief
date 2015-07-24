@@ -9,7 +9,7 @@ Package.describe({
 
 Package.onUse(function (api) {
 	api.versionsFrom("METEOR@1.1");
-	api.use(["globals", "grigio:babel"]);
+	api.use(["globals", "grigio:babel@0.1.6"]);
 	api.addFiles("state.es6.js");
 });
 

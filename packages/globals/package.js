@@ -21,5 +21,4 @@ Package.onUse(function (api) {
 
 	api.addFiles(["globals.js", "object_utils.es6.js"]);
 	api.export("GemThief");
-	api.export("ObjectUtils");
 });

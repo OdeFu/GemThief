@@ -33,7 +33,7 @@ function removeGem(gem) {
 // Private methods
 
 function _createPlayer(playerData, map) {
-	const player = GemThief.Player.instantiate({ x: playerData.x, y: playerData.y });
+	const player = new GemThief.Player({ x: playerData.x, y: playerData.y });
 	const tile = map.getTile(playerData.x, playerData.y);
 	tile.addEntity(player);
 	return player;
@@ -41,7 +41,7 @@ function _createPlayer(playerData, map) {
 
 function _createGems(gemsData, map) {
 	return _.map(gemsData, function (gemData) {
-		const gem = GemThief.Gem.instantiate(gemData);
+		const gem = new GemThief.Gem(gemData);
 		const tile = map.getTile(gemData.x, gemData.y);
 		tile.addEntity(gem);
 		return gem;
@@ -57,7 +57,7 @@ function _createDwarf(dwarfData, dungeon) {
 	data.x = dwarfData.x;
 	data.y = dwarfData.y;
 
-	const dwarf = GemThief.Dwarf.instantiate(data);
+	const dwarf = new GemThief.Dwarf(data);
 	dwarf.setAI(GemThief.DWARF_AIS[data.ai ? data.ai : data.name](dwarf, dungeon, data));
 	const tile = dungeon.map.getTile(dwarfData.x, dwarfData.y);
 	tile.addEntity(dwarf);

@@ -37,8 +37,6 @@ GemThief.DungeonData.saveGemData = function (userId, gemData) {
 Meteor.startup(function dungeonDataStartup() {
 	if (Meteor.isClient) {
 		Tracker.autorun(function dungeonDataAutorun() {
-			console.log("dungeon data autorun");
-
 			const data = GemThief.DungeonData.getData(Meteor.userId());
 			if (data && GemThief.Game.state && GemThief.Game.state.playerActor) {
 				GemThief.Game.state.playerActor.turnOver();

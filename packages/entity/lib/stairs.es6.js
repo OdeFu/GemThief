@@ -1,9 +1,9 @@
 "use strict";
 
-GemThief.Stairs = {
-	type: "GemThief.Stairs",
+class Stairs extends GemThief.Entity {
+	type = "GemThief.Stairs";
 
-	instantiate: function (params) {
+	constructor(params) {
 		const down = params.value === GemThief.MapFeatures.DOWN;
 
 		params.char = down ? ">" : "<";
@@ -12,8 +12,10 @@ GemThief.Stairs = {
 		params.priority = GemThief.Entity.FLOOR;
 		params.type = GemThief.Stairs.type;
 
-		const stairs = GemThief.Entity.instantiate(params);
-		stairs.down = down;
-		return stairs;
+		super(params);
+
+		this.down = down;
 	}
-};
+}
+
+GemThief.Stairs = Stairs;

@@ -1,11 +1,13 @@
 "use strict";
 
-GemThief.Player = {
-	instantiate: function (params) {
+class Player extends GemThief.Entity {
+	constructor(params) {
 		params.priority = GemThief.Entity.ENTITY;
 		params.char = "@";
 		params.color = "white";
 
-		return GemThief.Entity.instantiate(params);
+		super(params);
 	}
-};
+}
+
+GemThief.Player = Player;

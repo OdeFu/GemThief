@@ -6,7 +6,7 @@
 autopublish
 insecure
 
-grigio:babel
+grigio:babel@0.1.6
 
 globals
 oaalto:messenger
