@@ -13,8 +13,7 @@ Package.onUse(function (api) {
 		"oaalto:rot",
 		"ian:accounts-ui-bootstrap-3",
 		"twbs:bootstrap",
-		"sacha:spin",
-		"erasaur:meteor-lodash"
+		"sacha:spin"
 	];
 
 	api.use(packages);
@@ -23,6 +22,4 @@ Package.onUse(function (api) {
 	api.addFiles(["globals.js", "object_utils.es6.js"]);
 	api.export("GemThief");
 	api.export("ObjectUtils");
-	api.export("_");
-	api.export("ROT");
 });
