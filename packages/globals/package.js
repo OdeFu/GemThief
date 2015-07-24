@@ -19,6 +19,6 @@ Package.onUse(function (api) {
 	api.use(packages);
 	api.imply(packages);
 
-	api.addFiles(["globals.js", "object_utils.es6.js"]);
+	api.addFiles(["globals.js", "object_utils.es6.js", "messages.es6.js"]);
 	api.export("GemThief");
 });

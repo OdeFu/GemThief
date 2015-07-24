@@ -28,6 +28,7 @@ Meteor.methods({
 			newMap.dwarf = _createDwarf(mapData, params);
 			newMap.gems = _createGems(mapData, params.numGems);
 			newMap.lights = _generateLightingData(mapData, params.numLightLocations);
+			newMap.tiles = mapData.data;
 
 			GemThief.DungeonData.upsert({ userId: this.userId }, {
 				data: newMap,
@@ -47,7 +48,7 @@ function _createPlayer(mapData) {
 
 function _createGems(mapData, numGems) {
 	return _.times(numGems, function createGem() {
-		return GemThief.Digger.findEmptyTile(mapData);
+		return mapData.findEmptyTile();
 	});
 }
 
@@ -65,7 +66,7 @@ function _createDwarf(mapData, params) {
 
 function _createStairs(mapData) {
 	return _.times(2, function createStairs(n) {
-		const tile = GemThief.Digger.findEmptyTile(mapData);
+		const tile = mapData.findEmptyTile();
 		tile.value = n === 0 ? GemThief.MapFeatures.UP : GemThief.MapFeatures.DOWN;
 		return tile;
 	});
@@ -73,7 +74,7 @@ function _createStairs(mapData) {
 
 function _generateLightingData(mapData, numLightLocations) {
 	function isEmpty(x, y) {
-		const tile = GemThief.Digger.getTile(x, y, mapData);
+		const tile = mapData.getTile(x, y);
 		return tile && tile.value !== GemThief.MapFeatures.WALL;
 	}
 
@@ -99,7 +100,7 @@ function _generateLightingData(mapData, numLightLocations) {
 	const lightedTiles = [];
 
 	function lightingCallback(x, y, color) {
-		const tile = GemThief.Digger.getTile(x, y, mapData);
+		const tile = mapData.getTile(x, y);
 		tile.color = color;
 		lightedTiles.push(tile);
 	}
@@ -111,14 +112,14 @@ function _generateLightingData(mapData, numLightLocations) {
 
 function _createLightLocations(mapData, numLightLocations) {
 	return _.times(numLightLocations, function createLightLocation() {
-		const tile = GemThief.Digger.findEmptyTile(mapData);
+		const tile = mapData.findEmptyTile();
 		tile.value = GemThief.MapFeatures.LIGHT;
 		return tile;
 	});
 }
 
 function _findStairsUp(mapData) {
-	return _.find(mapData, function findStairs(tile) {
+	return _.find(mapData.data, function findStairs(tile) {
 		return tile.value === GemThief.MapFeatures.UP;
 	});
 }

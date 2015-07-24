@@ -3,7 +3,7 @@
 GemThief.Location = {};
 
 GemThief.Location.getRandomStartLocation = function (mapData) {
-	return GemThief.Digger.findEmptyTile(mapData);
+	return mapData.findEmptyTile();
 };
 
 GemThief.Location.getDarkStartLocation = function (mapData) {
@@ -11,7 +11,7 @@ GemThief.Location.getDarkStartLocation = function (mapData) {
 		return !tile.color;
 	}
 
-	return GemThief.Digger.getSomeTiles(mapData, darkTiles).random();
+	return mapData.getSomeTiles(darkTiles).random();
 };
 
 GemThief.Location.getLightStartLocation = function (mapData) {
@@ -19,11 +19,11 @@ GemThief.Location.getLightStartLocation = function (mapData) {
 		return tile.color;
 	}
 
-	return GemThief.Digger.getSomeTiles(mapData, lightTiles).random();
+	return mapData.getSomeTiles(lightTiles).random();
 };
 
 GemThief.Location.getBrightLightStartLocation = function (mapData) {
-	return GemThief.Digger.getLightLocations(mapData).random();
+	return mapData.getLightLocations().random();
 };
 
 GemThief.DWARF_START_LOCATIONS = {};

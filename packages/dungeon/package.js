@@ -13,6 +13,7 @@ Package.onUse(function (api) {
 	api.use(["globals", "entity", "grigio:babel@0.1.6"]);
 
 	api.addFiles([
+		"lib/map/digger/map_data.es6.js",
 		"lib/map/digger/map_digger.es6.js",
 		"lib/map/map.es6.js",
 		"lib/map/map_feature_types.es6.js",

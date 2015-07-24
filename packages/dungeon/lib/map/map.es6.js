@@ -1,7 +1,7 @@
 "use strict";
 
 GemThief.Map = {
-	instantiate: function (mapData, params) {
+	instantiate: function (entityData, params) {
 		const map = Object.create(GemThief.Map);
 		map.getSomeTiles = getSomeTiles.bind(map);
 		map.getTile = getTile.bind(map);
@@ -14,10 +14,10 @@ GemThief.Map = {
 		map.level = params.level || 1;
 		map.width = params.width;
 		map.height = params.height;
-		map.tiles = _createTiles(GemThief.Digger.dig(params));
-		map.stairs = _createStairs(mapData.stairs, map);
+		map.tiles = _createTiles(entityData.tiles);
+		map.stairs = _createStairs(entityData.stairs, map);
 
-		_setupLights(mapData.lights, map);
+		_setupLights(entityData.lights, map);
 
 		return map;
 	}
