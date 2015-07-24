@@ -10,10 +10,11 @@ Package.onUse(function (api) {
 	var packages = [
 		"meteor-platform",
 		"accounts-password",
-		"oaalto:rot",
-		"ian:accounts-ui-bootstrap-3",
-		"twbs:bootstrap",
-		"sacha:spin"
+		"oaalto:rot@0.6.1",
+		"ian:accounts-ui-bootstrap-3@1.2.76",
+		"twbs:bootstrap@3.3.5",
+		"sacha:spin@2.3.1",
+		"msavin:mongol@1.1.0"
 	];
 
 	api.use(packages);
