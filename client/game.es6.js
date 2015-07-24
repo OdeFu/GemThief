@@ -21,7 +21,7 @@ GemThief.Game = {
 				}
 				if (result) {
 					Messenger.addListener(GemThief.Messages.GAME_OVER, this.gameOver);
-					this.changeState(GemThief.GameState.instantiate(result, game));
+					this.changeState(new GemThief.GameState(result, game));
 				}
 			}.bind(this));
 		}.bind(this));
@@ -40,7 +40,7 @@ GemThief.Game = {
 		this.state.engine.lock();
 
 		Meteor.call("update", won, function updateCallback(error, data) {
-			this.changeState(GemThief.EndState.instantiate(data));
+			this.changeState(new GemThief.EndState(data));
 		}.bind(this));
 	},
 
@@ -51,7 +51,7 @@ GemThief.Game = {
 		}
 		else {
 			Meteor.call("loadLevel", nextLevel, function loadLevelCallback(error, game) {
-				this.changeState(GemThief.GameState.instantiate(game));
+				this.changeState(new GemThief.GameState(game));
 			}.bind(this));
 		}
 	}
