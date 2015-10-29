@@ -2,6 +2,8 @@
   "devDependencies": {
     "asar": "^0.7.2",
     "electron-prebuilt": "^0.34.0",
+    "eslint": "^1.7.3",
+    "eslint-plugin-babel": "^2.1.1",
     "fs-jetpack": "^0.7.0",
     "gulp": "^3.9.0",
     "gulp-less": "^3.0.3",
